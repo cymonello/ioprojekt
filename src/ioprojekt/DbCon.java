@@ -56,6 +56,10 @@ public class DbCon
             System.out.println("Type: " + typ);
         }
     }
+    private void writePreparedStatement()
+    {
+        //TEST
+    }
     private void close()
     {
         try
