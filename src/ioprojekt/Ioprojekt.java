@@ -17,7 +17,7 @@ public class Ioprojekt
      */
     public static void main(String[] args)
     {
-        System.out.println("teeest");
+        System.out.println("test2");
     }
     
 }
