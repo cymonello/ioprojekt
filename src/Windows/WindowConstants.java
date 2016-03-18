@@ -15,9 +15,9 @@ import javax.swing.ImageIcon;
  */
 public class WindowConstants {
 
-    public static final int HEIGHT = 1000;
+    public static final int HEIGHT = 600;
     public static final int WIDTH = 1000;
     public static final int BORDER = 200;
-    public static final Color MAINMENUCOLOR = Color.BLACK;
-    public static final Image LOGOIMG = new ImageIcon("res/KinoLogo.jpg").getImage();
+    public static final Color MAINMENUCOLOR = Color.black;
+    public static final Image LOGOIMG = new ImageIcon("res/KinoLogo.png").getImage();
 }
