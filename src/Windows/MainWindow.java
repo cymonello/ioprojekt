@@ -5,12 +5,10 @@
  */
 package Windows;
 
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
 /**
@@ -20,22 +18,23 @@ import javax.swing.SwingUtilities;
 public class MainWindow extends JFrame implements ActionListener {
 
     public static void main(String[] args) {
-        run(new MainWindow(), WindowConstants.WIDTH, WindowConstants.HEIGHT, "Okno testowe");
+        MainWindow main = new MainWindow();
+        run(main, WindowConstants.WIDTH, WindowConstants.HEIGHT, "Okno testowe");
     }
     
-    private JPanel leftPanel;
-    private JScrollPane rightPanelScroll;
-    private JPanel rightPanel;
+    public static JPanel leftPanel;
+    //public static JScrollPane rightPanelScroll;
+    public static JPanel rightPanel;
     
     public MainWindow(){
         leftPanel = new MainMenu();
         leftPanel.setBackground(WindowConstants.MAINMENUCOLOR);
         leftPanel.setBounds(0, 0,WindowConstants.BORDER , WindowConstants.HEIGHT);
         add(leftPanel);
+        
         rightPanel = new RightWindow();
-        rightPanelScroll = new JScrollPane(rightPanel);
-        rightPanelScroll.setBounds(WindowConstants.BORDER,0,WindowConstants.WIDTH - WindowConstants.BORDER,WindowConstants.HEIGHT);
-        add(rightPanelScroll);
+        rightPanel.setBounds(WindowConstants.BORDER,0,WindowConstants.WIDTH - WindowConstants.BORDER,WindowConstants.HEIGHT);
+        add(rightPanel);
     }
     
     /**
