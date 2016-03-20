@@ -12,17 +12,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
-
 /**
  *
  * @author Szymon
  */
-public class MoviesDB
+public class TermsDB
 {
     private Connection connect = null;
     private Statement statement = null;
-    //private PreparedStatement preparedStatement = null;
-    //private ResultSet resultSet = null;
+    private PreparedStatement preparedStatement = null;
+    private ResultSet resultSet = null;
     public void open()
     {
         try
@@ -45,15 +44,15 @@ public class MoviesDB
             JOptionPane.showMessageDialog(null, e.toString());
         }
     }
-    public ResultSet getMovie(int id)
+    public ResultSet getTermsInDay(String date)
     {
-        ResultSet movie = null;
+        ResultSet termsInDay = null;
         try
         {
             if(connect != null)
             {
                 statement = connect.createStatement();
-                movie = statement.executeQuery("SELECT * FROM Movies WHERE id=" + id);  
+                termsInDay = statement.executeQuery("SELECT * FROM Movies WHERE date=" + date);  
             }
             else
             {
@@ -63,6 +62,6 @@ public class MoviesDB
         {
             JOptionPane.showMessageDialog(null, e.toString());
         }
-        return movie;
+        return termsInDay;
     }
 }
