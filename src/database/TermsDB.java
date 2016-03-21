@@ -20,8 +20,6 @@ public class TermsDB
 {
     private Connection connect = null;
     private Statement statement = null;
-    private PreparedStatement preparedStatement = null;
-    private ResultSet resultSet = null;
     public void open()
     {
         try
@@ -111,6 +109,40 @@ public class TermsDB
             JOptionPane.showMessageDialog(null, e.toString());
         }
         return info;
+    }
+
+    /**
+     * Zwraca tytuł filmu z konkretnego terminu
+     * @param date
+     * @param time
+     * @return
+     */
+    public String getTitle(String date, String time)
+    {
+        String title = null;
+        ResultSet temp;
+        try
+        {
+            if(connect != null)
+            {
+                statement = connect.createStatement();
+                temp = statement.executeQuery("SELECT movie FROM Terms WHERE date='" + date + "' AND hour='" + time + "'"); 
+                temp.next();
+                int i = temp.getInt("movie");
+                statement = connect.createStatement();
+                temp = statement.executeQuery("SELECT title FROM Movies WHERE id=" + i);
+                temp.next();
+                title = temp.getString("title");
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(null, "Błąd! Brak połączenia z bazą filmów");
+            }
+        } catch (SQLException e)
+        {
+            JOptionPane.showMessageDialog(null, e.toString());
+        }
+        return title;
     }
     
 }

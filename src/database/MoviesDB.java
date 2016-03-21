@@ -11,6 +11,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Date;
+import java.sql.Time;
 import javax.swing.JOptionPane;
 
 /**
@@ -21,8 +23,7 @@ public class MoviesDB
 {
     private Connection connect = null;
     private Statement statement = null;
-    //private PreparedStatement preparedStatement = null;
-    //private ResultSet resultSet = null;
+    
     public void open()
     {
         try
@@ -45,6 +46,12 @@ public class MoviesDB
             JOptionPane.showMessageDialog(null, e.toString());
         }
     }
+
+    /**
+     * Zwraca cały ResultSet ze wszystkimi danymi owybranym filmie
+     * @param id
+     * @return
+     */
     public ResultSet getMovie(int id)
     {
         ResultSet movie = null;
@@ -64,5 +71,63 @@ public class MoviesDB
             JOptionPane.showMessageDialog(null, e.toString());
         }
         return movie;
+    }
+
+    /**
+     * Zwraca String tytuł
+     * @param id
+     * @return
+     */
+    public String getTitle(int id)
+    {
+        String title = null;
+        ResultSet temp;
+        try
+        {
+            if(connect != null)
+            {
+                statement = connect.createStatement();
+                temp = statement.executeQuery("SELECT title FROM Movies WHERE id=" + id); 
+                temp.next();
+                title = temp.getString("title");
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(null, "Błąd! Brak połączenia z bazą filmów");
+            }
+        } catch (SQLException e)
+        {
+            JOptionPane.showMessageDialog(null, e.toString());
+        }
+        return title;
+    }
+
+    /**
+     * Zwraca Date datę premiery filmu
+     * @param id
+     * @return
+     */
+    public String getDescription(int id)
+    {
+        String desc = null;
+        ResultSet temp;
+        try
+        {
+            if(connect != null)
+            {
+                statement = connect.createStatement();
+                temp = statement.executeQuery("SELECT description FROM Movies WHERE id=" + id); 
+                temp.next();
+                desc = temp.getString("description");
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(null, "Błąd! Brak połączenia z bazą filmów");
+            }
+        } catch (SQLException e)
+        {
+            JOptionPane.showMessageDialog(null, e.toString());
+        }
+        return desc;
     }
 }
