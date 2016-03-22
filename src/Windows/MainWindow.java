@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package Windows;
-
+//
 import database.MoviesDB;
 import database.TermsDB;
 import java.awt.event.ActionEvent;
