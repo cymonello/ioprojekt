@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package Windows;
-//
+//Bartek nie umie 
 import database.MoviesDB;
 import database.TermsDB;
 import java.awt.event.ActionEvent;
