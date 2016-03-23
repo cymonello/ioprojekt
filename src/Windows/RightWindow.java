@@ -152,7 +152,7 @@ public class RightWindow extends JPanel implements ActionListener {
         setBounds(WindowConstants.BORDER, 0, WindowConstants.WIDTH - WindowConstants.BORDER, WindowConstants.HEIGHT);
 
         JComboBox<String> jtfSearch = new JComboBox<>();
-        String str[] = {"1","2","3"};
+        String[] str = {"1","2","3"};//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         jtfSearch.setModel(new DefaultComboBoxModel(str));
         jtfSearch.setBounds(150, (int) (WindowConstants.HEIGHT * 0.3), WindowConstants.WIDTH - WindowConstants.BORDER - 300, 100);
         jtfSearch.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 36));
