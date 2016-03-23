@@ -15,11 +15,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
- * Klasa tworząca główne menu programu
- * Klasa tworzy przyciski z obrazów, po najechaniu na przycisk obrazek się zmienia imitując mrugnięcie guzika
- * Jeśli nie odnajdzie odpwiedniego obrazka w w katalogu res, zostanie stworzony domyśly dla Javy przycisk
- * Klikniecie na guzik powoduje zmiane wyświetlanej zawartości na prawym panelu
- * Przyciski niezależnie od systemu na którym jesteśmy powinny wyglądać jednakowo
+ * Klasa tworząca główne menu programu Klasa tworzy przyciski z obrazów, po
+ * najechaniu na przycisk obrazek się zmienia imitując mrugnięcie guzika Jeśli
+ * nie odnajdzie odpwiedniego obrazka w w katalogu res, zostanie stworzony
+ * domyśly dla Javy przycisk Klikniecie na guzik powoduje zmiane wyświetlanej
+ * zawartości na prawym panelu Przyciski niezależnie od systemu na którym
+ * jesteśmy powinny wyglądać jednakowo
+ *
  * @author Bartłomiej
  */
 public class MainMenu extends JPanel implements ActionListener {
@@ -67,34 +69,36 @@ public class MainMenu extends JPanel implements ActionListener {
         cpr.setBounds(10, WindowConstants.HEIGHT - 60, 200, 30);
         add(cpr);
     }
-    
-    
+
     /**
-     * Metoda actionPerformed zostaje wywołana gdy naciśniemu przycisk
-     * jako parametr jej wywołania zostaje podane żródło (przycisk naciśnięty)
-     * Metoda rozpoznaje który z naszych przycisków urzytkownik nacisnął oraz na jego podstawie tworzy odpowiedni obiekt JPanel i wyświetla do po prawej stronie okna
-     * 
+     * Metoda actionPerformed zostaje wywołana gdy naciśniemu przycisk jako
+     * parametr jej wywołania zostaje podane żródło (przycisk naciśnięty) Metoda
+     * rozpoznaje który z naszych przycisków urzytkownik nacisnął oraz na jego
+     * podstawie tworzy odpowiedni obiekt JPanel i wyświetla do po prawej
+     * stronie okna
+     *
      */
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
         if (source == logo) {
-
-
+            MainWindow.rightPanel.StartWindow();
         } else if (source == repertuarButton) {
-            new RightWindow(MenuButtons.REPERTUAR);
-        }else if(source == wyszukajFilmButton){
-            new RightWindow(MenuButtons.WYSZUKAJ);
+            MainWindow.rightPanel.MakeRepertoire();
+        } else if (source == wyszukajFilmButton) {
+            MainWindow.rightPanel.MakeSearch();
+        } else if (source == logo) {
+            MainWindow.rightPanel.StartWindow();
         }
     }
 }
 
 /**
- * Klasa pomocnicza dostępna tylko wpakiecie Windows
- * Klasa umożliwiająca tworzenie przycisków na podstawie obrazka
- * W kontruktorze klasy podajemy ściezkę dostępu do danego pliku
- * Jeśli nie ma podanego pliku, przycisk bęzie wyglądał jak klasyczny JButton w Javie
- * 
+ * Klasa pomocnicza dostępna tylko wpakiecie Windows Klasa umożliwiająca
+ * tworzenie przycisków na podstawie obrazka W kontruktorze klasy podajemy
+ * ściezkę dostępu do danego pliku Jeśli nie ma podanego pliku, przycisk bęzie
+ * wyglądał jak klasyczny JButton w Javie
+ *
  */
 class ImageButton extends JButton {
 
@@ -113,11 +117,4 @@ class ImageButton extends JButton {
     }
 
 }
-/**
- * ta klasa jest tylko dla mnie pomocna, żeby nie pogubić się w podawaniu numerków dla odpowiedniego wywołania fukncji po naciśnięciu przycisków
- */
-class MenuButtons{
-    public static int LOGH=0;
-    public static int REPERTUAR=1;
-    public static int WYSZUKAJ=2;
-}
+

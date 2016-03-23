@@ -5,86 +5,108 @@
  */
 package Windows;
 
+import Repertoire.Repertoire;
+import database.MoviesDB;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 
 /**
  * To jest klasa odpowiedzialna za poprawne wyświetlanie prawej strony naszego
  * porgramu, reagowanie na naciśnięcie przycisków Sam do końca nie ogarniam co
- * ja to robię xD Nawet nie marnujcie czasu na zrozumienie tego :)
- * Narazie wszelkie kolorki, obrazki są jedynie po to by nie było biało, wszelkie schematy czcionek, kolorów itd dobierze się chyba już po 1 prototypie
+ * ja to robię xD Nawet nie marnujcie czasu na zrozumienie tego :) Narazie
+ * wszelkie kolorki, obrazki są jedynie po to by nie było biało, wszelkie
+ * schematy czcionek, kolorów itd dobierze się chyba już po 1 prototypie
+ *
  * @author Bartłomiej
  */
 public class RightWindow extends JPanel implements ActionListener {
+    JTable jTable = new JTable();
 
-    RightWindow(int val) {
-        switch (val) {
-            case 1:
-                MakeRepertoire(MainWindow.rightPanel);
-                break;
-            case 2:
-                MakeSearch(MainWindow.rightPanel);
-                break;
-            case 3:
-                break;
-            default:
-                StartWindow();
-        }
+    RightWindow() {
+        StartWindow();
     }
 
-    private void StartWindow() {
+    public void StartWindow() {
+        removeAll();
+        setLayout(null);
+        setBounds(WindowConstants.BORDER, 0, WindowConstants.WIDTH - WindowConstants.BORDER, WindowConstants.HEIGHT);
+        setBackground(Color.black);
+        
+        repaint();
     }
 
-    private void MakeRepertoire(JPanel rp) {
-        rp.removeAll();
-        rp.setLayout(null);
-        rp.setBounds(WindowConstants.BORDER, 0, WindowConstants.WIDTH - WindowConstants.BORDER, WindowConstants.HEIGHT);
-
+    public void MakeRepertoire() {
+        JComboBox jcbDate;
+        jTable = null;
+        
+        removeAll();
+        setLayout(null);
+        setBounds(WindowConstants.BORDER, 0, WindowConstants.WIDTH - WindowConstants.BORDER, WindowConstants.HEIGHT);
+        setBackground(Color.black);
+        
         JLabel jlChooseDate = new JLabel("WYBIERZ DATE:");
+        
         jlChooseDate.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 17));
         jlChooseDate.setBounds(10, 30, 180, 30);
         jlChooseDate.setForeground(Color.white);
-        rp.add(jlChooseDate);
-        JComboBox jcbDate = new JComboBox();
-        SimpleDateFormat ft = new SimpleDateFormat("dd:MM:yy");
+        add(jlChooseDate);
+        
+        jcbDate = new JComboBox();
+        SimpleDateFormat ft = new SimpleDateFormat("dd.MM.yy");
         Calendar cal = Calendar.getInstance();
         jcbDate.addItem(ft.format(cal.getTime()));
+        
         for (int i = 0; i < 5; i++) {
             cal.add(Calendar.DAY_OF_MONTH, 1);
             java.util.Date data = cal.getTime();
             jcbDate.addItem(ft.format(cal.getTime()));
-            System.out.println(ft.format(data));
         }
         jcbDate.setBounds(200, 30, 120, 30);
         jcbDate.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 17));
         jcbDate.setForeground(Color.GRAY);
         jcbDate.setBackground(Color.CYAN);
-        jcbDate.addActionListener(this);
+       /* jcbDate.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //JComboBox source = (JComboBox) e.getSource();
+                //String str = (String) source.getSelectedItem();
+                //System.out.println(str);
+                //try {
+                   // Repertoire rep = new Repertoire(str);
+                    //String[][] tab = rep.getValue();
+                    //String[] str1 = {"Tytuł","Wiek","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17"};
+                    //jTable = new JTable(tab,str1);
+                    //jTable.setBounds(10,100,980,490);
+                    
+                    //MainWindow.rightPanel.add(jTable);
+                //} catch (ClassNotFoundException ex) {
+                //} catch (SQLException ex){
+               // }
+            }
 
-        rp.add(jcbDate);
-        JLabel sty = new JLabel("Tytul");
-        sty.setBounds(10, 250, 350, 50);
-        rp.add(sty);
-
-        rp.repaint();
-        rp.setBackground(new Color(104, 158, 205));
+        });*/
+        add(jcbDate);
+        repaint();
     }
 
-    private void MakeSearch(JPanel rp) {
-        rp.removeAll();
-        rp.setLayout(null);
-        rp.setBackground(Color.BLACK);
-        rp.setBounds(WindowConstants.BORDER, 0, WindowConstants.WIDTH - WindowConstants.BORDER, WindowConstants.HEIGHT);
+    public void MakeSearch() {
+        removeAll();
+        setLayout(null);
+        setBackground(Color.BLACK);
+        setBounds(WindowConstants.BORDER, 0, WindowConstants.WIDTH - WindowConstants.BORDER, WindowConstants.HEIGHT);
 
         JTextField jtfSearch = new JTextField("Szukaj filmu");
         jtfSearch.setBounds(150, (int) (WindowConstants.HEIGHT * 0.3), WindowConstants.WIDTH - WindowConstants.BORDER - 300, 100);
@@ -98,16 +120,17 @@ public class RightWindow extends JPanel implements ActionListener {
         ibSearch.setRolloverIcon(new ImageIcon("res/SzukajEntered.png"));
         ibSearch.setBounds(210, (int) (WindowConstants.HEIGHT * 0.3) + 130, WindowConstants.WIDTH - WindowConstants.BORDER - 420, 80);
         ibSearch.addActionListener(this);
-        rp.add(ibSearch);
+        add(ibSearch);
 
-        rp.add(jtfSearch);
-        rp.setBounds(WindowConstants.BORDER, 0, WindowConstants.WIDTH - WindowConstants.BORDER, WindowConstants.HEIGHT);
+        add(jtfSearch);
+        setBounds(WindowConstants.BORDER, 0, WindowConstants.WIDTH - WindowConstants.BORDER, WindowConstants.HEIGHT);
 
-        rp.repaint();
+        repaint();
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        Object source = e.getSource();
 
     }
 
