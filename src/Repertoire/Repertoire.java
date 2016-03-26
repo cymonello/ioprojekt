@@ -11,6 +11,10 @@ import java.util.HashMap;
 /**
  * Created on 23.03.16.
  */
+
+/* TODO dynamiczne ustalanie wielkości tablicy movies
+ */
+
 public class Repertoire {
     private ResultSet movies; //referencja do ResultSet z TermsDB
     private TermsDB tdb;
@@ -23,6 +27,7 @@ public class Repertoire {
     private HashMap<Integer, String[]> mapMovieInfo = new HashMap<>();
     // tablica asocjacyjna przechowujaca godziny dla danego filmu, klucz - id filmu, wartość tablica z godzinami
     private HashMap<Integer, Integer[]> mapHours = new HashMap<>();
+
     /**
      * Konstruktor przyjmujący date filmu, tworzy ResultSet dla bazy Terms, skąd zostaną następnie pobrane ID filmów
      * przyjmuje datę jako String
@@ -38,6 +43,7 @@ public class Repertoire {
             tdb = new TermsDB();
             date = dateOfMovies;
             hours = new Integer[12];
+            movie = new Integer[20];
             tdb.open();
             movies = tdb.getTermsInDay(dateOfMovies);
             gettingInfo();
@@ -61,7 +67,6 @@ public class Repertoire {
         tdb.open();
         Integer j = 0;
         while(movies.next()){
-            ResultSet temp = movies;
             id = movies.getInt("id");
             hall = movies.getInt("hall");
             /**
