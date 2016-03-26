@@ -13,7 +13,6 @@ import java.util.HashMap;
  */
 public class Repertoire {
     ResultSet movies; //referencja do ResultSet z TermsDB
-    String[] movieInfo; //wynikowa tablica z info o filmie
     TermsDB tdb;
     String date; //data
     Integer hall; //sala
@@ -65,7 +64,6 @@ public class Repertoire {
         while(movies.next()){
             i+=1;
         }
-        movieInfo = new String[i];
         movies.beforeFirst();
         while(movies.next()){
             ResultSet temp = movies;
