@@ -10,10 +10,11 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 
 /**
- *
+ * Ta klasa jest jedynie po to aby w jednym miejscu przechowywać wszystkie stałe parametry dla okna, z biegiem czasu pewnie ich przybedzie, nie byłoby sensu przechowywania ich w wielu miejscach
+ * ewentualana późniejsza zmiana w tym miejscy powoduje zmiane tych parametrów w całym programie
  * @author Bartłomiej
  */
-public class WindowConstants {
+abstract public class WindowConstants {
 
     public static final int HEIGHT = 600;
     public static final int WIDTH = 1000;
