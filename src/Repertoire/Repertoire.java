@@ -12,17 +12,17 @@ import java.util.HashMap;
  * Created on 23.03.16.
  */
 public class Repertoire {
-    ResultSet movies; //referencja do ResultSet z TermsDB
-    TermsDB tdb;
-    String date; //data
-    Integer hall; //sala
-    Integer[] hours; // godzina filmu
-    Integer[] movie; //tablica id filmow na dany dzien
-    Integer id; //przechwowuje id terms
+    private ResultSet movies; //referencja do ResultSet z TermsDB
+    private TermsDB tdb;
+    private String date; //data
+    private Integer hall; //sala
+    private Integer[] hours; // godzina filmu
+    private Integer[] movie; //tablica id filmow na dany dzien
+    private Integer id; //przechwowuje id terms
     // tablica asocjacyjna przechowujaca informacje o filmie, klucz movie(id), wartość movieInfo
-    HashMap<Integer, String[]> mapMovieInfo = new HashMap<>();
+    private HashMap<Integer, String[]> mapMovieInfo = new HashMap<>();
     // tablica asocjacyjna przechowujaca godziny dla danego filmu, klucz - id filmu, wartość tablica z godzinami
-    HashMap<Integer, Integer[]> mapHours = new HashMap<>();
+    private HashMap<Integer, Integer[]> mapHours = new HashMap<>();
     /**
      * Konstruktor przyjmujący date filmu, tworzy ResultSet dla bazy Terms, skąd zostaną następnie pobrane ID filmów
      * przyjmuje datę jako String
@@ -40,8 +40,8 @@ public class Repertoire {
             hours = new Integer[12];
             tdb.open();
             movies = tdb.getTermsInDay(dateOfMovies);
-            tdb.close();
             gettingInfo();
+            tdb.close();
         }
         catch(ClassNotFoundException e){
             e.getMessage();
@@ -59,12 +59,7 @@ public class Repertoire {
 
     private void gettingInfo() throws SQLException {
         tdb.open();
-        Integer i = 0;
         Integer j = 0;
-        while(movies.next()){
-            i+=1;
-        }
-        movies.beforeFirst();
         while(movies.next()){
             ResultSet temp = movies;
             id = movies.getInt("id");
