@@ -69,9 +69,15 @@ public class Repertoire {
             ResultSet temp = movies;
             id = movies.getInt("id");
             hall = movies.getInt("hall");
+            /**
+             * Za pomocą tego ifa tworzy się tablica z id filmów
+             */
             if(Arrays.binarySearch(movie, movies.getInt("movie"))>=0) {
                 movie[j] = movies.getInt("movie");
             }
+            /**
+             * Tworzenie tablicy asocjacyjnej z informacją o filmie oraz z godzinami wyświetlania
+             */
             if(!mapMovieInfo.containsKey(movie[j])){
                 mapMovieInfo.put(movie[j],tdb.getMovieInfo(movie[j]));
                 int k = 0;
