@@ -164,7 +164,8 @@ public class Repertoire {
         return movie;
     }
     public String[][] getValue(){
-        String[][] table = new String[movie.length][17]; //12 godzin + 5 informacji
+        Integer temp = movie.length;
+        String[][] table = new String[temp][17]; //12 godzin + 5 informacji
         String[] tempIntToString = new String[12]; //tablica godzin zamienionych na stringi
         Integer[] tempInt; //tymczasowa tablica intów przechowujaca godziny
         String[] tempString; //tymczasowa tablica przechowująca wartość z tablicy asocjacyjnej
