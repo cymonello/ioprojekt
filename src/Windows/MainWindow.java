@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package Windows;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
