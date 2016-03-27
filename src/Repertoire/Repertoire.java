@@ -163,6 +163,13 @@ public class Repertoire {
     public Integer[] getMovie(){
         return movie;
     }
+
+    /**
+     * Metoda, ktora w oparciu o HashMap i tablice Integerów(movie) tworzy wynikową tablice dwuwymiarową,
+     * za pomocą, której tworzona jest tabelka w okienku repertuaru
+     *
+     * @return tablica dwuwymiarowa zawierająca w wierszu wszystkie informacje o danym filmie
+     */
     public String[][] getValue(){
         Integer temp = movie.length;
         String[][] table = new String[temp][17]; //12 godzin + 5 informacji
@@ -190,5 +197,4 @@ public class Repertoire {
         }
         return table;
     }
-
 }
