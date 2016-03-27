@@ -62,7 +62,7 @@ public class TermsDB
             if(connect != null)
             {
                 statement = connect.createStatement();
-                termsInDay = statement.executeQuery("SELECT * FROM Terms WHERE date=" + date);  
+                termsInDay = statement.executeQuery("SELECT * FROM Terms WHERE date='" + date + "'");  
             }
             else
             {
