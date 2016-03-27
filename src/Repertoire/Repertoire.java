@@ -163,4 +163,31 @@ public class Repertoire {
     public Integer[] getMovie(){
         return movie;
     }
+    public String[][] getValue(){
+        String[][] table = new String[movie.length][17]; //12 godzin + 5 informacji
+        String[] tempIntToString = new String[12]; //tablica godzin zamienionych na stringi
+        Integer[] tempInt; //tymczasowa tablica intów przechowujaca godziny
+        String[] tempString; //tymczasowa tablica przechowująca wartość z tablicy asocjacyjnej
+        String[] connectedRow = new String[17]; // tablica przechowująca cały wiersz
+        for (int i = 0; i < movie.length; i++) {
+            tempInt = mapHours.get(movie[i]);
+            for (int j = 0; j < tempIntToString.length; j++) {
+                if(tempInt[j]==0){
+                    tempIntToString[j] = " ";
+                }
+                else
+                    tempIntToString[j] = String.valueOf(tempInt[j]);
+            }
+            tempString = mapMovieInfo.get(movie[i]);
+            for (int j = 0; j < 5; j++) {
+                connectedRow[j] = tempString[j];
+            }
+            for (int j = 5; j < 17; j++) {
+                connectedRow[j] = tempIntToString[j-5];
+            }
+            table[i] = connectedRow;
+        }
+        return table;
+    }
+
 }
