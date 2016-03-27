@@ -4,7 +4,6 @@ import database.TermsDB;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.HashMap;
 
 
@@ -12,47 +11,40 @@ import java.util.HashMap;
  * Created on 23.03.16.
  */
 
-/* TODO dynamiczne ustalanie wielkości tablicy movies
- */
 
 public class Repertoire {
-    private ResultSet movies; //referencja do ResultSet z TermsDB
+    private ResultSet moviesRS; //referencja do ResultSet z TermsDB
     private TermsDB tdb;
-    private String date; //data
-    private Integer hall; //sala
+    String date;
     private Integer[] hours; // godzina filmu
     private Integer[] movie; //tablica id filmow na dany dzien
-    private Integer id; //przechwowuje id terms
     // tablica asocjacyjna przechowujaca informacje o filmie, klucz movie(id), wartość movieInfo
     private HashMap<Integer, String[]> mapMovieInfo = new HashMap<>();
     // tablica asocjacyjna przechowujaca godziny dla danego filmu, klucz - id filmu, wartość tablica z godzinami
     private HashMap<Integer, Integer[]> mapHours = new HashMap<>();
 
     /**
-     * Konstruktor przyjmujący date filmu, tworzy ResultSet dla bazy Terms, skąd zostaną następnie pobrane ID filmów
-     * przyjmuje datę jako String
+     * Konstruktor przyjmujący date filmu, tworzy ResultSet dla bazy Terms, skąd zostaną następnie pobrane ID
+     * filmów przyjmuje datę jako String, wywoluje sie rowniez w nim funkcja, ktora inicjalizuje pozostaje pola,
+     * w szczególności tablice asocjacyjne za pomocą metody gettingInfo()
      *
      * @param dateOfMovies data filmu
      * @throws ClassNotFoundException
      */
 
 
-    public Repertoire(String dateOfMovies) throws ClassNotFoundException {
+    public Repertoire(String dateOfMovies) throws ClassNotFoundException, SQLException {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             tdb = new TermsDB();
             date = dateOfMovies;
-            hours = new Integer[12];
-            movie = new Integer[20];
+            hours = new Integer[13];
             tdb.open();
-            movies = tdb.getTermsInDay(dateOfMovies);
+            moviesRS = tdb.getTermsInDay(dateOfMovies);
             gettingInfo();
-            tdb.close();
         }
         catch(ClassNotFoundException e){
-            e.getMessage();
-        } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
@@ -64,36 +56,111 @@ public class Repertoire {
 
 
     private void gettingInfo() throws SQLException {
-        tdb.open();
-        Integer j = 0;
-        while(movies.next()){
-            id = movies.getInt("id");
-            hall = movies.getInt("hall");
-            /**
-             * Za pomocą tego ifa tworzy się tablica z id filmów
-             */
-            if(Arrays.binarySearch(movie, movies.getInt("movie"))>=0) {
-                movie[j] = movies.getInt("movie");
+        gettingMovieId();
+        for (int i = 0; i < movie.length; i++) {
+            if (!mapMovieInfo.containsKey(movie[i])) {
+                mapMovieInfo.put(movie[i], tdb.getMovieInfo(movie[i]));
+                gettingHours(i);
+                mapHours.put(movie[i], hours);
             }
-            /**
-             * Tworzenie tablicy asocjacyjnej z informacją o filmie oraz z godzinami wyświetlania
-             */
-            if(!mapMovieInfo.containsKey(movie[j])){
-                mapMovieInfo.put(movie[j],tdb.getMovieInfo(movie[j]));
-                int k = 0;
-                while(movies.next()){
-                    if(id==movies.getInt("id")){
-                        hours[k]=movies.getInt("id");
-                        k++;
-                    }
-                }
-                mapHours.put(movie[j], hours);
-                j++;
-            }
-            movies.beforeFirst();
         }
-
-        tdb.close();
     }
 
+    /**
+     * Metoda służąca do sprawdzenia czy wartość znajduje się w tablicy
+     * @param tab tablica wartości
+     * @param key szukana wartość
+     * @return zwraca liczę dodatnią gdy wartość jest w tablicy, ujemną gdy wartość jest poza tablicą
+     */
+    private Integer searchingIfValue(Integer[] tab, Integer key){
+        for (int i = 0; i < tab.length; i++) {
+            if(tab[i]==key){
+                return 1;
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * Metoda, która tworzy tablicę godzin wyświetlania dla filmów wg ich ID
+     * @param index indeks w tablicy movie, informuje dla jakiego filmu szukamy godzin
+     * @throws SQLException
+     */
+
+    private void gettingHours(Integer index) throws SQLException{
+        int k = 0;
+        Integer id;
+        Integer[] tempHours = new Integer[13];
+        while (moviesRS.next()) {
+            id = moviesRS.getInt("movie");
+            if (id == movie[index]) {
+                tempHours[k] = moviesRS.getInt("hour");
+                k++;
+            }
+        }
+        Integer tempIndex =0;
+        for (int ii = 10; ii <= 22; ii++) {
+            for (int l = 0; l < tempHours.length; l++) {
+                if(tempHours[l]!=null){
+                    if(tempHours[l]==ii){
+                        hours[tempIndex]=tempHours[l];
+                    }
+                }
+            }
+            if(hours[tempIndex]==null){
+                hours[tempIndex]=0;
+            }
+            tempIndex++;
+        }
+        moviesRS.beforeFirst();
+    }
+
+    /**
+     * Metoda, która tworzy tablicę z ID filmów wyświetlanych danego dnia
+     *
+     * @throws SQLException
+     */
+    private void gettingMovieId() throws SQLException {
+        Integer j = 0;
+        Integer[] tempMovie = new Integer[20];
+        while (moviesRS.next()) {
+            if (searchingIfValue(tempMovie, moviesRS.getInt("movie")) < 0) {
+                tempMovie[j] = moviesRS.getInt("movie");
+                j++;
+            }
+        }
+        movie = new Integer[j];
+        for (int i = 0; i < movie.length; i++) {
+            movie[i]=tempMovie[i];
+        }
+        moviesRS.beforeFirst();
+    }
+
+    /**
+     * Getter dla tablicy przechowujące informacje o filmie: title, age, info, lang, duration
+     *
+     * @return tablica asocjacyjna, HashMap
+     */
+    public HashMap<Integer, String[]> getMapMovieInfo() {
+        return mapMovieInfo;
+    }
+
+    /**
+     * Getter dla tablicy przechowującej godziny wyświetlania danego filmu
+     *
+     * @return tablica asocjacyjna, HashMap
+     */
+
+    public HashMap<Integer, Integer[]> getMapHours(){
+        return mapHours;
+    }
+
+    /**
+     * Getter dla tablicy przechowującej numery ID filmów
+     *
+     * @return tablica Integerów
+     */
+    public Integer[] getMovie(){
+        return movie;
+    }
 }
