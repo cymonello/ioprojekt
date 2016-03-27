@@ -8,6 +8,10 @@ import java.util.HashMap;
  */
 public class Testowa {
     public static void main(String[] args) throws SQLException {
+        /* Przykładowe użycie i wypisywanie, żeby baza mogła znaleźć rekordy dla daty musi być ona podana
+           w pojedynczych cudzysłowach -> ' '
+         */
+
         try {
             Repertoire repertuar = new Repertoire("'23.03.16'");
             HashMap<Integer, String[]> aboutMovie = repertuar.getMapMovieInfo();
