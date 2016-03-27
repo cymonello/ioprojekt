@@ -9,7 +9,7 @@ public class Testowa {
     public static void main(String[] args) throws SQLException {
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            Repertoire repertuar = new Repertoire("1");
+            Repertoire repertuar = new Repertoire("24.03.16");
 
         } catch(ClassNotFoundException e)
         {

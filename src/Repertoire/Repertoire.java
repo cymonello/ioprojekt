@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.HashMap;
+import javax.swing.JOptionPane;
 
 
 /**
@@ -46,6 +47,8 @@ public class Repertoire {
             movie = new Integer[20];
             tdb.open();
             movies = tdb.getTermsInDay(dateOfMovies);
+            //movies.next();
+            //JOptionPane.showMessageDialog(null, movies.getString("date")); *** Test czy pobiera się resultset
             gettingInfo();
             tdb.close();
         }
