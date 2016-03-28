@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -86,7 +87,13 @@ public class MainMenu extends JPanel implements ActionListener {
         } else if (source == repertuarButton) {
             MainWindow.rightPanel.MakeRepertoire();
         } else if (source == wyszukajFilmButton) {
-            MainWindow.rightPanel.MakeSearch();
+            try {
+                MainWindow.rightPanel.MakeSearch();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            } catch (ClassNotFoundException e1) {
+                e1.printStackTrace();
+            }
         } else if (source == logo) {
             MainWindow.rightPanel.StartWindow();
         }

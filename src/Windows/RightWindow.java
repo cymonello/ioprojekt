@@ -13,6 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -145,14 +146,25 @@ public class RightWindow extends JPanel implements ActionListener {
         repaint();
     }
 
-    public void MakeSearch() {
+    public void MakeSearch() throws SQLException, ClassNotFoundException {
         removeAll();
         setLayout(null);
         setBackground(Color.BLACK);
         setBounds(WindowConstants.BORDER, 0, WindowConstants.WIDTH - WindowConstants.BORDER, WindowConstants.HEIGHT);
 
         JComboBox<String> jtfSearch = new JComboBox<>();
-        String[] str = {"1","2","3"};//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        Class.forName("com.mysql.jdbc.Driver");
+        MoviesDB mdb = new MoviesDB();
+        mdb.open();
+        Integer i = 6;
+        /*while(mdb.getTitle(i+1)!=null){
+            i++;
+        }*/
+        String[] str = new String[i];
+        for (int j = 0; j < i; j++) {
+            str[j] = mdb.getTitle(j+1);
+        }
+        jtfSearch.setEnabled(true);
         jtfSearch.setModel(new DefaultComboBoxModel(str));
         jtfSearch.setBounds(150, (int) (WindowConstants.HEIGHT * 0.3), WindowConstants.WIDTH - WindowConstants.BORDER - 300, 100);
         jtfSearch.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 36));
@@ -171,6 +183,7 @@ public class RightWindow extends JPanel implements ActionListener {
         setBounds(WindowConstants.BORDER, 0, WindowConstants.WIDTH - WindowConstants.BORDER, WindowConstants.HEIGHT);
 
         repaint();
+        mdb.close();
     }
 
     @Override
