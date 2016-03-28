@@ -130,4 +130,30 @@ public class MoviesDB
         }
         return desc;
     }
+    
+    
+    // Metoda zwracająca max id z bazy filmów czyli ilość filmów w bazie
+    public int getMaxId()
+    {
+        int id = 0;
+        ResultSet temp;
+        try
+        {
+            if(connect != null)
+            {
+                statement = connect.createStatement();
+                temp = statement.executeQuery("SELECT max(id) FROM Movies"); 
+                temp.next();
+                id = temp.getInt("id");
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(null, "Błąd! Brak połączenia z bazą filmów");
+            }
+        } catch (SQLException e)
+        {
+            JOptionPane.showMessageDialog(null, e.toString());
+        }
+        return id;
+    }
 }
