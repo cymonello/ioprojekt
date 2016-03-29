@@ -5,16 +5,15 @@
  */
 package database;
 
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Date;
-import java.sql.Time;
-import java.util.Random;
-import javax.print.event.PrintJobListener;
+import java.sql.Blob;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -159,20 +158,35 @@ public class MoviesDB
         return id;
     }
     
-    // Metoda zwracająca losowy film jako resultset
-    public ResultSet getRandomMovie()
+    // Metoda zwracająca info o filmie + zdjęcie w tablicy Object
+    
+    public Object[] getMovieInfo(int id)
     {
-        int max = getMaxId();
-        Random generator = new Random();
-        int los = generator.nextInt(max-1) + 1;
         ResultSet r = null;
+        Object[] mov = new Object[12];
         try
         {
             if(connect != null)
             {
                 statement = connect.createStatement();
-                r = statement.executeQuery("SELECT title, genre, description, note, image FROM Movies"); 
+                r = statement.executeQuery("SELECT title, genre, duration, lang, age, director, cast, country, year, note, description, image FROM Movies WHERE id="+id); 
                 r.next();
+                byte [] image = r.getBytes("image");
+                Image img = Toolkit.getDefaultToolkit().createImage(image);
+                ImageIcon icon = new ImageIcon(img);
+                mov[0] = icon;
+                mov[1] = r.getInt("title");
+                mov[2] = r.getInt("genre");
+                mov[3] = r.getInt("duration");
+                mov[4] = r.getInt("lang");
+                mov[5] = r.getInt("age");
+                mov[6] = r.getInt("director");
+                mov[7] = r.getInt("cast");
+                mov[8] = r.getInt("country");
+                mov[9] = r.getInt("year");
+                mov[10] = r.getInt("note");
+                mov[11] = r.getInt("description");
+                
             }
             else
             {
@@ -182,6 +196,7 @@ public class MoviesDB
         {
             JOptionPane.showMessageDialog(null, e.toString());
         }
-        return r;
+        return mov;
     }
+    
 }
