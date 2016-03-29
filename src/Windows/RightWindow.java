@@ -12,18 +12,26 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Random;
 import java.util.Vector;
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -32,6 +40,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 import javax.swing.table.JTableHeader;
 
@@ -52,12 +61,32 @@ public class RightWindow extends JPanel implements ActionListener {
         StartWindow();
     }
 
-    public void StartWindow() {
+    public void StartWindow(){
         removeAll();
         setLayout(null);
         setBounds(WindowConstants.BORDER, 0, WindowConstants.WIDTH - WindowConstants.BORDER, WindowConstants.HEIGHT);
         setBackground(Color.black);
-
+        MoviesDB db = new MoviesDB();
+        db.open();
+        ArrayList<Object[]> listaRes = new ArrayList<>();
+        ArrayList<Integer> lista = new ArrayList<>();
+        Random rand = new Random();
+        while(lista.size()<3){
+            int ID = rand.nextInt(db.getMaxId());
+            if(lista.indexOf(ID)==-1){
+                lista.add(ID);
+                listaRes.add(db.getMovieInfo(ID));
+            }
+            System.out.println(" sg"+ db.getMaxId());
+        }
+        db.close();
+        
+        for(int i =0;i<3;i++){
+            Object[] res = listaRes.get(i);
+            JLabel labelIcon = new JLabel((ImageIcon)res[0]);
+            labelIcon.setBounds(51+(i*250), 66, 198, 284);
+            add(labelIcon);
+        }
         repaint();
     }
 
@@ -115,7 +144,7 @@ public class RightWindow extends JPanel implements ActionListener {
                         public void mouseClicked(MouseEvent e) {
                             int row = jTable.rowAtPoint(e.getPoint());
                             int col = jTable.columnAtPoint(e.getPoint());
-                            System.out.println(row + " " + col);
+                            System.out.println(row + " " + col+ " "+ jTable.getColumnName(col)+ " " );
                         }
 
                         @Override
@@ -169,7 +198,7 @@ public class RightWindow extends JPanel implements ActionListener {
         Class.forName("com.mysql.jdbc.Driver");
         MoviesDB mdb = new MoviesDB();
         mdb.open();
-        Integer i = 6;
+        Integer i = mdb.getMaxId();
         /*while(mdb.getTitle(i+1)!=null){
             i++;
         }*/
@@ -261,7 +290,13 @@ public class RightWindow extends JPanel implements ActionListener {
         ibSearch = new ImageButton("res/Szukaj.png");
         ibSearch.setRolloverIcon(new ImageIcon("res/SzukajEntered.png"));
         ibSearch.setBounds(210, (int) (WindowConstants.HEIGHT * 0.3) + 130, WindowConstants.WIDTH - WindowConstants.BORDER - 420, 80);
-        ibSearch.addActionListener(this);
+        ibSearch.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println(jtfSearch.getEditor().getItem().toString());
+            }
+            
+        });
         add(ibSearch);
 
         add(jtfSearch);
@@ -292,5 +327,4 @@ public class RightWindow extends JPanel implements ActionListener {
         Object source = e.getSource();
 
     }
-
 }
