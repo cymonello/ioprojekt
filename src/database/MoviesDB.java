@@ -188,17 +188,17 @@ public class MoviesDB
                 Image img = Toolkit.getDefaultToolkit().createImage(image);
                 ImageIcon icon = new ImageIcon(img);
                 mov[0] = icon;
-                mov[1] = r.getInt("title");
-                mov[2] = r.getInt("genre");
+                mov[1] = r.getString("title");
+                mov[2] = r.getString("genre");
                 mov[3] = r.getInt("duration");
-                mov[4] = r.getInt("lang");
-                mov[5] = r.getInt("age");
-                mov[6] = r.getInt("director");
-                mov[7] = r.getInt("cast");
-                mov[8] = r.getInt("country");
+                mov[4] = r.getString("lang");
+                mov[5] = r.getString("age");
+                mov[6] = r.getString("director");
+                mov[7] = r.getString("cast");
+                mov[8] = r.getString("country");
                 mov[9] = r.getInt("year");
-                mov[10] = r.getInt("note");
-                mov[11] = r.getInt("description");
+                mov[10] = r.getDouble("note");
+                mov[11] = r.getString("description");
                 
             }
             else
