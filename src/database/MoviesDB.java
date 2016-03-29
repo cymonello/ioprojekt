@@ -158,7 +158,20 @@ public class MoviesDB
         return id;
     }
     
-    // Metoda zwracająca info o filmie + zdjęcie w tablicy Object
+    /* Metoda zwracająca info o filmie + zdjęcie w tablicy Object
+    0 - obrazek
+    1 - tytuł
+    2 - gatunek
+    3 - długość
+    4 - język 
+    5 - wiek
+    6 - reżyser
+    7 - aktorzy
+    8 - kraj
+    9 - rok prod
+    10 - ocena
+    11 - opis
+    */
     
     public Object[] getMovieInfo(int id)
     {
