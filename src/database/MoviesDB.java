@@ -146,7 +146,7 @@ public class MoviesDB
                 statement = connect.createStatement();
                 temp = statement.executeQuery("SELECT max(id) FROM Movies"); 
                 temp.next();
-                id = temp.getInt("id");
+                id = temp.getInt(1);
             }
             else
             {
