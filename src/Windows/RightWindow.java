@@ -7,26 +7,32 @@ package Windows;
 
 import Repertoire.Repertoire;
 import database.MoviesDB;
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.HashMap;
+import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.plaf.basic.BasicComboBoxUI;
 import javax.swing.table.JTableHeader;
 
 /**
@@ -132,7 +138,11 @@ public class RightWindow extends JPanel implements ActionListener {
                         jTable.setRowHeight(i, 15);
                     }
                     JScrollPane scrollPane = new JScrollPane(jTable);
-                    scrollPane.setBounds(10, 150, 780, jTable.getRowCount() * jTable.getRowHeight() + 22);
+                    int hei = jTable.getRowCount() * jTable.getRowHeight() + 22;
+                    if (hei > 400) {
+                        hei = 400;
+                    }
+                    scrollPane.setBounds(10, 150, 780, hei);
                     MainWindow.rightPanel.add(scrollPane);
                     MainWindow.rightPanel.repaint();
                     //MakeRepertoireWithTab(rep.getValue());
@@ -145,6 +155,10 @@ public class RightWindow extends JPanel implements ActionListener {
         add(jcbDate);
         repaint();
     }
+    private JTextField tf;
+    private final Vector<String> v = new Vector<>();
+    private final JComboBox jtfSearch = new JComboBox();
+    private boolean hide_flag = false;
 
     public void MakeSearch() throws SQLException, ClassNotFoundException {
         removeAll();
@@ -152,7 +166,6 @@ public class RightWindow extends JPanel implements ActionListener {
         setBackground(Color.BLACK);
         setBounds(WindowConstants.BORDER, 0, WindowConstants.WIDTH - WindowConstants.BORDER, WindowConstants.HEIGHT);
 
-        JComboBox<String> jtfSearch = new JComboBox<>();
         Class.forName("com.mysql.jdbc.Driver");
         MoviesDB mdb = new MoviesDB();
         mdb.open();
@@ -162,15 +175,87 @@ public class RightWindow extends JPanel implements ActionListener {
         }*/
         String[] str = new String[i];
         for (int j = 0; j < i; j++) {
-            str[j] = mdb.getTitle(j+1);
+            str[j] = mdb.getTitle(j + 1);
         }
-        jtfSearch.setEnabled(true);
-        jtfSearch.setModel(new DefaultComboBoxModel(str));
+        jtfSearch.setEditable(true);
+        //jtfSearch.setModel(new DefaultComboBoxModel(str));
         jtfSearch.setBounds(150, (int) (WindowConstants.HEIGHT * 0.3), WindowConstants.WIDTH - WindowConstants.BORDER - 300, 100);
-        jtfSearch.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 36));
-        jtfSearch.setForeground(Color.WHITE);
-        jtfSearch.setBorder(BorderFactory.createLineBorder(Color.YELLOW, 3));
-        jtfSearch.setBackground(new Color(104, 158, 150));
+        //jtfSearch.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 36));
+        //jtfSearch.setForeground(Color.WHITE);
+        //jtfSearch.setBorder(BorderFactory.createLineBorder(Color.YELLOW, 3));
+        //jtfSearch.setBackground(new Color(104, 158, 150));
+        jtfSearch.setUI(new BasicComboBoxUI() { ///////////usuwa widoczne rozwijanie z JComboBox
+            @Override
+            protected JButton createArrowButton() {
+                return new JButton() {
+                    @Override
+                    public int getWidth() {
+                        return 0;
+                    }
+                };
+            }
+        });
+        tf = (JTextField) jtfSearch.getEditor().getEditorComponent();
+        tf.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                EventQueue.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        String text = tf.getText();
+                        if (text.length() == 0) {
+                            jtfSearch.hidePopup();
+                            setModel(new DefaultComboBoxModel(v), "");
+                        } else {
+                            DefaultComboBoxModel m = getSuggestedModel(v, text);
+                            if (m.getSize() == 0 || hide_flag) {
+                                jtfSearch.hidePopup();
+                                hide_flag = false;
+                            } else {
+                                setModel(m, text);
+                                jtfSearch.showPopup();
+                            }
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                String text = tf.getText();
+                int code = e.getKeyCode();
+                switch (code) {
+                    case KeyEvent.VK_ENTER:
+                        hide_flag = true;
+                        break;
+                    case KeyEvent.VK_ESCAPE:
+                        hide_flag = true;
+                        break;
+                    case KeyEvent.VK_RIGHT:
+                        for (int i = 0; i < v.size(); i++) {
+                            String str = v.elementAt(i);
+                            if (str.startsWith(text)) {
+                                jtfSearch.setSelectedIndex(-1);
+                                tf.setText(str);
+                                return;
+                            }
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+        v.removeAllElements();
+        for (String str1 : str) {
+            v.addElement(str1);
+        }
+        setModel(new DefaultComboBoxModel(v), "");
+        JPanel p = new JPanel(new BorderLayout());
+        p.add(jtfSearch, null);
+        add(p);
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        setPreferredSize(new Dimension(300, 150));
 
         ImageButton ibSearch;
         ibSearch = new ImageButton("res/Szukaj.png");
@@ -184,6 +269,22 @@ public class RightWindow extends JPanel implements ActionListener {
 
         repaint();
         mdb.close();
+    }
+
+    private void setModel(DefaultComboBoxModel mdl, String str) {
+        jtfSearch.setModel(mdl);
+        jtfSearch.setSelectedIndex(-1);
+        tf.setText(str);
+    }
+
+    private static DefaultComboBoxModel getSuggestedModel(java.util.List<String> list, String text) {
+        DefaultComboBoxModel m = new DefaultComboBoxModel();
+        for (String s : list) {
+            if (s.toLowerCase().contains(text.toLowerCase())) {
+                m.addElement(s);
+            }
+        }
+        return m;
     }
 
     @Override
