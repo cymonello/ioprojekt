@@ -17,6 +17,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -60,7 +61,7 @@ public class RightWindow extends JPanel implements ActionListener {
     RightWindow() {
         StartWindow();
     }
-
+    public ArrayList<Integer> lista = new ArrayList<>();
     public void StartWindow(){
         removeAll();
         setLayout(null);
@@ -69,15 +70,14 @@ public class RightWindow extends JPanel implements ActionListener {
         MoviesDB db = new MoviesDB();
         db.open();
         ArrayList<Object[]> listaRes = new ArrayList<>();
-        ArrayList<Integer> lista = new ArrayList<>();
+        lista.clear();
         Random rand = new Random();
         while(lista.size()<3){
-            int ID = rand.nextInt(db.getMaxId());
+            int ID = rand.nextInt(db.getMaxId())+1;
             if(lista.indexOf(ID)==-1){
                 lista.add(ID);
                 listaRes.add(db.getMovieInfo(ID));
             }
-            System.out.println(" sg"+ db.getMaxId());
         }
         db.close();
         
@@ -86,6 +86,37 @@ public class RightWindow extends JPanel implements ActionListener {
             JLabel labelIcon = new JLabel((ImageIcon)res[0]);
             labelIcon.setBounds(51+(i*250), 66, 198, 284);
             add(labelIcon);
+            JLabel opis = new JLabel((String)res[1]);
+            opis.setBounds(26+(i*250), 360, 198+50, 40);
+            opis.setForeground(Color.white);
+            opis.setHorizontalAlignment(SwingConstants.CENTER);
+            opis.setVerticalAlignment(SwingConstants.CENTER);
+            add(opis);
+            opis.addMouseListener(new MouseListener() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    JLabel label = (JLabel) e.getSource();
+                    MainWindow.rightPanel.SchowInfoFilm(label.getText());
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {}
+
+                @Override
+                public void mouseReleased(MouseEvent e) {}
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    JLabel label = (JLabel) e.getSource();
+                    label.setForeground(Color.blue);
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    JLabel label = (JLabel) e.getSource();
+                    label.setForeground(Color.white);
+                }
+            });
         }
         repaint();
     }
@@ -326,5 +357,9 @@ public class RightWindow extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
 
+    }
+
+    private void SchowInfoFilm(String source) {
+        System.out.println("Tu bedzą informacje o "+ source);
     }
 }
