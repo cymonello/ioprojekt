@@ -13,6 +13,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Date;
 import java.sql.Time;
+import java.util.Random;
+import javax.print.event.PrintJobListener;
 import javax.swing.JOptionPane;
 
 /**
@@ -144,7 +146,7 @@ public class MoviesDB
                 statement = connect.createStatement();
                 temp = statement.executeQuery("SELECT max(id) FROM Movies"); 
                 temp.next();
-                id = temp.getInt("id");
+                id = temp.getInt(1);
             }
             else
             {
@@ -155,5 +157,31 @@ public class MoviesDB
             JOptionPane.showMessageDialog(null, e.toString());
         }
         return id;
+    }
+    
+    // Metoda zwracająca losowy film jako resultset
+    public ResultSet getRandomMovie()
+    {
+        int max = getMaxId();
+        Random generator = new Random();
+        int los = generator.nextInt(max-1) + 1;
+        ResultSet r = null;
+        try
+        {
+            if(connect != null)
+            {
+                statement = connect.createStatement();
+                r = statement.executeQuery("SELECT title, genre, description, note, image FROM Movies"); 
+                r.next();
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(null, "Błąd! Brak połączenia z bazą filmów");
+            }
+        } catch (SQLException e)
+        {
+            JOptionPane.showMessageDialog(null, e.toString());
+        }
+        return r;
     }
 }
