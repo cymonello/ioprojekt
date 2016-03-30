@@ -193,7 +193,9 @@ public class Repertoire {
             for (int j = 5; j < 17; j++) {
                 connectedRow[j] = tempIntToString[j-5];
             }
-            table[i] = connectedRow;
+            for (int k = 0; k < 17; k++) {
+                table[i][k] = connectedRow[k];
+            }
         }
         return table;
     }
