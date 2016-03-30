@@ -11,8 +11,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
-import BaseClasses.Film;
-import java.awt.Image;
+
+
 /**
  *
  * @author robert
@@ -45,7 +45,7 @@ public class Search {
         }
     }
     
-    public Film[] byTitle(String s){
+    public Integer[] byTitle(String s){
         ResultSet movies;
         try
         {
@@ -55,12 +55,12 @@ public class Search {
                 movies = statement.executeQuery("SELECT *  FROM Movies WHERE title LIKE '%" + s + "%'");   
                 movies.last();
                 int size = movies.getRow();
-                Film[] TabMovies = new Film[size];
+                Integer[] TabMovies = new Integer[size];
                 movies.beforeFirst();
                 int i = 0;
                 while(movies.next()){
                     
-                    TabMovies[i++] = new Film(movies.getString("title"),movies.getString("genre"),movies.getString("note"),movies.getString("description"),movies.getInt("id"),(Image)movies.getObject("image"));
+                    TabMovies[i++] = movies.getInt("id");
                 }
                 return TabMovies;
             }
@@ -74,7 +74,7 @@ public class Search {
         }
         return null;
     }
-    public Film[] byGenre(String s){
+    public Integer[] byGenre(String s){
         ResultSet movies;
         try
         {
@@ -84,12 +84,12 @@ public class Search {
                 movies = statement.executeQuery("SELECT *  FROM Movies WHERE genre='" + s + "'");   
                 movies.last();
                 int size = movies.getRow();
-                Film[] TabMovies = new Film[size];
+                Integer[] TabMovies = new Integer[size];
                 movies.beforeFirst();
                 int i = 0;
                 while(movies.next()){
                     
-                    TabMovies[i++] = new Film(movies.getString("title"),movies.getString("genre"),movies.getString("note"),movies.getString("description"),movies.getInt("id"),(Image)movies.getObject("image"));
+                   TabMovies[i++] = movies.getInt("id");
                 }
                 return TabMovies;
             }

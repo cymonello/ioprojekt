@@ -156,8 +156,9 @@ public class RightWindow extends JPanel implements ActionListener {
         jcbDate.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 17));
         jcbDate.setForeground(Color.GRAY);
         jcbDate.setBackground(Color.CYAN);
-
-        jcbDate.addActionListener(new ActionListener() {
+        
+        
+        ActionListener aList = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JComboBox source = (JComboBox) e.getSource();
@@ -217,8 +218,11 @@ public class RightWindow extends JPanel implements ActionListener {
                 }
             }
 
-        });
+        };
+        
+        jcbDate.addActionListener(aList);
         add(jcbDate);
+        aList.actionPerformed(new ActionEvent(jcbDate,2, "ss"));
         repaint();
     }
     private JTextField tf;

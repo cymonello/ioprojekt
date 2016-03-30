@@ -5,7 +5,7 @@
  */
 package Search;
 
-import BaseClasses.Film;
+//import BaseClasses.Film;
 
 /**
  *
@@ -16,25 +16,25 @@ public class test {
     
     
     
-    
-    static public void main(String[] argv){
-    Search tmp = new Search();
-    tmp.open();
-    Film[] temp=tmp.byTitle("a");
-    for(int i=0;i<temp.length;i++)
-    {
-        if(temp[i]!=null)
-            temp[i].Print();
-        
-    }
-    temp=tmp.byGenre("Dramat");
-    if(temp!=null)
-    for(int i=0;i<temp.length;i++)
-    {
-        if(temp[i]!=null)
-            temp[i].Print();
-        
-    }
-    tmp.close();
-    }
+//    
+//    static public void main(String[] argv){
+//    Search tmp = new Search();
+//    tmp.open();
+//    Film[] temp=tmp.byTitle("a");
+//    for(int i=0;i<temp.length;i++)
+//    {
+//        if(temp[i]!=null)
+//            temp[i].Print();
+//        
+//    }
+//    temp=tmp.byGenre("Dramat");
+//    if(temp!=null)
+//    for(int i=0;i<temp.length;i++)
+//    {
+//        if(temp[i]!=null)
+//            temp[i].Print();
+//        
+//    }
+//    tmp.close();
+//}
 }
