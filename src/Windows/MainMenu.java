@@ -78,6 +78,7 @@ public class MainMenu extends JPanel implements ActionListener {
      * podstawie tworzy odpowiedni obiekt JPanel i wyświetla do po prawej
      * stronie okna
      *
+     * @param e
      */
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -89,13 +90,14 @@ public class MainMenu extends JPanel implements ActionListener {
         } else if (source == wyszukajFilmButton) {
             try {
                 MainWindow.rightPanel.MakeSearch();
-            } catch (SQLException e1) {
-                e1.printStackTrace();
-            } catch (ClassNotFoundException e1) {
-                e1.printStackTrace();
+            } catch (SQLException | ClassNotFoundException e1) {
             }
         } else if (source == logo) {
             MainWindow.rightPanel.StartWindow();
+        } else if (source == mojaRezerwacjaButton) {
+            MainWindow.rightPanel.MakeBookingEdit();
+        } else if (source == informacjeButton) {
+            MainWindow.rightPanel.MakeInfoPage();
         }
     }
 }
@@ -124,4 +126,3 @@ class ImageButton extends JButton {
     }
 
 }
-
