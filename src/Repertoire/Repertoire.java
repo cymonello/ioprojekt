@@ -38,7 +38,6 @@ public class Repertoire {
             Class.forName("com.mysql.jdbc.Driver");
             tdb = new TermsDB();
             date = dateOfMovies;
-            hours = new Integer[13];
             tdb.open();
             moviesRS = tdb.getTermsInDay(dateOfMovies);
             gettingInfo();
@@ -90,6 +89,7 @@ public class Repertoire {
     private void gettingHours(Integer index) throws SQLException{
         int k = 0;
         Integer id;
+        hours = new Integer[13];
         Integer[] tempHours = new Integer[13];
         while (moviesRS.next()) {
             id = moviesRS.getInt("movie");
@@ -112,6 +112,7 @@ public class Repertoire {
             }
             tempIndex++;
         }
+        System.out.println();
         moviesRS.beforeFirst();
     }
 
