@@ -455,7 +455,7 @@ public class RightWindow extends JPanel implements ActionListener {
             thumbColor = new Color(84,54,54);
 
         }
-        private JButton createZeroButton() {
+        private JButton createZeroButton() { // 
             JButton jbutton = new JButton();
             jbutton.setPreferredSize(new Dimension(0, 0));
             jbutton.setMinimumSize(new Dimension(0, 0));
