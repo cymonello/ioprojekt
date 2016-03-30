@@ -166,7 +166,7 @@ public class RightWindow extends JPanel implements ActionListener {
                     Repertoire rep = new Repertoire(str);
                     String[][] tab = rep.getValue();
 
-                    String[] tab1 = {"Tytuł", "Wiek", "??", "Język", "Czas", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21"};
+                    String[] tab1 = {"Tytuł", "Wiek", "Info", "Język", "Czas", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21"};
 
                     jTable = new JTable(tab, tab1);
                     jTable.setEnabled(false);
@@ -418,14 +418,13 @@ public class RightWindow extends JPanel implements ActionListener {
         }
 
         JTextArea filmDescription = new JTextArea(res[11].toString());
- 
+
         filmDescription.setWrapStyleWord(true);
         filmDescription.setLineWrap(true);
         filmDescription.setEditable(false);
         filmDescription.setFocusable(false);
         //filmDescription.setOpaque(false);
-        
-        
+
         filmDescription.setEditable(false);
         filmDescription.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 11));
         filmDescription.setForeground(Color.white);
@@ -433,35 +432,37 @@ public class RightWindow extends JPanel implements ActionListener {
         filmDescription.setBackground(Color.black);
         filmDescription.setBorder(BorderFactory.createLineBorder(Color.black, 1));
 
-        JScrollPane scroll =new JScrollPane(filmDescription,
+        JScrollPane scroll = new JScrollPane(filmDescription,
                 ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
                 ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER
         );
         scroll.setBounds(260, 354, 530, 210);
         scroll.setBorder(BorderFactory.createLineBorder(Color.black, 1));
-        scroll.getVerticalScrollBar().setUI(new BasicScrollBarUI(){
-        @Override
-        protected JButton createDecreaseButton(int orientation) {
-            return createZeroButton();
-        }
+        scroll.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
+            @Override
+            protected JButton createDecreaseButton(int orientation) {
+                return createZeroButton();
+            }
 
-        @Override    
-        protected JButton createIncreaseButton(int orientation) {
-              return createZeroButton();
-        }
-        @Override 
-        protected void configureScrollBarColors(){
-            this.trackColor = Color.black;
-            thumbColor = new Color(84,54,54);
+            @Override
+            protected JButton createIncreaseButton(int orientation) {
+                return createZeroButton();
+            }
 
-        }
-        private JButton createZeroButton() { // 
-            JButton jbutton = new JButton();
-            jbutton.setPreferredSize(new Dimension(0, 0));
-            jbutton.setMinimumSize(new Dimension(0, 0));
-            jbutton.setMaximumSize(new Dimension(0, 0));
-            return jbutton;
-        }
+            @Override
+            protected void configureScrollBarColors() {
+                this.trackColor = Color.black;
+                thumbColor = new Color(84, 54, 54);
+
+            }
+
+            private JButton createZeroButton() { // 
+                JButton jbutton = new JButton();
+                jbutton.setPreferredSize(new Dimension(0, 0));
+                jbutton.setMinimumSize(new Dimension(0, 0));
+                jbutton.setMaximumSize(new Dimension(0, 0));
+                return jbutton;
+            }
         });
 
         GridBagConstraints gbc_scrollPane = new GridBagConstraints();
@@ -470,6 +471,23 @@ public class RightWindow extends JPanel implements ActionListener {
         gbc_scrollPane.gridy = 0;
         add(scroll, gbc_scrollPane);
 
+        repaint();
+    }
+
+    void MakeBookingEdit() {
+        removeAll();
+        setLayout(null);
+        setBackground(Color.BLACK);
+        setBounds(WindowConstants.BORDER, 0, WindowConstants.WIDTH - WindowConstants.BORDER, WindowConstants.HEIGHT);
+
+        repaint();
+    }
+
+    void MakeInfoPage() {
+        removeAll();
+        setLayout(null);
+        setBackground(Color.BLACK);
+        setBounds(WindowConstants.BORDER, 0, WindowConstants.WIDTH - WindowConstants.BORDER, WindowConstants.HEIGHT);
 
         repaint();
     }
