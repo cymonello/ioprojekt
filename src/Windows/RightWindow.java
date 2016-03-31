@@ -43,10 +43,9 @@ import javax.swing.table.JTableHeader;
 
 /**
  * To jest klasa odpowiedzialna za poprawne wyświetlanie prawej strony naszego
- * porgramu, reagowanie na naciśnięcie przycisków Sam do końca nie ogarniam co
- * ja to robię xD Nawet nie marnujcie czasu na zrozumienie tego :) Narazie
- * wszelkie kolorki, obrazki są jedynie po to by nie było biało, wszelkie
- * schematy czcionek, kolorów itd dobierze się chyba już po 1 prototypie
+ * porgramu Naraziewszelkie kolorki, obrazki są jedynie po to by nie było biało,
+ * wszelkie schematy czcionek, kolorów itd dobierze się chyba już po 1
+ * prototypie
  *
  * @author Bartłomiej
  */
@@ -156,8 +155,7 @@ public class RightWindow extends JPanel implements ActionListener {
         jcbDate.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 17));
         jcbDate.setForeground(Color.GRAY);
         jcbDate.setBackground(Color.CYAN);
-        
-        
+
         ActionListener aList = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -219,10 +217,10 @@ public class RightWindow extends JPanel implements ActionListener {
             }
 
         };
-        
+
         jcbDate.addActionListener(aList);
         add(jcbDate);
-        aList.actionPerformed(new ActionEvent(jcbDate,2, "ss"));
+        aList.actionPerformed(new ActionEvent(jcbDate, 2, "ss"));
         repaint();
     }
     private JTextField tf;
@@ -246,6 +244,7 @@ public class RightWindow extends JPanel implements ActionListener {
         }
         mdb.close();
         jtfSearch.setEditable(true);
+        //Przykładowe formatowanie wszukiwarki - narazie niedopracowane - OFF
         //jtfSearch.setModel(new DefaultComboBoxModel(str));
         //jtfSearch.setBounds(150, (int) (WindowConstants.HEIGHT * 0.3), WindowConstants.WIDTH - WindowConstants.BORDER - 300, 100);
         //jtfSearch.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 36));
@@ -329,6 +328,8 @@ public class RightWindow extends JPanel implements ActionListener {
 
         });
         add(ibSearch);
+
+        // usunięcie przycisku do rozwijania ComboBoxa w wyszukiwarce - narazie zakomentowane bo sie buguje przy 2-gim otworzeniu wyszukiwarki przy ciaglym otwarym oknie
         /*jtfSearch.setUI(new BasicComboBoxUI() { ///////////usuwa widoczne rozwijanie z JComboBox
             @Override                           ///////////Nie radze zmienaic miejsca wywołania setUI
             protected JButton createArrowButton() {
@@ -342,7 +343,6 @@ public class RightWindow extends JPanel implements ActionListener {
         });*/
         //add(jtfSearch);
         //setBounds(WindowConstants.BORDER, 0, WindowConstants.WIDTH - WindowConstants.BORDER, WindowConstants.HEIGHT);
-
         repaint();
         mdb.close();
     }

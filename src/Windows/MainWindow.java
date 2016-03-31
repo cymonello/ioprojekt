@@ -17,12 +17,11 @@ import javax.swing.SwingUtilities;
 public class MainWindow extends JFrame {
 
     /**
-     * Tu jest narazie metoda main powodująca wyświetlenie okna, żeby nie
-     * irytowała was przy kompilacji/testowaniu tego co piszecie
+     * Tu jest metoda main powodująca wyświetlenie okna
      */
     public static void main(String[] args) {
         MainWindow main = new MainWindow();
-        run(main, WindowConstants.WIDTH, WindowConstants.HEIGHT, "Okno testowe");
+        run(main, WindowConstants.WIDTH, WindowConstants.HEIGHT, "Projekt - prototyp 1");
     }
 
     public static MainMenu leftPanel;
