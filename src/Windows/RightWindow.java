@@ -162,25 +162,31 @@ public class RightWindow extends JPanel implements ActionListener {
                 JComboBox source = (JComboBox) e.getSource();
                 String str = (String) source.getSelectedItem();
                 try {
-                    Repertoire rep = new Repertoire(str);
-                    String[][] tab = rep.getValue();
+                    final Repertoire rep = new Repertoire(str);
+                    final String[][] tab = rep.getValue();
 
-                    String[] tab1 = {"Tytuł", "Wiek", "Info", "Język", "Czas", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21"};
+                    final String[] tab1 = {"Tytuł", "Wiek", "Info", "Język", "Czas", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21"};
 
                     jTable = new JTable(tab, tab1);
                     jTable.setEnabled(false);
-
                     JTableHeader header = jTable.getTableHeader();
                     header.setBackground(new Color(128, 17, 17));
                     header.setForeground(new Color(255, 227, 227));
                     jTable.setBackground(new Color(128, 17, 17));
                     jTable.setForeground(new Color(255, 227, 227));
+                    header.setReorderingAllowed(false);
                     jTable.addMouseListener(new MouseListener() {
                         @Override
                         public void mouseClicked(MouseEvent e) {
                             int row = jTable.rowAtPoint(e.getPoint());
                             int col = jTable.columnAtPoint(e.getPoint());
-                            System.out.println(row + " " + col + " " + jTable.getColumnName(col) + " ");
+
+                            if (col == 0) {
+                                MainWindow.rightPanel.SchowInfoFilm(rep.getMovieID(row));
+                            }
+                            if (col >= 5 && col <= 16 && !" ".equals(tab[row][col])) {
+                                MainWindow.rightPanel.MakeOrderPart1(rep.getTermID(row, col));
+                            }
                         }
 
                         @Override
@@ -228,7 +234,7 @@ public class RightWindow extends JPanel implements ActionListener {
     private JComboBox jtfSearch = new JComboBox();
     private boolean hide_flag = false;
 
-    public void MakeSearch() throws SQLException, ClassNotFoundException {
+    void MakeSearch() throws SQLException, ClassNotFoundException {
         removeAll();
         setLayout(null);
         setBackground(Color.BLACK);
@@ -383,7 +389,7 @@ public class RightWindow extends JPanel implements ActionListener {
                 10 - ocena
                 11 - opis
      */
-    private void SchowInfoFilm(int ID) {
+    void SchowInfoFilm(int ID) {
         removeAll();
         setLayout(null);
         setBackground(Color.BLACK);
@@ -493,6 +499,16 @@ public class RightWindow extends JPanel implements ActionListener {
         setBackground(Color.BLACK);
         setBounds(WindowConstants.BORDER, 0, WindowConstants.WIDTH - WindowConstants.BORDER, WindowConstants.HEIGHT);
 
+        repaint();
+    }
+
+    private void MakeOrderPart1(Integer ID) {
+
+        removeAll();
+        setLayout(null);
+        setBounds(WindowConstants.BORDER, 0, WindowConstants.WIDTH - WindowConstants.BORDER, WindowConstants.HEIGHT);
+        setBackground(Color.black);
+        System.out.println(ID);
         repaint();
     }
 }

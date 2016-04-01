@@ -19,6 +19,7 @@ public class MainWindow extends JFrame {
 
     /**
      * Tu jest metoda main powodująca wyświetlenie okna
+     * @param args
      */
     public static void main(String[] args) {
         MainWindow main = new MainWindow();
