@@ -7,6 +7,7 @@ package Booking;
 //import java.util.*;
 
 
+
 /**
  *
  * @author Kamil Oleszek
@@ -19,14 +20,13 @@ public class Booking {
 }
 
 class Ticket{
-    static String[] types = {"Normalny", "Szkolny", "Seniorski", "Studencki"} ;
-    String type;
-    int amount;
+    private String type;
+    private int amount;
+    private double price;
+    private double sum;
     static int total_amount;
-    double price;
-    static double sum;
-    Client client;
-    Seat seat;
+    static double total_sum;
+    static String[] types = {"Normalny", "Szkolny", "Seniorski", "Studencki"} ;
     Ticket(int index, int ilosc){
         type = types[index];
         amount = ilosc;
@@ -42,8 +42,9 @@ class Ticket{
                 price = 18.00;
                 break;
         }
-        ++total_amount;
+        total_amount += amount;
         sum = amount * price;
+        total_sum += sum;
     }
 }
 
@@ -81,17 +82,23 @@ class Client{
 }
 
 class Seat{
-    final static int ROW = 10;
-    final static int COLUMN = 20;
-    int row;
-    int column;
-    static boolean[][] seats = new boolean[ROW][COLUMN];
-    static enum miejsca {szary, zielony, zolty };
+    public final int ROW = 10;
+    public final int COLUMN = 20;
+    private int row;
+    private int column;
+    static enum Place {szary, zielony, zolty }
+     Place[][] seats = new Place[ROW][COLUMN];
+    
     Seat(int r, int c){
-        if(seats[r][c] == false){
+        for(int i = 0; i < ROW; ++i){
+            for(int j = 0; j < COLUMN; ++j){
+                seats[i][j] = Place.szary;
+            }
+        }
+        if(seats[r][c] == Place.zielony){
             row = r;
             column = c;
-            seats[r][c] = true;
+            seats[r][c] = Place.zolty;
         }
         else{
             System.out.println("To miejsce jest zajete, sprobuj wybrac inne.");
