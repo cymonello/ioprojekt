@@ -6,6 +6,14 @@
 package Booking;
 //import java.util.*;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
+import database.OrdersDB;
+import database.TermsDB;
+
 
 
 /**
@@ -13,10 +21,28 @@ package Booking;
  * @author Kamil Oleszek
  */
 public class Booking {
-    Ticket ticket;
-    Film film;
+    //metoda tworzaca obiekty bilet w petli wg ilosci tego co wpisane w formularzu
+    Ticket [] ticket; 
+    //Film film;
     Client client;
-    Seat seat;
+    Seat [] seat;
+    private Connection connect = null;
+    private Statement statement = null;
+    private int id;
+    
+    public Booking(){
+        ticket = new Ticket[5];
+        for(int i = 0; i < 5 ; ++i){
+            ticket[i] = new Ticket(0);
+        }
+    }
+    public void startBooking(int id){
+        OrdersDB odb = new OrdersDB();
+        odb.open();
+        odb.addOrder(id, "Kamil", "Oleszek", "kamil@wp.pl", 798567043, "strstr");
+        
+        odb.close();
+    }
 }
 
 class Ticket{
@@ -27,9 +53,8 @@ class Ticket{
     static int total_amount;
     static double total_sum;
     static String[] types = {"Normalny", "Szkolny", "Seniorski", "Studencki"} ;
-    Ticket(int index, int ilosc){
+    Ticket(int index){
         type = types[index];
-        amount = ilosc;
         switch(index){
             case 0: 
                 price = 24.00;
@@ -42,9 +67,7 @@ class Ticket{
                 price = 18.00;
                 break;
         }
-        total_amount += amount;
-        sum = amount * price;
-        total_sum += sum;
+        ++total_amount;
     }
 }
 

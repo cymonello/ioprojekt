@@ -5,6 +5,7 @@
  */
 package Windows;
 
+import Booking.Booking;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
@@ -22,6 +23,9 @@ public class MainWindow extends JFrame {
     public static void main(String[] args) {
         MainWindow main = new MainWindow();
         run(main, WindowConstants.WIDTH, WindowConstants.HEIGHT, "Projekt - prototyp 1");
+        Booking bk = new Booking();
+        bk.startBooking(120);
+        
     }
 
     public static MainMenu leftPanel;

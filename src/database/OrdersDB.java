@@ -52,21 +52,20 @@ public class OrdersDB
      * @param phone
      * @param password
      */
-    public void addOrder(int id, int term, String name, String surname, String mail, int phone, String password)
+    public void addOrder(int term, String name, String surname, String mail, int phone, String password)
     {
         try
         {
             if(connect != null)
             {
                 statement = connect.createStatement();
-                statement.executeUpdate("INSERT INTO Orders VALUES ("
-                        + id + ","
-                        + term + ","
-                        + name + ","
-                        + surname + ","
-                        + mail + ","
-                        + phone + ","
-                        + password + ")");
+                statement.executeUpdate("INSERT INTO Orders (term, name, surname, mail, telephone, password) VALUES ("
+                        + "'" + term + "',"
+                        + "'" + name + "',"
+                        + "'" + surname + "',"
+                        + "'" + mail + "',"
+                        + "'" + phone + "',"
+                        + "'" + password + "')");
             }
             else
             {
