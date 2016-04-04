@@ -87,9 +87,9 @@ public class OrdersDB
             if(connect != null)
             {
                 statement = connect.createStatement();
-                temp = statement.executeQuery("SELECT MAX id FORM Orders");
+                temp = statement.executeQuery("SELECT max(id) FROM Orders");
                 temp.next();
-                id = temp.getInt("id");
+                id = temp.getInt(1);
             }
             else
             {

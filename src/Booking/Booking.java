@@ -13,6 +13,7 @@ import java.sql.Statement;
 import javax.swing.JOptionPane;
 import database.OrdersDB;
 import database.TermsDB;
+import database.TicketsDB;
 
 
 
@@ -40,8 +41,15 @@ public class Booking {
         OrdersDB odb = new OrdersDB();
         odb.open();
         odb.addOrder(id, "Kamil", "Oleszek", "kamil@wp.pl", 798567043, "strstr");
-        
+        int _id = odb.getId();
         odb.close();
+        
+        TicketsDB tdb = new TicketsDB();
+        tdb.open();
+        for(int i = 0 ; i < 5; ++i){
+            tdb.addTicket(_id, "06.04.16", "19:30", 6, 8, 7, 0);
+        }
+        tdb.close();
     }
 }
 

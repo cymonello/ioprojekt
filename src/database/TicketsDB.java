@@ -42,7 +42,7 @@ public class TicketsDB
         }
     }
     
-    public void addTicket(int order, String date, String hour, int hall, int row, int seat)
+    public void addTicket(int order, String date, String hour, int hall, int row, int seat, int type)
     {
         try
         {
@@ -55,7 +55,8 @@ public class TicketsDB
                         + "'" + hour + "',"
                         + "'" + hall + "',"
                         + "'" + row + "',"
-                        + "'" + seat + "')");
+                        + "'" + seat + "',"
+                        + "'" + type + "')");
             }
             else
             {
