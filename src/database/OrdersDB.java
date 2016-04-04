@@ -7,6 +7,7 @@ package database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
@@ -75,5 +76,29 @@ public class OrdersDB
         {
             JOptionPane.showMessageDialog(null, e.toString());
         }
+    }
+    
+    public int getId()
+    {
+        int id = 0;
+        ResultSet temp;
+        try
+        {
+            if(connect != null)
+            {
+                statement = connect.createStatement();
+                temp = statement.executeQuery("SELECT MAX id FORM Orders");
+                temp.next();
+                id = temp.getInt("id");
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(null, "Błąd! Brak połączenia z bazą filmów");
+            }
+        } catch (SQLException e)
+        {
+            JOptionPane.showMessageDialog(null, e.toString());
+        }
+        return id;
     }
 }
