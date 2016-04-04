@@ -42,21 +42,20 @@ public class TicketsDB
         }
     }
     
-    public void addTicket(int id, int order, String date, String hour, int hall, int row, int seat)
+    public void addTicket(int order, String date, String hour, int hall, int row, int seat)
     {
         try
         {
             if(connect != null)
             {
                 statement = connect.createStatement();
-                statement.executeUpdate("INSERT INTO Tickets VALUES ("
-                        + id + "," // ma pójść przez auto
-                        + order + ","
-                        + date + ","
-                        + hour + ","
-                        + hall + ","
-                        + row + ","
-                        + seat + ")");
+                statement.executeUpdate("INSERT INTO Tickets (orderid, date, hour, hall, row, seat, type) VALUES ("
+                        + "'" + order + "',"
+                        + "'" + date + "',"
+                        + "'" + hour + "',"
+                        + "'" + hall + "',"
+                        + "'" + row + "',"
+                        + "'" + seat + "')");
             }
             else
             {
