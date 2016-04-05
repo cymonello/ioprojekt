@@ -41,6 +41,7 @@ public class Repertoire {
             tdb.open();
             moviesRS = tdb.getTermsInDay(dateOfMovies);
             gettingInfo();
+            tdb.close();
         }
         catch(ClassNotFoundException e){
             System.out.println(e.getMessage());
@@ -69,7 +70,7 @@ public class Repertoire {
      * Metoda służąca do sprawdzenia czy wartość znajduje się w tablicy
      * @param tab tablica wartości
      * @param key szukana wartość
-     * @return zwraca liczę dodatnią gdy wartość jest w tablicy, ujemną gdy wartość jest poza tablicą
+     * @return zwraca liczbę dodatnią gdy wartość jest w tablicy, ujemną gdy wartość jest poza tablicą
      */
     private Integer searchingIfValue(Integer[] tab, Integer key){
         for (int i = 0; i < tab.length; i++) {
