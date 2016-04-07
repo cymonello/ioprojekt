@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 
 
+
 /**
  * Created on 23.03.16.
  */
@@ -16,8 +17,10 @@ public class Repertoire {
     private ResultSet moviesRS; //referencja do ResultSet z TermsDB
     private TermsDB tdb;
     String date;
-    private Integer[] hours; // godzina filmu
+    private Integer[] hours; // godzina filmuhttps://www.facebook.com/groups/620900221394681/631541116997258/
     private Integer[] movie; //tablica id filmow na dany dzien
+    private Integer[][] termsID;
+    private HashMap<Integer, String[]> mapTermsID = new HashMap<>();
     // tablica asocjacyjna przechowujaca informacje o filmie, klucz movie(id), wartość movieInfo
     private HashMap<Integer, String[]> mapMovieInfo = new HashMap<>();
     // tablica asocjacyjna przechowujaca godziny dla danego filmu, klucz - id filmu, wartość tablica z godzinami
@@ -92,6 +95,7 @@ public class Repertoire {
         Integer id;
         hours = new Integer[13];
         Integer[] tempHours = new Integer[13];
+        Integer[] tempID = new Integer[13];
         while (moviesRS.next()) {
             id = moviesRS.getInt("movie");
             if (id == movie[index]) {
@@ -200,5 +204,14 @@ public class Repertoire {
             }
         }
         return table;
+    }
+
+    /**
+     *
+     * @param row
+     * @return
+     */
+    public Integer getMovieID(Integer row){
+        return movie[row];
     }
 }
