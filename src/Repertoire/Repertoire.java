@@ -19,8 +19,9 @@ public class Repertoire {
     String date;
     private Integer[] hours; // godzina filmuhttps://www.facebook.com/groups/620900221394681/631541116997258/
     private Integer[] movie; //tablica id filmow na dany dzien
-    private Integer[][] termsID;
-    private HashMap<Integer, String[]> mapTermsID = new HashMap<>();
+    private Integer[] termsID;
+    // tablica asocjacyjna przechowujaca termID dla movieID
+    private HashMap<Integer, Integer[]> mapTermsID = new HashMap<>();
     // tablica asocjacyjna przechowujaca informacje o filmie, klucz movie(id), wartość movieInfo
     private HashMap<Integer, String[]> mapMovieInfo = new HashMap<>();
     // tablica asocjacyjna przechowujaca godziny dla danego filmu, klucz - id filmu, wartość tablica z godzinami
@@ -65,6 +66,7 @@ public class Repertoire {
                 mapMovieInfo.put(movie[i], tdb.getMovieInfo(movie[i]));
                 gettingHours(i);
                 mapHours.put(movie[i], hours);
+                mapTermsID.put(movie[i], termsID);
             }
         }
     }
@@ -94,12 +96,14 @@ public class Repertoire {
         int k = 0;
         Integer id;
         hours = new Integer[13];
+        termsID = new Integer[13];
         Integer[] tempHours = new Integer[13];
         Integer[] tempID = new Integer[13];
         while (moviesRS.next()) {
             id = moviesRS.getInt("movie");
             if (id == movie[index]) {
                 tempHours[k] = moviesRS.getInt("hour");
+                tempID[k] = moviesRS.getInt("id");
                 k++;
             }
         }
@@ -109,11 +113,13 @@ public class Repertoire {
                 if(tempHours[l]!=null){
                     if(tempHours[l]==ii){
                         hours[tempIndex]=tempHours[l];
+                        termsID[tempIndex]=tempID[l];
                     }
                 }
             }
             if(hours[tempIndex]==null){
                 hours[tempIndex]=0;
+                termsID[tempIndex]=0;
             }
             tempIndex++;
         }
@@ -207,11 +213,16 @@ public class Repertoire {
     }
 
     /**
+     *Getter dla ID filmu
      *
      * @param row
      * @return
      */
     public Integer getMovieID(Integer row){
         return movie[row];
+    }
+    public Integer getTermID(Integer row, Integer column){
+        Integer[] tempTable = mapTermsID.get(movie[row]);
+        return tempTable[column-5];
     }
 }
