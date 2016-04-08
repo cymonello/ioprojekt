@@ -31,7 +31,7 @@ public class Booking {
     //Seat [] seat;
     private Connection connect = null;
     private Statement statement = null;
-    //private int id;
+    private int id;
     private String[] informacje;
     
     public int listLength(){
@@ -51,7 +51,9 @@ public class Booking {
         TermsDB term = new TermsDB();
         term.open();
         informacje = term.getTermInfo(id);
+        this.id = id;
         term.close();
+        
         
         /*
         OrdersDB odb = new OrdersDB();
@@ -67,6 +69,15 @@ public class Booking {
         }
         tdb.close();
         */
+        
+    }
+    
+    public void endBooking(String imie, String nazwisko, String email, int nr_tel){
+        OrdersDB odb = new OrdersDB();
+        odb.open();
+        odb.addOrder(id, imie, nazwisko, email, nr_tel, "haslomaslo");
+        int ticketId = odb.getId();
+        odb.close();
         
     }
 }
