@@ -14,9 +14,10 @@ public class Hall {
     public static final int COLUMN = 20;
     private static int[][] Sala1 = new int[ROW][COLUMN];
     
-    public static boolean selectSeat(int r, int c){
-        if(Sala1[r][c] == 1){ // 1 - wolne , 0 - zajete
-            Sala1[r][c] = 0;
+    public static boolean selectSeat(int hall, int r, int c){
+        int [][] Sala = getHall(hall);
+        if(Sala[r][c] == 0){ // 0 - wolne , 1 - zajete
+            Sala[r][c] = 1;
             return true;
         }
         else{
@@ -24,7 +25,9 @@ public class Hall {
         }
     }
     
-    public int[][] getHall(int id){
+    
+    
+    public static int[][] getHall(int id){
         switch(id){
             case 1: 
                 return Sala1;
@@ -33,6 +36,10 @@ public class Hall {
         }
     }
     
-    
-    
+    public static boolean checkSeat(int hall, int r, int c){
+        int [][] Sala = getHall(hall);
+        if(Sala[r][c] == 0)
+            return true;
+        else return false;
+    }
 }
