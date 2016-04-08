@@ -14,6 +14,8 @@ import javax.swing.JOptionPane;
 import database.OrdersDB;
 import database.TermsDB;
 import database.TicketsDB;
+import java.util.ArrayList;
+import java.util.List;
 
 
 
@@ -23,21 +25,31 @@ import database.TicketsDB;
  */
 public class Booking {
     //metoda tworzaca obiekty bilet w petli wg ilosci tego co wpisane w formularzu
-    Ticket [] ticket; 
+    List<Ticket> ticket = new ArrayList<Ticket>(); 
     //Film film;
     Client client;
-    Seat [] seat;
+    //Seat [] seat;
     private Connection connect = null;
     private Statement statement = null;
-    private int id;
+    //private int id;
+    private String[] informacje;
     
-    public Booking(){
-        ticket = new Ticket[5];
-        for(int i = 0; i < 5 ; ++i){
-            ticket[i] = new Ticket(0);
-        }
+    public String[] getInfo(){
+        return informacje;
     }
+    
+    public void newTicket(int index){
+        ticket.add(new Ticket(index));
+    }
+    
+    public Booking(){}
     public void startBooking(int id){
+        TermsDB term = new TermsDB();
+        term.open();
+        informacje = term.getTermInfo(id);
+        term.close();
+        
+        /*
         OrdersDB odb = new OrdersDB();
         odb.open();
         odb.addOrder(id, "Kamil", "Oleszek", "kamil@wp.pl", 798567043, "strstr");
@@ -50,34 +62,11 @@ public class Booking {
             tdb.addTicket(_id, "06.04.16", "19:30", 6, 8, 7, 0);
         }
         tdb.close();
+        */
+        
     }
 }
 
-class Ticket{
-    private String type;
-    private int amount;
-    private double price;
-    private double sum;
-    static int total_amount;
-    static double total_sum;
-    static String[] types = {"Normalny", "Szkolny", "Seniorski", "Studencki"} ;
-    Ticket(int index){
-        type = types[index];
-        switch(index){
-            case 0: 
-                price = 24.00;
-                break;
-            case 3:
-            case 1:
-                price = 17.00;
-                break;
-            case 2:
-                price = 18.00;
-                break;
-        }
-        ++total_amount;
-    }
-}
 
 class Film{
     String title;
@@ -112,6 +101,7 @@ class Client{
     }
 }
 
+/*
 class Seat{
     public final int ROW = 10;
     public final int COLUMN = 20;
@@ -138,3 +128,4 @@ class Seat{
     }
 
 }
+*/
