@@ -18,7 +18,7 @@ public class Hall {
     private int[][] Sala;
     private int id;
     
-    Hall(int id){
+    public Hall(int id){
         HallDB hdb = new HallDB();
         hdb.open();
         Sala = hdb.getHall(id);
@@ -42,14 +42,14 @@ public class Hall {
         else return false;
     }
     
-    public void updateHall(){
+    public void updateHall(int[][] nowaSala){
         HallDB hdb = new HallDB();
         hdb.open();
-        hdb.updateHall(id, Sala);
+        hdb.updateHall(id, nowaSala);
         hdb.close();
     }
     
-    public int[][] getHall(int id){
+    public int[][] getHall(){
         return Sala;
     }
 }

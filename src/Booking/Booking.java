@@ -53,6 +53,7 @@ public class Booking {
         informacje = term.getTermInfo(id);
         term.close();
         
+        
         /*
         OrdersDB odb = new OrdersDB();
         odb.open();
