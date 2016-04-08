@@ -5,6 +5,7 @@
  */
 package Booking;
 
+import database.HallDB;
 import database.TicketsDB;
 import java.util.ArrayList;
 
@@ -13,7 +14,6 @@ import java.util.ArrayList;
  * @author Kamil Oleszek
  */
 public class Hall {
-    
     public static final int ROW = 10;
     public static final int COLUMN = 20;
     private int[][] Sala;

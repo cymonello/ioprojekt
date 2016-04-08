@@ -16,8 +16,10 @@ public class Ticket {
     private double sum;
     static int total_amount;
     static double total_sum;
+    private int ticketIndex;
     static String[] types = {"Normalny", "Szkolny", "Seniorski", "Stsudencki"} ;
     Ticket(int index){
+        ticketIndex = index;
         type = types[index];
         switch(index){
             case 0: 
@@ -32,6 +34,10 @@ public class Ticket {
                 break;
         }
         ++total_amount;
+    }
+    
+    public int getTicketIndex(){
+        return ticketIndex;
     }
     
     
