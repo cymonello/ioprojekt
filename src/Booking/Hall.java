@@ -5,7 +5,7 @@
  */
 package Booking;
 
-import database.HallDB;
+import database.TicketsDB;
 import java.util.ArrayList;
 
 /**
@@ -19,12 +19,12 @@ public class Hall {
     private int[][] Sala;
     private int id;
     
-    public Hall(int id){
-        HallDB hdb = new HallDB();
-        hdb.open();
-        Sala = hdb.getHall(id);
+    public Hall(String d, String h, int id){
+        TicketsDB tdb = new TicketsDB();
+        tdb.open();
+        Sala = tdb.checkHall(d, h, id);
         this.id = id;
-        hdb.close();
+        tdb.close();
     }
     
     public boolean selectSeat(int hall, int r, int c){
@@ -41,16 +41,6 @@ public class Hall {
         if(Sala[r][c] == 0)
             return true;
         else return false;
-    }
-    
-    public void updateHall(ArrayList<int[]> miejsca){
-        HallDB hdb = new HallDB();
-        hdb.open();
-        for(int i = 0; i < miejsca.size(); ++i){
-            Sala[miejsca.get(i)[0]][miejsca.get(i)[1]]=1;
-        }
-        hdb.updateHall(id, Sala);
-        hdb.close();
     }
     
     public int[][] getHall(){

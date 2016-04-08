@@ -69,7 +69,7 @@ public class TicketsDB
         }
     }
     
-    public int[][] checkHall(String date, String hour, int hall, int row, int seat)
+    public int[][] checkHall(String date, String hour, int hall)
     {
         int[][] sala = new int[10][20];
         ResultSet term = null;

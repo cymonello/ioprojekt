@@ -73,6 +73,7 @@ public class HallDB
         }
         return hall;
     }
+    /*
     public void updateHall(int id, int[][] sala)
     {
         try
@@ -97,5 +98,5 @@ public class HallDB
             JOptionPane.showMessageDialog(null, e.toString());
         }
     }
-    
+    */
 }
