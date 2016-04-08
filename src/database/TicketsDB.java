@@ -78,7 +78,7 @@ public class TicketsDB
             if(connect != null)
             {
                 statement = connect.createStatement();
-                term = statement.executeQuery("SELECT row, seat FORM Tickets WHERE hall='" + hall + "' AND date='" + date + "' AND hour='" + hour + "';");
+                term = statement.executeQuery("SELECT row, seat FROM Tickets WHERE hall='" + hall + "' AND date='" + date + "' AND hour='" + hour + "';");
                 if(term.next())
                 {
                     while(term.next())

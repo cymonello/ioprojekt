@@ -110,9 +110,10 @@ public class MainMenu extends JPanel implements ActionListener {
  *
  */
 class ImageButton extends JButton {
-
+    String str;
     public ImageButton(String img) {
         this(new ImageIcon(img));
+        str= img;
     }
 
     public ImageButton(ImageIcon icon) {
@@ -123,6 +124,14 @@ class ImageButton extends JButton {
         setBorder(null);
         setText(null);
         setSize(icon.getImage().getWidth(null), icon.getImage().getHeight(null));
+    }
+    public void setIcon(String str){
+        this.str=str;
+        setIcon(new ImageIcon(str));
+    }
+    @Override
+    public boolean equals(Object obj){
+        return str.equals(obj);
     }
 
 }

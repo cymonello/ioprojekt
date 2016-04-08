@@ -5,6 +5,8 @@
  */
 package Windows;
 
+import Booking.Booking;
+import Booking.Hall;
 import Repertoire.Repertoire;
 import database.MoviesDB;
 import java.awt.BorderLayout;
@@ -31,6 +33,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -89,7 +93,7 @@ public class RightWindow extends JPanel implements ActionListener {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     JLabel label = (JLabel) e.getSource();
-                    MainWindow.rightPanel.SchowInfoFilm(ID);
+                    MainWindow.rightPanel.ShowInfoFilm(ID);
                 }
 
                 @Override
@@ -175,6 +179,7 @@ public class RightWindow extends JPanel implements ActionListener {
                     jTable.setBackground(new Color(128, 17, 17));
                     jTable.setForeground(new Color(255, 227, 227));
                     header.setReorderingAllowed(false);
+                    jTable.getColumnModel().getColumn(0).setPreferredWidth(400);
                     jTable.addMouseListener(new MouseListener() {
                         @Override
                         public void mouseClicked(MouseEvent e) {
@@ -182,10 +187,12 @@ public class RightWindow extends JPanel implements ActionListener {
                             int col = jTable.columnAtPoint(e.getPoint());
 
                             if (col == 0) {
-                                MainWindow.rightPanel.SchowInfoFilm(rep.getMovieID(row));
+                                MainWindow.rightPanel.ShowInfoFilm(rep.getMovieID(row));
                             }
                             if (col >= 5 && col <= 16 && !" ".equals(tab[row][col])) {
-                                MainWindow.rightPanel.MakeOrderPart1(rep.getTermID(row, col));
+                                Booking b = new Booking();
+                                b.startBooking(rep.getTermID(row, col));
+                                MainWindow.rightPanel.MakeOrderPart1(b);
                             }
                         }
 
@@ -389,7 +396,7 @@ public class RightWindow extends JPanel implements ActionListener {
                 10 - ocena
                 11 - opis
      */
-    void SchowInfoFilm(int ID) {
+    void ShowInfoFilm(int ID) {
         removeAll();
         setLayout(null);
         setBackground(Color.BLACK);
@@ -502,13 +509,281 @@ public class RightWindow extends JPanel implements ActionListener {
         repaint();
     }
 
-    private void MakeOrderPart1(Integer ID) {
+    private void MakeOrderPart1(final Booking booking) {
 
         removeAll();
         setLayout(null);
         setBounds(WindowConstants.BORDER, 0, WindowConstants.WIDTH - WindowConstants.BORDER, WindowConstants.HEIGHT);
         setBackground(Color.black);
-        System.out.println(ID);
+
+        String[] info = booking.getInfo();
+        JLabel title = new JLabel(info[0]);
+        title.setForeground(new Color(247, 214, 185));
+        title.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 20));
+        title.setHorizontalAlignment(SwingConstants.CENTER);
+        title.setBounds(50, 70, 700, 50);
+        add(title);
+
+        JLabel date = new JLabel(info[1] + " : " + info[2]);
+        date.setForeground(new Color(247, 214, 185));
+        date.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 15));
+        date.setHorizontalAlignment(SwingConstants.CENTER);
+        date.setBounds(50, 120, 700, 50);
+        add(date);
+
+        JLabel[] ticket = new JLabel[4];
+        ticket[0] = new JLabel("Normalny");
+        ticket[1] = new JLabel("Szkolny");
+        ticket[2] = new JLabel("Seniorski");
+        ticket[3] = new JLabel("Studencki");
+
+        for (int i = 0; i < 4; i++) {
+            ticket[i].setBounds(200, 190 + i * 50, 180, 50);
+            ticket[i].setHorizontalAlignment(SwingConstants.RIGHT);
+            add(ticket[i]);
+            ticket[i].setForeground(new Color(247, 214, 185));
+            ticket[i].setFont(new Font("Arial Black", Font.CENTER_BASELINE, 12));
+
+        }
+
+        String[] tab = {"0", "1", "2", "3", "4", "5"};
+
+        final JComboBox[] jcbTicketNumber = new JComboBox[4];
+        for (int i = 0; i < 4; i++) {
+            jcbTicketNumber[i] = new JComboBox(tab);
+            jcbTicketNumber[i].setBounds(400, 200 + i * 50, 50, 30);
+            add(jcbTicketNumber[i]);
+            jcbTicketNumber[i].setSelectedIndex(0);
+
+        }
+
+        ImageButton next = new ImageButton("res/dalej.png");
+        next.setRolloverIcon(new ImageIcon("res/DalejEntered.png"));
+        next.setBounds(350, 400, 100, 40);
+        next.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int ile = 0;
+                for (int i = 0; i < 4; i++) {
+                    if (jcbTicketNumber[i].getSelectedItem() != "0") {
+                        int item = Integer.parseInt((String) jcbTicketNumber[i].getSelectedItem());
+                        for (int j = 0; j < item; j++) {
+                            booking.newTicket(i);
+                            ile++;
+                        }
+                    }
+                }
+                if (ile > 0) {
+                    MainWindow.rightPanel.MakeOrderPart2(booking);
+                }
+            }
+        });
+        add(next);
+
+        repaint();
+    }
+
+    private void MakeOrderPart2(final Booking booking) {
+        removeAll();
+        setLayout(null);
+        setBounds(WindowConstants.BORDER, 0, WindowConstants.WIDTH - WindowConstants.BORDER, WindowConstants.HEIGHT);
+
+        String[] info = booking.getInfo();
+        JLabel title = new JLabel(info[0]);
+        title.setForeground(new Color(247, 214, 185));
+        title.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 20));
+        title.setHorizontalAlignment(SwingConstants.CENTER);
+        title.setBounds(50, 70, 700, 50);
+        add(title);
+
+        JLabel date = new JLabel(info[1] + " : " + info[2]);
+        date.setForeground(new Color(247, 214, 185));
+        date.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 15));
+        date.setHorizontalAlignment(SwingConstants.CENTER);
+        date.setBounds(50, 100, 700, 50);
+        add(date);
+
+        final Hall hal = new Hall(info[1], info[2], Integer.parseInt(booking.getInfo()[3]));
+        final int[][] sal = hal.getHall();
+
+        final ArrayList<int[]> list = new ArrayList<>();
+        JLabel ekran = new JLabel(new ImageIcon("res/Ekran.png"));
+        ekran.setBounds(160, 160, 480, 28);
+        add(ekran);
+        for (int i = 0; i < sal.length; i++) {
+            for (int j = 0; j < sal[i].length; j++) {
+                final int k = i;
+                final int l = j;
+                if (sal[i][j] == 0) {
+                    final ImageButton sala = new ImageButton("res/miejsceDostepne.png");
+                    sala.setRolloverIcon(new ImageIcon("res/miejsceWybrane.png"));
+                    sala.setBounds(100 + 30 * j, 200 + 30 * i, 28, 28);
+                    add(sala);
+                    sala.addMouseListener(new MouseListener() {
+                        @Override
+                        public void mouseClicked(MouseEvent e) {
+                            if (sala.equals("res/miejsceDostepne.png")) {
+                                if (list.size() < booking.listLength()) {
+                                    sala.setIcon("res/miejsceWybrane.png");
+                                    int[] tmp = {k, l};
+                                    list.add(tmp);
+                                }
+                            } else {
+                                sala.setIcon("res/miejsceDostepne.png");
+                                sala.setRolloverIcon(new ImageIcon("res/miejsceWybrane.png"));
+                                int[] tmp = {k, l};
+                                for (int m = 0; m < list.size(); m++) {
+                                    if (list.get(m)[0] == k && list.get(m)[1] == l) {
+                                        list.remove(m);
+                                    }
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void mousePressed(MouseEvent e) {
+                        }
+
+                        @Override
+                        public void mouseReleased(MouseEvent e) {
+                        }
+
+                        @Override
+                        public void mouseEntered(MouseEvent e) {
+                        }
+
+                        @Override
+                        public void mouseExited(MouseEvent e) {
+                        }
+                    });
+                } else if (sal[i][j] == 1) {
+                    ImageButton sala = new ImageButton("res/miejsceZajete.png");
+                    sala.setBounds(100 + 30 * j, 200 + 30 * i, 28, 28);
+                    add(sala);
+                }
+            }
+        }
+        ImageButton next = new ImageButton("res/Dalej.png");
+        next.setRolloverIcon(new ImageIcon("res/DalejEntered.png"));
+        next.setBounds(350, 510, 100, 40);
+        next.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (list.size() < booking.listLength()) {
+                    JOptionPane.showMessageDialog(null, "Proszę wybrać następującą liczbę miejsc: " + booking.listLength(), "Error", INFORMATION_MESSAGE);
+                } else {
+                    for (int i = 0; i < list.size(); i++) {
+                        System.out.println(list.get(i)[0] + " " + list.get(i)[1]);
+                        //hal.updateHall(list);
+                        MainWindow.rightPanel.MakeOrderPart3(booking);
+                        /////////////////////////////////////////////////////////////////////
+                    }
+                }
+
+                //hal.updateHall(sal);//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                //MainWindow.rightPanel.MakeOrderPart3(booking);
+            }
+        });
+        add(next);
+        repaint();
+    }
+
+    private void MakeOrderPart3(Booking booking) {
+        removeAll();
+        setLayout(null);
+        setBounds(WindowConstants.BORDER, 0, WindowConstants.WIDTH - WindowConstants.BORDER, WindowConstants.HEIGHT);
+
+        String[] info = booking.getInfo();
+        JLabel title = new JLabel(info[0]);
+        title.setForeground(new Color(247, 214, 185));
+        title.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 20));
+        title.setHorizontalAlignment(SwingConstants.CENTER);
+        title.setBounds(50, 70, 700, 50);
+        add(title);
+
+        JLabel date = new JLabel(info[1] + " : " + info[2]);
+        date.setForeground(new Color(247, 214, 185));
+        date.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 15));
+        date.setHorizontalAlignment(SwingConstants.CENTER);
+        date.setBounds(50, 100, 700, 50);
+        add(date);
+
+        JLabel jlDane = new JLabel("Proszę podać następujące dane:");
+        jlDane.setForeground(new Color(247, 214, 185));
+        jlDane.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 15));
+        jlDane.setHorizontalAlignment(SwingConstants.CENTER);
+        jlDane.setBounds(50, 140, 700, 50);
+        add(jlDane);
+        JLabel[] dane = new JLabel[4];
+
+        dane[0] = new JLabel("Imie");
+        dane[1] = new JLabel("Nazwisko");
+        dane[2] = new JLabel("Adres e-mail");
+        dane[3] = new JLabel("Numer telefonu");
+
+        for (int i = 0; i < dane.length; i++) {
+            dane[i].setForeground(new Color(247, 214, 185));
+            dane[i].setFont(new Font("Arial Black", Font.CENTER_BASELINE, 15));
+            dane[i].setHorizontalAlignment(SwingConstants.RIGHT);
+            dane[i].setBounds(50, 190 + 50 * i, 340, 50);
+            add(dane[i]);
+        }
+        final JTextField[] jtfPol = new JTextField[4];
+        for (int i = 0; i < jtfPol.length; i++) {
+            jtfPol[i] = new JTextField();
+            jtfPol[i].setBounds(410, 200 + 50 * i, 120, 30);
+            add(jtfPol[i]);
+        }
+
+        ImageButton next = new ImageButton("res/Dalej.png");
+        next.setRolloverIcon(new ImageIcon("res/DalejEntered.png"));
+        next.setBounds(350, 510, 100, 40);
+        next.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                boolean correct = true;
+                String name = jtfPol[0].getText();
+                //String name = "sghd67ah8adh7";
+                String replaceAll = name.replaceAll("[a-z]+", "");
+                replaceAll = replaceAll.replaceAll("[A-Z]+", "");
+                replaceAll = replaceAll.replaceAll(" ", "");
+                if (replaceAll.length() > 0 || name.length()==0) {
+                    correct = false;
+                }
+
+                String lastname = jtfPol[1].getText();
+                //String name = "sghd67ah8adh7";
+                replaceAll = lastname.replaceAll("[a-z]+", "");
+                replaceAll = replaceAll.replaceAll("[A-Z]+", "");
+                replaceAll = replaceAll.replaceAll(" ", "");
+                if (replaceAll.length() > 0 || lastname.length()==0) {
+                    correct = false;
+                }
+                String email = jtfPol[2].getText().replaceAll(" ", "");
+                int indAt = email.indexOf('@');
+                if(indAt<=0){
+                    correct = false;
+                }
+                int indDot = 0;
+                if (indAt > 0) {
+                    indDot = email.indexOf('.', indAt);
+                }
+                if(indAt>indDot){
+                    correct = false;
+                }
+                int tel_num=0;
+                try{
+                    tel_num = Integer.parseInt(jtfPol[3].getText().replaceAll(" ", ""));
+                }catch(Exception exc){
+                    correct = false;
+                }
+                if (!correct) {
+                    JOptionPane.showMessageDialog(null, "Proszę wpisać poprawne dane", "Error", INFORMATION_MESSAGE);
+
+                }
+            }
+        });
+        add(next);
         repaint();
     }
 }
