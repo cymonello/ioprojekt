@@ -688,7 +688,7 @@ public class RightWindow extends JPanel implements ActionListener {
         repaint();
     }
 
-    private void MakeOrderPart3(Booking booking) {
+    private void MakeOrderPart3(final Booking booking) {
         removeAll();
         setLayout(null);
         setBounds(WindowConstants.BORDER, 0, WindowConstants.WIDTH - WindowConstants.BORDER, WindowConstants.HEIGHT);
@@ -783,6 +783,8 @@ public class RightWindow extends JPanel implements ActionListener {
                 if (!correct) {
                     JOptionPane.showMessageDialog(null, "Proszę wpisać poprawne dane", "Error", INFORMATION_MESSAGE);
 
+                }else {
+                    booking.endBooking(name, lastname, email, tel_num);
                 }
             }
         });
