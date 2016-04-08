@@ -145,4 +145,34 @@ public class TermsDB
         return title;
     }
     
+    public String[] getTermInfo(int id)
+    {
+        String info[] = new String[4];
+        ResultSet term = null;
+        try
+        {
+            if(connect != null)
+            {
+                statement = connect.createStatement();
+                term = statement.executeQuery("SELECT date, hour, movie, hall FROM Terms WHERE id=" + id);
+                term.next();
+                String d = term.getString("date");
+                String h = term.getString("hour");
+                info[0] = getTitle(d,h);
+                info[1] = term.getString("date");
+                info[2] = term.getString("hour");
+                info[3] = term.getString("hall");
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(null, "Błąd! Brak połączenia z bazą filmów");
+                info = null;
+            }
+        } catch (SQLException e)
+        {
+            JOptionPane.showMessageDialog(null, e.toString());
+        }
+        return info;
+    }
+    
 }
