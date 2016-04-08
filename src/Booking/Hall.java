@@ -6,6 +6,7 @@
 package Booking;
 
 import database.HallDB;
+import java.util.ArrayList;
 
 /**
  *
@@ -42,10 +43,13 @@ public class Hall {
         else return false;
     }
     
-    public void updateHall(int[][] nowaSala){
+    public void updateHall(ArrayList<int[]> miejsca){
         HallDB hdb = new HallDB();
         hdb.open();
-        hdb.updateHall(id, nowaSala);
+        for(int i = 0; i < miejsca.size(); ++i){
+            Sala[miejsca.get(i)[0]][miejsca.get(i)[1]]=1;
+        }
+        hdb.updateHall(id, Sala);
         hdb.close();
     }
     
