@@ -673,8 +673,8 @@ public class RightWindow extends JPanel implements ActionListener {
                     JOptionPane.showMessageDialog(null, "Proszę wybrać następującą liczbę miejsc: " + booking.listLength(), "Error", INFORMATION_MESSAGE);
                 } else {
                     for (int i = 0; i < list.size(); i++) {
-                        System.out.println(list.get(i)[0] + " " + list.get(i)[1]);
-                        //hal.updateHall(list);
+                        //System.out.println(list.get(i)[0] + " " + list.get(i)[1]);
+                        booking.getSeat(list);
                         MainWindow.rightPanel.MakeOrderPart3(booking);
                         /////////////////////////////////////////////////////////////////////
                     }
@@ -761,7 +761,7 @@ public class RightWindow extends JPanel implements ActionListener {
                 }
                 String email = jtfPol[2].getText().replaceAll(" ", "");
                 int indAt = email.indexOf('@');
-                if(indAt<=0){
+                if(indAt<=0 || !email.equals(jtfPol[2].getText())){
                     correct = false;
                 }
                 int indDot = 0;
@@ -773,6 +773,9 @@ public class RightWindow extends JPanel implements ActionListener {
                 }
                 int tel_num=0;
                 try{
+                    if(!jtfPol[3].getText().replaceAll(" ", "").equals(jtfPol[3].getText())){
+                        correct = false;
+                    }
                     tel_num = Integer.parseInt(jtfPol[3].getText().replaceAll(" ", ""));
                 }catch(Exception exc){
                     correct = false;
