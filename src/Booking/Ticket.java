@@ -33,4 +33,6 @@ public class Ticket {
         }
         ++total_amount;
     }
+    
+    
 }

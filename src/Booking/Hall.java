@@ -10,6 +10,7 @@ package Booking;
  * @author Kamil Oleszek
  */
 public class Hall {
+    
     public static final int ROW = 10;
     public static final int COLUMN = 20;
     private static int[][] Sala1 = new int[ROW][COLUMN];

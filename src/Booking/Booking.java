@@ -34,6 +34,10 @@ public class Booking {
     //private int id;
     private String[] informacje;
     
+    public int listLength(){
+        return ticket.size();
+    }
+    
     public String[] getInfo(){
         return informacje;
     }
