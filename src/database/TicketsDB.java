@@ -79,13 +79,13 @@ public class TicketsDB
             {
                 statement = connect.createStatement();
                 term = statement.executeQuery("SELECT row, seat FROM Tickets WHERE hall='" + hall + "' AND date='" + date + "' AND hour='" + hour + "';");
-                if(term.next())
+                while(term.next())
                 {
-                    while(term.next())
-                    {
-                        sala[term.getInt("row")][term.getInt("seat")] = 1;
-                    }
+                    sala[term.getInt("row")][term.getInt("seat")] = 1;
                 }
+                for(int i=0; i<10; i++)
+                    for (int j=9; j<11; j++)
+                        sala[i][j] = -1;
             }
             else
             {
