@@ -6,6 +6,7 @@
 package Booking;
 //import java.util.*;
 
+import database.HallDB;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -25,13 +26,11 @@ import java.util.List;
  */
 public class Booking {
     //metoda tworzaca obiekty bilet w petli wg ilosci tego co wpisane w formularzu
-    List<Ticket> ticket = new ArrayList<Ticket>(); 
-    //Film film;
-    Client client;
-    //Seat [] seat;
+    private List<Ticket> ticket = new ArrayList<Ticket>();
+    private ArrayList<int[]> miejsce = new ArrayList<>();
     private Connection connect = null;
     private Statement statement = null;
-    private int id;
+    private int termId;
     private String[] informacje;
     
     public int listLength(){
@@ -51,7 +50,7 @@ public class Booking {
         TermsDB term = new TermsDB();
         term.open();
         informacje = term.getTermInfo(id);
-        this.id = id;
+        this.termId = id;
         term.close();
         
         
@@ -72,13 +71,23 @@ public class Booking {
         
     }
     
+    public void getSeat(ArrayList<int[]> msc){
+        miejsce = msc;
+    }
+    
     public void endBooking(String imie, String nazwisko, String email, int nr_tel){
         OrdersDB odb = new OrdersDB();
         odb.open();
-        odb.addOrder(id, imie, nazwisko, email, nr_tel, "haslomaslo");
-        int ticketId = odb.getId();
+        odb.addOrder(termId, imie, nazwisko, email, nr_tel, "haslomaslo");
+        int orderId = odb.getId();
         odb.close();
         
+        TicketsDB tdb = new TicketsDB();
+        tdb.open();
+        for(int i = 0; i < ticket.size(); ++i){
+            tdb.addTicket(orderId, informacje[1], informacje[2], Integer.parseInt(informacje[3]), miejsce.get(i)[0], miejsce.get(i)[1] , ticket.get(i).getTicketIndex() );
+        }
+        tdb.close();
     }
 }
 
@@ -91,6 +100,7 @@ class Film{
     
 }
 
+/*
 class Client{
     String name;
     String surname;
@@ -116,7 +126,6 @@ class Client{
     }
 }
 
-/*
 class Seat{
     public final int ROW = 10;
     public final int COLUMN = 20;
