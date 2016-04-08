@@ -48,4 +48,8 @@ public class Hall {
         hdb.updateHall(id, Sala);
         hdb.close();
     }
+    
+    public int[][] getHall(int id){
+        return Sala;
+    }
 }
