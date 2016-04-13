@@ -117,7 +117,7 @@ public class TermsDB
      * @param time
      * @return
      */
-    public String getTitle(String date, String time)
+    public String getTitle(int id)
     {
         String title = null;
         ResultSet temp;
@@ -126,7 +126,7 @@ public class TermsDB
             if(connect != null)
             {
                 statement = connect.createStatement();
-                temp = statement.executeQuery("SELECT movie FROM Terms WHERE date='" + date + "' AND hour='" + time + "'"); 
+                temp = statement.executeQuery("SELECT movie FROM Terms WHERE id='" + id + "'"); 
                 temp.next();
                 int i = temp.getInt("movie");
                 statement = connect.createStatement();
@@ -158,7 +158,7 @@ public class TermsDB
                 term.next();
                 String d = term.getString("date");
                 String h = term.getString("hour");
-                info[0] = getTitle(d,h);
+                info[0] = getTitle(id);
                 info[1] = term.getString("date");
                 info[2] = term.getString("hour");
                 info[3] = term.getString("hall");
