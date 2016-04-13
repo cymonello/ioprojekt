@@ -593,14 +593,14 @@ public class RightWindow extends JPanel implements ActionListener {
         title.setForeground(new Color(247, 214, 185));
         title.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 20));
         title.setHorizontalAlignment(SwingConstants.CENTER);
-        title.setBounds(50, 70, 700, 50);
+        title.setBounds(50, 20, 700, 50);
         add(title);
 
         JLabel date = new JLabel(info[1] + " : " + info[2]);
         date.setForeground(new Color(247, 214, 185));
         date.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 15));
         date.setHorizontalAlignment(SwingConstants.CENTER);
-        date.setBounds(50, 100, 700, 50);
+        date.setBounds(50, 50, 700, 50);
         add(date);
 
         final Hall hal = new Hall(info[1], info[2], Integer.parseInt(booking.getInfo()[3]));
@@ -608,7 +608,7 @@ public class RightWindow extends JPanel implements ActionListener {
 
         final ArrayList<int[]> list = new ArrayList<>();
         JLabel ekran = new JLabel(new ImageIcon("res/Ekran.png"));
-        ekran.setBounds(160, 160, 480, 28);
+        ekran.setBounds(160, 110, 480, 28);
         add(ekran);
         for (int i = 0; i < sal.length; i++) {
             for (int j = 0; j < sal[i].length; j++) {
@@ -617,7 +617,7 @@ public class RightWindow extends JPanel implements ActionListener {
                 if (sal[i][j] == 0) {
                     final ImageButton sala = new ImageButton("res/miejsceDostepne.png");
                     sala.setRolloverIcon(new ImageIcon("res/miejsceWybrane.png"));
-                    sala.setBounds(100 + 30 * j, 200 + 30 * i, 28, 28);
+                    sala.setBounds(100 + 30 * j, 150 + 30 * i, 28, 28);
                     add(sala);
                     sala.addMouseListener(new MouseListener() {
                         @Override
@@ -631,7 +631,6 @@ public class RightWindow extends JPanel implements ActionListener {
                             } else {
                                 sala.setIcon("res/miejsceDostepne.png");
                                 sala.setRolloverIcon(new ImageIcon("res/miejsceWybrane.png"));
-                                int[] tmp = {k, l};
                                 for (int m = 0; m < list.size(); m++) {
                                     if (list.get(m)[0] == k && list.get(m)[1] == l) {
                                         list.remove(m);
@@ -658,11 +657,40 @@ public class RightWindow extends JPanel implements ActionListener {
                     });
                 } else if (sal[i][j] == 1) {
                     ImageButton sala = new ImageButton("res/miejsceZajete.png");
-                    sala.setBounds(100 + 30 * j, 200 + 30 * i, 28, 28);
+                    sala.setBounds(100 + 30 * j, 150 + 30 * i, 28, 28);
                     add(sala);
                 }
             }
         }
+        ImageButton miejsceDostepne = new ImageButton("res/miejsceDostepne.png");
+        ImageButton miejsceWybrane = new ImageButton("res/miejsceWybrane.png");
+        ImageButton miejsceZajete = new ImageButton("res/miejsceZajete.png");
+        miejsceDostepne.setBounds(100, 480, 28, 28);
+        miejsceWybrane.setBounds(300, 480, 28, 28);
+        miejsceZajete.setBounds(500, 480, 28, 28);
+        add(miejsceWybrane);
+        add(miejsceZajete);
+        add(miejsceDostepne);
+
+        JLabel zajete = new JLabel("Miejsce niedostępne");
+        JLabel wolne = new JLabel("Miejsce dostępne");
+        JLabel wybrane = new JLabel("Miejsce wyrane");
+        wolne.setBounds(130, 480, 270, 28);
+        wolne.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 12));
+        wolne.setHorizontalAlignment(SwingConstants.LEFT);
+        wolne.setForeground(new Color(247, 214, 185));
+        wybrane.setBounds(330, 480, 270, 28);
+        wybrane.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 12));
+        wybrane.setHorizontalAlignment(SwingConstants.LEFT);
+        wybrane.setForeground(new Color(247, 214, 185));
+        zajete.setBounds(530, 480, 270, 28);
+        zajete.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 12));
+        zajete.setHorizontalAlignment(SwingConstants.LEFT);
+        zajete.setForeground(new Color(247, 214, 185));
+        add(wybrane);
+        add(zajete);
+        add(wolne);
+
         ImageButton next = new ImageButton("res/Dalej.png");
         next.setRolloverIcon(new ImageIcon("res/DalejEntered.png"));
         next.setBounds(350, 510, 100, 40);
@@ -672,16 +700,9 @@ public class RightWindow extends JPanel implements ActionListener {
                 if (list.size() < booking.listLength()) {
                     JOptionPane.showMessageDialog(null, "Proszę wybrać następującą liczbę miejsc: " + booking.listLength(), "Error", INFORMATION_MESSAGE);
                 } else {
-                    for (int i = 0; i < list.size(); i++) {
-                        //System.out.println(list.get(i)[0] + " " + list.get(i)[1]);
-                        booking.getSeat(list);
-                        MainWindow.rightPanel.MakeOrderPart3(booking);
-                        /////////////////////////////////////////////////////////////////////
-                    }
+                    booking.getSeat(list);
+                    MainWindow.rightPanel.MakeOrderPart3(booking);
                 }
-
-                //hal.updateHall(sal);//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                //MainWindow.rightPanel.MakeOrderPart3(booking);
             }
         });
         add(next);
@@ -743,49 +764,110 @@ public class RightWindow extends JPanel implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 boolean correct = true;
                 String name = jtfPol[0].getText();
-                //String name = "sghd67ah8adh7";
-                String replaceAll = name.replaceAll("[a-z]+", "");
-                replaceAll = replaceAll.replaceAll("[A-Z]+", "");
-                replaceAll = replaceAll.replaceAll(" ", "");
-                if (replaceAll.length() > 0 || name.length()==0) {
+                String replaceAll1 = name.replaceAll("[a-z]+", "").replaceAll("[A-Z]+", "").replaceAll(" ", "");
+
+                String lastname = jtfPol[1].getText();
+                String replaceAll2 = lastname.replaceAll("[a-z]+", "").replaceAll("[A-Z]+", "").replaceAll(" ", "");
+
+                String email = jtfPol[2].getText();
+                String replaceAll3 = email.replaceAll(" ", "");
+
+                if (replaceAll1.length() > 0 || name.length() == 0
+                        || replaceAll2.length() > 0 || lastname.length() == 0
+                        || !email.equals(replaceAll3) || email.indexOf('@') <= 0 || email.indexOf('@') > email.indexOf('.', email.indexOf('@'))) {
                     correct = false;
                 }
 
-                String lastname = jtfPol[1].getText();
-                //String name = "sghd67ah8adh7";
-                replaceAll = lastname.replaceAll("[a-z]+", "");
-                replaceAll = replaceAll.replaceAll("[A-Z]+", "");
-                replaceAll = replaceAll.replaceAll(" ", "");
-                if (replaceAll.length() > 0 || lastname.length()==0) {
-                    correct = false;
-                }
-                String email = jtfPol[2].getText().replaceAll(" ", "");
-                int indAt = email.indexOf('@');
-                if(indAt<=0 || !email.equals(jtfPol[2].getText())){
-                    correct = false;
-                }
-                int indDot = 0;
-                if (indAt > 0) {
-                    indDot = email.indexOf('.', indAt);
-                }
-                if(indAt>indDot){
-                    correct = false;
-                }
-                int tel_num=0;
-                try{
-                    if(!jtfPol[3].getText().replaceAll(" ", "").equals(jtfPol[3].getText())){
+                int tel_num = 0;
+                try {
+                    if (!jtfPol[3].getText().replaceAll(" ", "").equals(jtfPol[3].getText()) || jtfPol[3].getText().length() != 9) {
                         correct = false;
                     }
                     tel_num = Integer.parseInt(jtfPol[3].getText().replaceAll(" ", ""));
-                }catch(Exception exc){
+                    if (tel_num <= 0) {
+                        correct = false;
+                    }
+                } catch (Exception exc) {
                     correct = false;
                 }
                 if (!correct) {
                     JOptionPane.showMessageDialog(null, "Proszę wpisać poprawne dane", "Error", INFORMATION_MESSAGE);
 
-                }else {
-                    booking.endBooking(name, lastname, email, tel_num);
+                } else {
+                    MainWindow.rightPanel.MakeOrderPart4(booking, name, lastname, email, tel_num);
                 }
+            }
+        });
+        add(next);
+        repaint();
+    }
+
+    private void MakeOrderPart4(final Booking booking, final String name, final String lastname, final String email, final int number) {
+        removeAll();
+        setLayout(null);
+        setBounds(WindowConstants.BORDER, 0, WindowConstants.WIDTH - WindowConstants.BORDER, WindowConstants.HEIGHT);
+
+        JLabel check = new JLabel("Sprawdź poprawność danych do rezerwacji");
+        check.setBounds(50, 60, 700, 50);
+        check.setForeground(new Color(247, 214, 185));
+        check.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 20));
+        check.setHorizontalAlignment(SwingConstants.CENTER);
+        add(check);
+
+        JLabel[] infoName = new JLabel[8];
+        infoName[0] = new JLabel("Tytuł:");
+        infoName[1] = new JLabel("Data:");
+        infoName[2] = new JLabel("Godzina:");
+        infoName[3] = new JLabel("Ilość miejsc:");
+        infoName[4] = new JLabel("Imie:");
+        infoName[5] = new JLabel("Nazwisko:");
+        infoName[6] = new JLabel("Adres e-mail:");
+        infoName[7] = new JLabel("Numer telefonu:");
+
+        for (int i = 0; i < infoName.length; i++) {
+            infoName[i].setBounds(50, 120 + 40 * i, 250, 40);
+            infoName[i].setForeground(new Color(247, 214, 185));
+            infoName[i].setFont(new Font("Arial Black", Font.CENTER_BASELINE, 16));
+            infoName[i].setHorizontalAlignment(SwingConstants.RIGHT);
+            add(infoName[i]);
+        }
+        ImageButton wstecz = new ImageButton("res/Wstecz.png");
+        wstecz.setBounds(WIDTH, WIDTH, WIDTH, HEIGHT);
+        wstecz.setBounds(290, 450, 100, 40);
+        wstecz.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MainWindow.rightPanel.MakeOrderPart3(booking);
+            }
+        });
+        add(wstecz);
+        ImageButton next = new ImageButton("res/Dalej.png");
+        next.setRolloverIcon(new ImageIcon("res/DalejEntered.png"));
+        next.setBounds(410, 450, 100, 40);
+
+        JLabel[] info = new JLabel[8];
+        info[0] = new JLabel(booking.getInfo()[0]);
+        info[1] = new JLabel(booking.getInfo()[1]);
+        info[2] = new JLabel(booking.getInfo()[2]);
+        info[3] = new JLabel(Integer.toString(booking.listLength()));
+        info[4] = new JLabel(name);
+        info[5] = new JLabel(lastname);
+        info[6] = new JLabel(email);
+        info[7] = new JLabel(Integer.toString(number));
+
+        for (int i = 0; i < info.length; i++) {
+            info[i].setBounds(310, 120 + 40 * i, 390, 40);
+            info[i].setForeground(new Color(247, 214, 185));
+            info[i].setFont(new Font("Arial Black", Font.CENTER_BASELINE, 16));
+            info[i].setHorizontalAlignment(SwingConstants.LEFT);
+            add(info[i]);
+        }
+        next.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                booking.endBooking(name, lastname, email, number);
+                JOptionPane.showMessageDialog(null, "Proces rezerwacji przebiegł poprawnie", "Udana rezerwacja", INFORMATION_MESSAGE);
+                MainWindow.rightPanel.StartWindow();
             }
         });
         add(next);

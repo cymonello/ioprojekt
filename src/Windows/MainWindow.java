@@ -6,8 +6,19 @@
 package Windows;
 
 import Booking.Booking;
+import java.awt.Color;
+import java.awt.Font;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
+import javax.swing.JRootPane;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.plaf.ColorUIResource;
+import javax.swing.plaf.metal.DefaultMetalTheme;
+import javax.swing.plaf.metal.MetalLookAndFeel;
+import javax.swing.plaf.metal.MetalTheme;
 
 /**
  * Klasa powodująca wyświetlenie się głównego okna programu, łączy ona ze sobą
@@ -19,14 +30,15 @@ public class MainWindow extends JFrame {
 
     /**
      * Tu jest metoda main powodująca wyświetlenie okna
+     *
      * @param args
      */
     public static void main(String[] args) {
         MainWindow main = new MainWindow();
         run(main, WindowConstants.WIDTH, WindowConstants.HEIGHT, "Projekt - prototyp 1");
-        Booking bk = new Booking();
-        bk.startBooking(120);
-        
+        //Booking bk = new Booking();
+        //bk.startBooking(120);
+
     }
 
     public static MainMenu leftPanel;
@@ -63,6 +75,65 @@ public class MainWindow extends JFrame {
                 f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 f.setSize(width, height);
                 f.setResizable(false);
+                /*f.setUndecorated(true);
+                f.getRootPane().setWindowDecorationStyle(
+                        JRootPane.FRAME
+                );
+                MetalTheme th = MetalLookAndFeel.getCurrentTheme();
+                MetalLookAndFeel.setCurrentTheme(new DefaultMetalTheme() {
+                    @Override
+                    public ColorUIResource getWindowTitleInactiveBackground() {
+                        return new ColorUIResource(Color.black);
+                    }
+
+                    @Override
+                    public ColorUIResource getWindowTitleBackground() {
+                        return new ColorUIResource(Color.black);
+                    }
+
+                    @Override
+                    public ColorUIResource getPrimaryControlHighlight() {
+                        return new ColorUIResource(Color.black);
+                    }
+
+                    @Override
+                    public ColorUIResource getPrimaryControlDarkShadow() {
+                        return new ColorUIResource(Color.black);
+                    }
+
+                    @Override
+                    public ColorUIResource getPrimaryControl() {
+                        return new ColorUIResource(Color.black);
+                    }
+
+                    @Override
+                    public ColorUIResource getControlHighlight() {
+                        return new ColorUIResource(Color.black);
+                    }
+
+                    @Override
+                    public ColorUIResource getControlDarkShadow() {
+                        return new ColorUIResource(Color.black);
+                    }
+
+                    @Override
+                    public ColorUIResource getControl() {
+                        return new ColorUIResource(Color.black);
+                    }
+                    //end inActiveBumps
+
+                });
+
+                try {
+                    UIManager.setLookAndFeel(
+                            UIManager.getCrossPlatformLookAndFeelClassName()
+                    );
+                } catch (UnsupportedLookAndFeelException e) {
+                } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+                    Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                SwingUtilities.updateComponentTreeUI(f);*/
                 f.setVisible(true);
             }
 

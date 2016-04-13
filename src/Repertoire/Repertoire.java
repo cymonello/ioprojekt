@@ -48,7 +48,6 @@ public class Repertoire {
             tdb.close();
         }
         catch(ClassNotFoundException e){
-            System.out.println(e.getMessage());
         }
     }
 
@@ -123,7 +122,6 @@ public class Repertoire {
             }
             tempIndex++;
         }
-        System.out.println();
         moviesRS.beforeFirst();
     }
 
