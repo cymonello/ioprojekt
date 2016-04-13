@@ -177,6 +177,14 @@ public class Repertoire {
     }
 
     /**
+     * Getter dla tablicy ID
+     * @return
+     */
+    public HashMap<Integer, Integer[]> getMapTermsID() {
+        return mapTermsID;
+    }
+
+    /**
      * Metoda, ktora w oparciu o HashMap i tablice Integerów(movie) tworzy wynikową tablice dwuwymiarową,
      * za pomocą, której tworzona jest tabelka w okienku repertuaru
      *

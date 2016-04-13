@@ -9,11 +9,21 @@ import java.util.HashMap;
 public class Testowa {
     public static void main(String[] args) throws SQLException {
         try {
-            Repertoire repertuar = new Repertoire("30.03.16");
+            Repertoire repertuar = new Repertoire("10.04.16");
             HashMap<Integer, String[]> aboutMovie = repertuar.getMapMovieInfo();
             HashMap<Integer, Integer[]> displayingHours = repertuar.getMapHours();
             Integer[] movieID = repertuar.getMovie();
-            for (int i = 0; i < movieID.length; i++) {
+            HashMap<Integer, Integer[]> displayID = repertuar.getMapTermsID();
+            int i = 0;
+            while(i<movieID.length){
+                Integer[] termID = displayID.get(movieID[i]);
+                for (int j = 0; j < termID.length; j++) {
+                    System.out.print(termID[j] + " ");
+                }
+                System.out.println();
+                i++;
+            }
+            /*for (int i = 0; i < movieID.length; i++) {
                 String[] info = aboutMovie.get(movieID[i]);
                 for (int j = 0; j < info.length; j++) {
                     System.out.print(info[j] + " ");
@@ -31,7 +41,7 @@ public class Testowa {
                     System.out.print(tablica[i][j] + " ");
                 }
                 System.out.println();
-            }
+            }*/
         } catch(SQLException e){
             System.out.println(e.getMessage());
         } catch (ClassNotFoundException e) {
