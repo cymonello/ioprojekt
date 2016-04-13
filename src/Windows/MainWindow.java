@@ -35,7 +35,7 @@ public class MainWindow extends JFrame {
      */
     public static void main(String[] args) {
         MainWindow main = new MainWindow();
-        run(main, WindowConstants.WIDTH, WindowConstants.HEIGHT, "Projekt - prototyp 1");
+        run(main, WindowConstants.WIDTH, WindowConstants.HEIGHT, "Projekt - prototyp 2");
         //Booking bk = new Booking();
         //bk.startBooking(120);
 
