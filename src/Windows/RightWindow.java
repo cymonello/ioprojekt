@@ -3,6 +3,7 @@ package Windows;
 import Booking.Booking;
 import Booking.Hall;
 import Repertoire.Repertoire;
+import Search.Dates;
 import Search.Search;
 import database.MoviesDB;
 import java.awt.BorderLayout;
@@ -22,6 +23,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Random;
 import java.util.Vector;
 import javax.swing.BorderFactory;
@@ -737,6 +739,9 @@ public class RightWindow extends JPanel {
                 }
                 if (ile > 0) {
                     MainWindow.rightPanel.MakeOrderPart2(booking);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Nie wybrano biletów", "Błąd", INFORMATION_MESSAGE);
+
                 }
             }
         });
@@ -1219,6 +1224,16 @@ public class RightWindow extends JPanel {
                                 }
                             });
                         }
+                        ImageButton terms = new ImageButton("res/sprawdz.png");
+                        terms.setRolloverIcon(new ImageIcon("res/sprawdzEntered.png"));
+                        panel.add(terms);
+                        terms.setBounds(50, 420, 150, 30);
+                        terms.addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                MainWindow.rightPanel.Terms(idTab[k]);
+                            }
+                        });
                         JTextArea filmDescription = new JTextArea(res[11].toString());
 
                         filmDescription.setWrapStyleWord(true);
@@ -1282,4 +1297,60 @@ public class RightWindow extends JPanel {
         }
         repaint();
     }
+
+    /**
+     *
+     */
+    void Terms(int ID) {
+        removeAll();
+        setLayout(null);
+        setBackground(Color.black);
+        setBounds(WindowConstants.BORDER, 0, WindowConstants.WIDTH - WindowConstants.BORDER, WindowConstants.HEIGHT);
+        final Dates date = new Dates(ID);
+        HashMap<String, Integer[]> hoursPerDay = date.getMapHoursOfMovie();
+        String[] dates = date.getDatesOfMovie();
+        MoviesDB bd = new MoviesDB();
+        bd.open();
+        JLabel title = new JLabel(bd.getTitle(ID));
+        bd.close();
+        add(title);
+        title.setBounds(50, 60, 700, 50);
+        title.setForeground(new Color(247, 214, 185));
+        title.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 20));
+        title.setHorizontalAlignment(SwingConstants.CENTER);
+        for (int i = 0; i < 12; i++) {
+            JLabel godz = new JLabel(Integer.toString(i + 10));
+            godz.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 15));
+            godz.setForeground(new Color(247, 214, 185));
+            godz.setBounds(170 + 50 * i, 110, 50, 30);
+            add(godz);
+        }
+        for (int i = 0; i < dates.length; i++) {
+            final JLabel data = new JLabel(dates[i]);
+            data.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 20));
+            data.setForeground(new Color(247, 214, 185));
+            add(data);
+            data.setBounds(50, 150 + 40 * i, 110, 30);
+            final Integer[] hours = hoursPerDay.get(dates[i]);
+            for (int j = 0; j < hours.length; j++) {
+                final int ind = j;
+                if (hours[j] > 0) {
+                    ImageButton godzina = new ImageButton("res/Wyb.png");
+                    godzina.setRolloverIcon(new ImageIcon("res/WybEntered.png"));
+                    godzina.setBounds(160 + 50 * j, 150 + 40 * i, 50, 30);
+                    add(godzina);
+                    godzina.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            Booking b = new Booking();
+                            b.startBooking(date.gettingTermsIDForFilm(hours[ind], data.getText()));
+                            MainWindow.rightPanel.MakeOrderPart1(b);
+                        }
+                    });
+                }
+            }
+        }
+        repaint();
+    }
+
 }
