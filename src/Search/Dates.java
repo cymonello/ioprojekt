@@ -99,6 +99,9 @@ public class Dates {
         }
         return false;
     }
+    /**
+
+     */
     public Integer gettingTermsIDForFilm (Integer hours, String date){
         Integer[] tempHours = mapHoursOfMovie.get(date);
         Integer[] tempTermID = mapTermsOfMovie.get(date);
