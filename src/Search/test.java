@@ -15,7 +15,7 @@ import java.util.HashMap;
  */
 public class test {
     public static void main(String[] args) {
-        Dates date = new Dates(3);
+        Dates date = new Dates(1);
         HashMap<String, Integer[]> hoursPerDay = date.getMapHoursOfMovie();
         String[] dates = date.getDatesOfMovie();
         for (int i = 0; i < dates.length; i++) {
@@ -26,6 +26,7 @@ public class test {
             }
             System.out.println();
         }
+        System.out.println(date.gettingTermsIDForFilm(19,"23.04.16"));
     }
 
 

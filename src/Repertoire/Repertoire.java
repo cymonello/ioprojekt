@@ -227,6 +227,7 @@ public class Repertoire {
     public Integer getMovieID(Integer row){
         return movie[row];
     }
+
     public Integer getTermID(Integer row, Integer column){
         Integer[] tempTable = mapTermsID.get(movie[row]);
         return tempTable[column-5];

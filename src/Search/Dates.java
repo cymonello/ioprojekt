@@ -22,6 +22,10 @@ public class Dates {
      */
     private HashMap<String, Integer[]> mapHoursOfMovie;
     /**
+     * Tablica ascojacyjna, która dla danego terminu trzyma tablice termID
+     */
+    private HashMap<String, Integer[]> mapTermsOfMovie;
+    /**
      * Zmienna przechowująca ID filmu dla, którego szukamy terminów
      */
     private Integer movieID;
@@ -30,14 +34,15 @@ public class Dates {
     /**
      * Tablica terminów na 6 dni do przodu
      */
-    private String[] date = new String[6];
+    private String[] date = new String[7];
     private Integer numberOfDays;
 
     public Dates(Integer id) {
-        numberOfDays = 6;
+        numberOfDays = 7;
         date[0] = s.format(cal.getTime());
         movieID = id;
         mapHoursOfMovie = new HashMap<>();
+        mapTermsOfMovie = new HashMap<>();
         for (int i = 1; i < numberOfDays; i++) {
             cal.add(Calendar.DAY_OF_MONTH, 1);
             date[i] = s.format(cal.getTime());
@@ -57,6 +62,7 @@ public class Dates {
         int j = 0;
         Integer[] idPerDay;
         HashMap<Integer, Integer[]> hours;
+        HashMap<Integer, Integer[]> termsID;
         for (int i = 0; i < numberOfDays; i++) {
             rep = new Repertoire(date[i]);
             idPerDay = rep.getMovie();
@@ -64,7 +70,9 @@ public class Dates {
                 if (contains(idPerDay, movieID)) {
                     tempDatesOfMovies[j] = date[i];
                     hours = rep.getMapHours();
+                    termsID = rep.getMapTermsID();
                     mapHoursOfMovie.put(tempDatesOfMovies[j], hours.get(movieID));
+                    mapTermsOfMovie.put(tempDatesOfMovies[j], termsID.get(movieID));
                     j++;
                 }
             }
@@ -90,5 +98,17 @@ public class Dates {
             }
         }
         return false;
+    }
+    public Integer gettingTermsIDForFilm (Integer hours, String date){
+        Integer[] tempHours = mapHoursOfMovie.get(date);
+        Integer[] tempTermID = mapTermsOfMovie.get(date);
+        Integer tempIndex;
+        for (int i = 0; i < tempHours.length; i++) {
+            if(tempHours[i].equals(hours)){
+                tempIndex = i;
+                return tempTermID[tempIndex];
+            }
+        }
+        return null;
     }
 }
