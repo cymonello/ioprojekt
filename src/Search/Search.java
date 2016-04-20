@@ -12,93 +12,78 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
 
-
 /**
  *
  * @author robert
  */
 public class Search {
-    
+
     private Connection connect = null;
     private Statement statement = null;
-    
-    public void open()
-    {
-        try
-        {
+
+    public void open() {
+        try {
             connect = DriverManager.getConnection("jdbc:mysql://ran.nazwa.pl:3307/ran_2", "ran_2", "Szymon_M95");
-        } catch (SQLException e)
-        {
+        } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.toString());
         }
     }
-    public void close()
-    {
-        try
-        {
-            if(connect != null)
+
+    public void close() {
+        try {
+            if (connect != null) {
                 connect.close();
-        }
-        catch(SQLException e)
-        {
+            }
+        } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.toString());
         }
     }
-    
-    public Integer[] byTitle(String s){
+
+    public Integer[] byTitle(String s) {
         ResultSet movies;
-        try
-        {
-            if(connect != null)
-            {
+        try {
+            if (connect != null) {
                 statement = connect.createStatement();
-                movies = statement.executeQuery("SELECT *  FROM Movies WHERE title LIKE '%" + s + "%'");   
+                movies = statement.executeQuery("SELECT *  FROM Movies WHERE title LIKE '%" + s + "%'");
                 movies.last();
                 int size = movies.getRow();
                 Integer[] TabMovies = new Integer[size];
                 movies.beforeFirst();
                 int i = 0;
-                while(movies.next()){
-                    
+                while (movies.next()) {
+
                     TabMovies[i++] = movies.getInt("id");
                 }
                 return TabMovies;
-            }
-            else
-            {
+            } else {
                 JOptionPane.showMessageDialog(null, "Błąd! Brak połączenia z bazą filmów");
             }
-        } catch (SQLException e)
-        {
+        } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.toString());
         }
         return null;
     }
-    public Integer[] byGenre(String s){
+
+    public Integer[] byGenre(String s) {
         ResultSet movies;
-        try
-        {
-            if(connect != null)
-            {
+        try {
+            if (connect != null) {
                 statement = connect.createStatement();
-                movies = statement.executeQuery("SELECT *  FROM Movies WHERE genre='" + s + "'");   
+                movies = statement.executeQuery("SELECT *  FROM Movies WHERE genre='" + s + "'");
                 movies.last();
                 int size = movies.getRow();
                 Integer[] TabMovies = new Integer[size];
                 movies.beforeFirst();
                 int i = 0;
-                while(movies.next()){
-                    
-                   TabMovies[i++] = movies.getInt("id");
+                while (movies.next()) {
+
+                    TabMovies[i++] = movies.getInt("id");
                 }
                 return TabMovies;
-            }
-            else
-            {
+            } else {
                 JOptionPane.showMessageDialog(null, "Błąd! Brak połączenia z bazą filmów");
             }
-        } catch (SQLException e)
-        {
+        } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.toString());
         }
         return null;
