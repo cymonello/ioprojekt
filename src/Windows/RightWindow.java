@@ -130,10 +130,10 @@ public class RightWindow extends JPanel implements ActionListener {
         }
         repaint();
     }
-    
+    private String dataa;
     public void MakeRepertoire() {
         JComboBox jcbDate;
-        
+        dataa = null;
         removeAll();
         setLayout(null);
         setBounds(WindowConstants.BORDER, 0, WindowConstants.WIDTH - WindowConstants.BORDER, WindowConstants.HEIGHT);
@@ -164,7 +164,9 @@ public class RightWindow extends JPanel implements ActionListener {
         ActionListener aList = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                
                 JComboBox source = (JComboBox) e.getSource();
+                dataa = source.getSelectedItem().toString();
                 String str = (String) source.getSelectedItem();
                 try {
                     
@@ -239,6 +241,11 @@ public class RightWindow extends JPanel implements ActionListener {
                     jcbDate1.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 17));
                     jcbDate1.setForeground(Color.GRAY);
                     jcbDate1.setBackground(Color.CYAN);
+                    for(int i =0;i<jcbDate1.getItemCount();i++){
+                        if(jcbDate1.getItemAt(i).toString().equals(dataa)){
+                            jcbDate1.setSelectedIndex(i);
+                        }
+                    }
                     add(jcbDate1);
                     jcbDate1.addActionListener(this);
                     JScrollPane scrollPane = new JScrollPane(jTable);
@@ -557,12 +564,12 @@ public class RightWindow extends JPanel implements ActionListener {
         date.setHorizontalAlignment(SwingConstants.CENTER);
         date.setBounds(50, 120, 700, 50);
         add(date);
-        
+        double[] ceny = booking.ceny();
         JLabel[] ticket = new JLabel[4];
-        ticket[0] = new JLabel("Normalny");
-        ticket[1] = new JLabel("Szkolny");
-        ticket[2] = new JLabel("Seniorski");
-        ticket[3] = new JLabel("Studencki");
+        ticket[0] = new JLabel("Normalny " + ceny[0] +" zł");
+        ticket[1] = new JLabel("Szkolny " + ceny[1] +" zł");
+        ticket[2] = new JLabel("Seniorski " + ceny[2] +" zł");
+        ticket[3] = new JLabel("Studencki " + ceny[3] +" zł");
         
         for (int i = 0; i < 4; i++) {
             ticket[i].setBounds(200, 190 + i * 50, 180, 50);
@@ -701,7 +708,7 @@ public class RightWindow extends JPanel implements ActionListener {
         
         JLabel zajete = new JLabel("Miejsce niedostępne");
         JLabel wolne = new JLabel("Miejsce dostępne");
-        JLabel wybrane = new JLabel("Miejsce wyrane");
+        JLabel wybrane = new JLabel("Miejsce wybrane");
         wolne.setBounds(130, 480, 270, 28);
         wolne.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 12));
         wolne.setHorizontalAlignment(SwingConstants.LEFT);
@@ -841,7 +848,7 @@ public class RightWindow extends JPanel implements ActionListener {
         check.setHorizontalAlignment(SwingConstants.CENTER);
         add(check);
         
-        JLabel[] infoName = new JLabel[8];
+        JLabel[] infoName = new JLabel[9];
         infoName[0] = new JLabel("Tytuł:");
         infoName[1] = new JLabel("Data:");
         infoName[2] = new JLabel("Godzina:");
@@ -850,9 +857,11 @@ public class RightWindow extends JPanel implements ActionListener {
         infoName[5] = new JLabel("Nazwisko:");
         infoName[6] = new JLabel("Adres e-mail:");
         infoName[7] = new JLabel("Numer telefonu:");
+        infoName[8] = new JLabel("Cena:");
+        
         
         for (int i = 0; i < infoName.length; i++) {
-            infoName[i].setBounds(50, 120 + 40 * i, 250, 40);
+            infoName[i].setBounds(50, 120 + 30 * i, 250, 30);
             infoName[i].setForeground(new Color(247, 214, 185));
             infoName[i].setFont(new Font("Arial Black", Font.CENTER_BASELINE, 16));
             infoName[i].setHorizontalAlignment(SwingConstants.RIGHT);
@@ -873,7 +882,7 @@ public class RightWindow extends JPanel implements ActionListener {
         next.setRolloverIcon(new ImageIcon("res/DalejEntered.png"));
         next.setBounds(410, 450, 100, 40);
         
-        JLabel[] info = new JLabel[8];
+        JLabel[] info = new JLabel[9];
         info[0] = new JLabel(booking.getInfo()[0]);
         info[1] = new JLabel(booking.getInfo()[1]);
         info[2] = new JLabel(booking.getInfo()[2]);
@@ -882,9 +891,10 @@ public class RightWindow extends JPanel implements ActionListener {
         info[5] = new JLabel(lastname);
         info[6] = new JLabel(email);
         info[7] = new JLabel(Integer.toString(number));
+        info[8] = new JLabel(Double.toString(booking.price())+ " zł");
         
         for (int i = 0; i < info.length; i++) {
-            info[i].setBounds(310, 120 + 40 * i, 390, 40);
+            info[i].setBounds(310, 120 +  30* i, 390, 30);
             info[i].setForeground(new Color(247, 214, 185));
             info[i].setFont(new Font("Arial Black", Font.CENTER_BASELINE, 16));
             info[i].setHorizontalAlignment(SwingConstants.LEFT);
