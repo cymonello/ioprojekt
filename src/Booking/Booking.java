@@ -45,6 +45,13 @@ public class Booking {
         ticket.add(new Ticket(index));
     }
     
+    public double price(){
+        double cena = 0;
+        for(int i = 0; i < ticket.size(); ++i)
+            cena += ticket.get(i).koszt();
+        return cena;
+    }
+    
     public Booking(){}
     public void startBooking(int id){
         TermsDB term = new TermsDB();

@@ -55,20 +55,20 @@ import javax.swing.table.JTableHeader;
  * @author Bartłomiej
  */
 public class RightWindow extends JPanel implements ActionListener {
-
+    
     JTable jTable = new JTable();
-
+    
     RightWindow() {
         StartWindow();
     }
     private ArrayList<Integer> lista = new ArrayList<>();
-
-    public void StartWindow() {
+    
+    final public void StartWindow() {
         removeAll();
         setLayout(null);
         setBounds(WindowConstants.BORDER, 0, WindowConstants.WIDTH - WindowConstants.BORDER, WindowConstants.HEIGHT);
         setBackground(Color.black);
-
+        
         MoviesDB db = new MoviesDB();
         db.open();
         ArrayList<Object[]> listaRes = new ArrayList<>();
@@ -82,42 +82,42 @@ public class RightWindow extends JPanel implements ActionListener {
             }
         }
         db.close();
-
+        
         for (int i = 0; i < 3; i++) {
             final int ID = lista.get(i);
             Object[] res = listaRes.get(i);
             JLabel labelIcon = new JLabel((ImageIcon) res[0]);
             labelIcon.setBounds(51 + (i * 250), 66, 198, 284);
-
+            
             MouseListener aList = new MouseListener() {
-
+                
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     JLabel label = (JLabel) e.getSource();
                     MainWindow.rightPanel.ShowInfoFilm(ID);
                 }
-
+                
                 @Override
                 public void mousePressed(MouseEvent e) {
                 }
-
+                
                 @Override
                 public void mouseReleased(MouseEvent e) {
                 }
-
+                
                 @Override
                 public void mouseEntered(MouseEvent e) {
                     JLabel label = (JLabel) e.getSource();
                     label.setForeground(Color.blue);
                 }
-
+                
                 @Override
                 public void mouseExited(MouseEvent e) {
                     JLabel label = (JLabel) e.getSource();
                     label.setForeground(Color.white);
                 }
             };
-
+            
             labelIcon.addMouseListener(aList);
             add(labelIcon);
             JLabel opis = new JLabel((String) res[1]);
@@ -130,27 +130,27 @@ public class RightWindow extends JPanel implements ActionListener {
         }
         repaint();
     }
-
+    
     public void MakeRepertoire() {
         JComboBox jcbDate;
-
+        
         removeAll();
         setLayout(null);
         setBounds(WindowConstants.BORDER, 0, WindowConstants.WIDTH - WindowConstants.BORDER, WindowConstants.HEIGHT);
         setBackground(Color.black);
-
+        
         JLabel jlChooseDate = new JLabel("WYBIERZ DATE:");
-
+        
         jlChooseDate.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 17));
         jlChooseDate.setBounds(10, 30, 180, 30);
         jlChooseDate.setForeground(Color.white);
         add(jlChooseDate);
-
+        
         jcbDate = new JComboBox();
         SimpleDateFormat ft = new SimpleDateFormat("dd.MM.yy");
         Calendar cal = Calendar.getInstance();
         jcbDate.addItem(ft.format(cal.getTime()));
-
+        
         for (int i = 0; i < 5; i++) {
             cal.add(Calendar.DAY_OF_MONTH, 1);
             java.util.Date data = cal.getTime();
@@ -160,18 +160,19 @@ public class RightWindow extends JPanel implements ActionListener {
         jcbDate.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 17));
         jcbDate.setForeground(Color.GRAY);
         jcbDate.setBackground(Color.CYAN);
-
+        
         ActionListener aList = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JComboBox source = (JComboBox) e.getSource();
                 String str = (String) source.getSelectedItem();
                 try {
+                    
                     final Repertoire rep = new Repertoire(str);
                     final String[][] tab = rep.getValue();
-
+                    
                     final String[] tab1 = {"Tytuł", "Wiek", "Info", "Język", "Czas", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21"};
-
+                    
                     jTable = new JTable(tab, tab1);
                     jTable.setEnabled(false);
                     JTableHeader header = jTable.getTableHeader();
@@ -186,7 +187,7 @@ public class RightWindow extends JPanel implements ActionListener {
                         public void mouseClicked(MouseEvent e) {
                             int row = jTable.rowAtPoint(e.getPoint());
                             int col = jTable.columnAtPoint(e.getPoint());
-
+                            
                             if (col == 0) {
                                 MainWindow.rightPanel.ShowInfoFilm(rep.getMovieID(row));
                             }
@@ -196,19 +197,19 @@ public class RightWindow extends JPanel implements ActionListener {
                                 MainWindow.rightPanel.MakeOrderPart1(b);
                             }
                         }
-
+                        
                         @Override
                         public void mousePressed(MouseEvent e) {
                         }
-
+                        
                         @Override
                         public void mouseReleased(MouseEvent e) {
                         }
-
+                        
                         @Override
                         public void mouseEntered(MouseEvent e) {
                         }
-
+                        
                         @Override
                         public void mouseExited(MouseEvent e) {
                         }
@@ -216,6 +217,30 @@ public class RightWindow extends JPanel implements ActionListener {
                     for (int i = 0; i < jTable.getRowCount(); i++) {
                         jTable.setRowHeight(i, 15);
                     }
+                    MainWindow.rightPanel.removeAll();
+                    JLabel jlChooseDate = new JLabel("WYBIERZ DATE:");
+                    
+                    jlChooseDate.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 17));
+                    jlChooseDate.setBounds(10, 30, 180, 30);
+                    jlChooseDate.setForeground(Color.white);
+                    add(jlChooseDate);
+                    
+                    JComboBox jcbDate1 = new JComboBox();
+                    SimpleDateFormat ft = new SimpleDateFormat("dd.MM.yy");
+                    Calendar cal = Calendar.getInstance();
+                    jcbDate1.addItem(ft.format(cal.getTime()));
+                    
+                    for (int i = 0; i < 5; i++) {
+                        cal.add(Calendar.DAY_OF_MONTH, 1);
+                        java.util.Date data = cal.getTime();
+                        jcbDate1.addItem(ft.format(cal.getTime()));
+                    }
+                    jcbDate1.setBounds(200, 30, 120, 30);
+                    jcbDate1.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 17));
+                    jcbDate1.setForeground(Color.GRAY);
+                    jcbDate1.setBackground(Color.CYAN);
+                    add(jcbDate1);
+                    jcbDate1.addActionListener(this);
                     JScrollPane scrollPane = new JScrollPane(jTable);
                     int hei = jTable.getRowCount() * jTable.getRowHeight() + 22;
                     if (hei > 400) {
@@ -229,9 +254,9 @@ public class RightWindow extends JPanel implements ActionListener {
                 } catch (ClassNotFoundException | SQLException ex) {
                 }
             }
-
+            
         };
-
+        
         jcbDate.addActionListener(aList);
         add(jcbDate);
         aList.actionPerformed(new ActionEvent(jcbDate, 2, "ss"));
@@ -241,13 +266,13 @@ public class RightWindow extends JPanel implements ActionListener {
     private final Vector<String> v = new Vector<>();
     private JComboBox jtfSearch = new JComboBox();
     private boolean hide_flag = false;
-
+    
     void MakeSearch() throws SQLException, ClassNotFoundException {
         removeAll();
         setLayout(null);
         setBackground(Color.BLACK);
         setBounds(WindowConstants.BORDER, 0, WindowConstants.WIDTH - WindowConstants.BORDER, WindowConstants.HEIGHT);
-
+        
         Class.forName("com.mysql.jdbc.Driver");
         MoviesDB mdb = new MoviesDB();
         mdb.open();
@@ -290,7 +315,7 @@ public class RightWindow extends JPanel implements ActionListener {
                     }
                 });
             }
-
+            
             @Override
             public void keyPressed(KeyEvent e) {
                 String text = tf.getText();
@@ -326,11 +351,11 @@ public class RightWindow extends JPanel implements ActionListener {
         JPanel p = new JPanel(new BorderLayout());
         p.add(jtfSearch, null);
         p.setBounds(150, (int) (WindowConstants.HEIGHT * 0.3), WindowConstants.WIDTH - WindowConstants.BORDER - 300, 100);
-
+        
         add(p);
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setPreferredSize(new Dimension(300, 150));
-
+        
         ImageButton ibSearch;
         ibSearch = new ImageButton("res/Szukaj.png");
         ibSearch.setRolloverIcon(new ImageIcon("res/SzukajEntered.png"));
@@ -340,7 +365,7 @@ public class RightWindow extends JPanel implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 makeFound(jtfSearch.getEditor().getItem().toString());
             }
-
+            
         });
         add(ibSearch);
 
@@ -361,13 +386,13 @@ public class RightWindow extends JPanel implements ActionListener {
         repaint();
         mdb.close();
     }
-
+    
     private void setModel(DefaultComboBoxModel mdl, String str) {
         jtfSearch.setModel(mdl);
         jtfSearch.setSelectedIndex(-1);
         tf.setText(str);
     }
-
+    
     private static DefaultComboBoxModel getSuggestedModel(java.util.List<String> list, String text) {
         DefaultComboBoxModel m = new DefaultComboBoxModel();
         for (String s : list) {
@@ -377,11 +402,11 @@ public class RightWindow extends JPanel implements ActionListener {
         }
         return m;
     }
-
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
-
+        
     }
 
     /*
@@ -403,7 +428,7 @@ public class RightWindow extends JPanel implements ActionListener {
         setLayout(null);
         setBackground(Color.BLACK);
         setBounds(WindowConstants.BORDER, 0, WindowConstants.WIDTH - WindowConstants.BORDER, WindowConstants.HEIGHT);
-
+        
         MoviesDB mdb = new MoviesDB();
         mdb.open();
         Object[] res = mdb.getMovieInfo(ID);
@@ -411,7 +436,7 @@ public class RightWindow extends JPanel implements ActionListener {
         JLabel labelIcon = new JLabel((ImageIcon) res[0]);
         labelIcon.setBounds(51, 66, 198, 284);
         add(labelIcon);
-
+        
         JLabel[] infoName = new JLabel[9];
         infoName[0] = new JLabel("Tytuł:");
         infoName[1] = new JLabel("Gatunek:");
@@ -428,16 +453,16 @@ public class RightWindow extends JPanel implements ActionListener {
             infoName[i].setForeground(new Color(247, 214, 185));
             infoName[i].setFont(new Font("Arial Black", Font.CENTER_BASELINE, 12));
             add(infoName[i]);
-
+            
             infoFilm[i] = new JLabel(res[i + 1].toString());
             infoFilm[i].setBounds(380, 66 + (i * 32), 400, 30);
             infoFilm[i].setFont(new Font("Arial Black", Font.CENTER_BASELINE, 11));
             infoFilm[i].setForeground(Color.white);
             add(infoFilm[i]);
         }
-
+        
         JTextArea filmDescription = new JTextArea(res[11].toString());
-
+        
         filmDescription.setWrapStyleWord(true);
         filmDescription.setLineWrap(true);
         filmDescription.setEditable(false);
@@ -450,7 +475,7 @@ public class RightWindow extends JPanel implements ActionListener {
         filmDescription.setBounds(0, 0, 490, 150);
         filmDescription.setBackground(Color.black);
         filmDescription.setBorder(BorderFactory.createLineBorder(Color.black, 1));
-
+        
         JScrollPane scroll = new JScrollPane(filmDescription,
                 ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
                 ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER
@@ -462,19 +487,19 @@ public class RightWindow extends JPanel implements ActionListener {
             protected JButton createDecreaseButton(int orientation) {
                 return createZeroButton();
             }
-
+            
             @Override
             protected JButton createIncreaseButton(int orientation) {
                 return createZeroButton();
             }
-
+            
             @Override
             protected void configureScrollBarColors() {
                 this.trackColor = Color.black;
                 thumbColor = new Color(84, 54, 54);
-
+                
             }
-
+            
             private JButton createZeroButton() { // 
                 JButton jbutton = new JButton();
                 jbutton.setPreferredSize(new Dimension(0, 0));
@@ -483,41 +508,41 @@ public class RightWindow extends JPanel implements ActionListener {
                 return jbutton;
             }
         });
-
+        
         GridBagConstraints gbc_scrollPane = new GridBagConstraints();
         gbc_scrollPane.fill = GridBagConstraints.BOTH;
         gbc_scrollPane.gridx = 0;
         gbc_scrollPane.gridy = 0;
         add(scroll, gbc_scrollPane);
-
+        
         repaint();
     }
-
+    
     void MakeBookingEdit() {
         removeAll();
         setLayout(null);
         setBackground(Color.BLACK);
         setBounds(WindowConstants.BORDER, 0, WindowConstants.WIDTH - WindowConstants.BORDER, WindowConstants.HEIGHT);
-
+        
         repaint();
     }
-
+    
     void MakeInfoPage() {
         removeAll();
         setLayout(null);
         setBackground(Color.BLACK);
         setBounds(WindowConstants.BORDER, 0, WindowConstants.WIDTH - WindowConstants.BORDER, WindowConstants.HEIGHT);
-
+        
         repaint();
     }
-
+    
     private void MakeOrderPart1(final Booking booking) {
-
+        
         removeAll();
         setLayout(null);
         setBounds(WindowConstants.BORDER, 0, WindowConstants.WIDTH - WindowConstants.BORDER, WindowConstants.HEIGHT);
         setBackground(Color.black);
-
+        
         String[] info = booking.getInfo();
         JLabel title = new JLabel(info[0]);
         title.setForeground(new Color(247, 214, 185));
@@ -525,40 +550,40 @@ public class RightWindow extends JPanel implements ActionListener {
         title.setHorizontalAlignment(SwingConstants.CENTER);
         title.setBounds(50, 70, 700, 50);
         add(title);
-
+        
         JLabel date = new JLabel(info[1] + " : " + info[2]);
         date.setForeground(new Color(247, 214, 185));
         date.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 15));
         date.setHorizontalAlignment(SwingConstants.CENTER);
         date.setBounds(50, 120, 700, 50);
         add(date);
-
+        
         JLabel[] ticket = new JLabel[4];
         ticket[0] = new JLabel("Normalny");
         ticket[1] = new JLabel("Szkolny");
         ticket[2] = new JLabel("Seniorski");
         ticket[3] = new JLabel("Studencki");
-
+        
         for (int i = 0; i < 4; i++) {
             ticket[i].setBounds(200, 190 + i * 50, 180, 50);
             ticket[i].setHorizontalAlignment(SwingConstants.RIGHT);
             add(ticket[i]);
             ticket[i].setForeground(new Color(247, 214, 185));
             ticket[i].setFont(new Font("Arial Black", Font.CENTER_BASELINE, 12));
-
+            
         }
-
+        
         String[] tab = {"0", "1", "2", "3", "4", "5"};
-
+        
         final JComboBox[] jcbTicketNumber = new JComboBox[4];
         for (int i = 0; i < 4; i++) {
             jcbTicketNumber[i] = new JComboBox(tab);
             jcbTicketNumber[i].setBounds(400, 200 + i * 50, 50, 30);
             add(jcbTicketNumber[i]);
             jcbTicketNumber[i].setSelectedIndex(0);
-
+            
         }
-
+        
         ImageButton next = new ImageButton("res/dalej.png");
         next.setRolloverIcon(new ImageIcon("res/DalejEntered.png"));
         next.setBounds(350, 400, 100, 40);
@@ -581,15 +606,15 @@ public class RightWindow extends JPanel implements ActionListener {
             }
         });
         add(next);
-
+        
         repaint();
     }
-
+    
     private void MakeOrderPart2(final Booking booking) {
         removeAll();
         setLayout(null);
         setBounds(WindowConstants.BORDER, 0, WindowConstants.WIDTH - WindowConstants.BORDER, WindowConstants.HEIGHT);
-
+        
         String[] info = booking.getInfo();
         JLabel title = new JLabel(info[0]);
         title.setForeground(new Color(247, 214, 185));
@@ -597,17 +622,17 @@ public class RightWindow extends JPanel implements ActionListener {
         title.setHorizontalAlignment(SwingConstants.CENTER);
         title.setBounds(50, 20, 700, 50);
         add(title);
-
+        
         JLabel date = new JLabel(info[1] + " : " + info[2]);
         date.setForeground(new Color(247, 214, 185));
         date.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 15));
         date.setHorizontalAlignment(SwingConstants.CENTER);
         date.setBounds(50, 50, 700, 50);
         add(date);
-
+        
         final Hall hal = new Hall(info[1], info[2], Integer.parseInt(booking.getInfo()[3]));
         final int[][] sal = hal.getHall();
-
+        
         final ArrayList<int[]> list = new ArrayList<>();
         JLabel ekran = new JLabel(new ImageIcon("res/Ekran.png"));
         ekran.setBounds(160, 110, 480, 28);
@@ -640,19 +665,19 @@ public class RightWindow extends JPanel implements ActionListener {
                                 }
                             }
                         }
-
+                        
                         @Override
                         public void mousePressed(MouseEvent e) {
                         }
-
+                        
                         @Override
                         public void mouseReleased(MouseEvent e) {
                         }
-
+                        
                         @Override
                         public void mouseEntered(MouseEvent e) {
                         }
-
+                        
                         @Override
                         public void mouseExited(MouseEvent e) {
                         }
@@ -673,7 +698,7 @@ public class RightWindow extends JPanel implements ActionListener {
         add(miejsceWybrane);
         add(miejsceZajete);
         add(miejsceDostepne);
-
+        
         JLabel zajete = new JLabel("Miejsce niedostępne");
         JLabel wolne = new JLabel("Miejsce dostępne");
         JLabel wybrane = new JLabel("Miejsce wyrane");
@@ -692,7 +717,7 @@ public class RightWindow extends JPanel implements ActionListener {
         add(wybrane);
         add(zajete);
         add(wolne);
-
+        
         ImageButton next = new ImageButton("res/Dalej.png");
         next.setRolloverIcon(new ImageIcon("res/DalejEntered.png"));
         next.setBounds(350, 510, 100, 40);
@@ -710,12 +735,12 @@ public class RightWindow extends JPanel implements ActionListener {
         add(next);
         repaint();
     }
-
+    
     private void MakeOrderPart3(final Booking booking) {
         removeAll();
         setLayout(null);
         setBounds(WindowConstants.BORDER, 0, WindowConstants.WIDTH - WindowConstants.BORDER, WindowConstants.HEIGHT);
-
+        
         String[] info = booking.getInfo();
         JLabel title = new JLabel(info[0]);
         title.setForeground(new Color(247, 214, 185));
@@ -723,14 +748,14 @@ public class RightWindow extends JPanel implements ActionListener {
         title.setHorizontalAlignment(SwingConstants.CENTER);
         title.setBounds(50, 70, 700, 50);
         add(title);
-
+        
         JLabel date = new JLabel(info[1] + " : " + info[2]);
         date.setForeground(new Color(247, 214, 185));
         date.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 15));
         date.setHorizontalAlignment(SwingConstants.CENTER);
         date.setBounds(50, 100, 700, 50);
         add(date);
-
+        
         JLabel jlDane = new JLabel("Proszę podać następujące dane:");
         jlDane.setForeground(new Color(247, 214, 185));
         jlDane.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 15));
@@ -738,12 +763,12 @@ public class RightWindow extends JPanel implements ActionListener {
         jlDane.setBounds(50, 140, 700, 50);
         add(jlDane);
         JLabel[] dane = new JLabel[4];
-
+        
         dane[0] = new JLabel("Imie");
         dane[1] = new JLabel("Nazwisko");
         dane[2] = new JLabel("Adres e-mail");
         dane[3] = new JLabel("Numer telefonu");
-
+        
         for (int i = 0; i < dane.length; i++) {
             dane[i].setForeground(new Color(247, 214, 185));
             dane[i].setFont(new Font("Arial Black", Font.CENTER_BASELINE, 15));
@@ -757,7 +782,7 @@ public class RightWindow extends JPanel implements ActionListener {
             jtfPol[i].setBounds(410, 200 + 50 * i, 120, 30);
             add(jtfPol[i]);
         }
-
+        
         ImageButton next = new ImageButton("res/Dalej.png");
         next.setRolloverIcon(new ImageIcon("res/DalejEntered.png"));
         next.setBounds(350, 510, 100, 40);
@@ -767,19 +792,19 @@ public class RightWindow extends JPanel implements ActionListener {
                 boolean correct = true;
                 String name = jtfPol[0].getText();
                 String replaceAll1 = name.replaceAll("[a-z]+", "").replaceAll("[A-Z]+", "").replaceAll(" ", "");
-
+                
                 String lastname = jtfPol[1].getText();
                 String replaceAll2 = lastname.replaceAll("[a-z]+", "").replaceAll("[A-Z]+", "").replaceAll(" ", "");
-
+                
                 String email = jtfPol[2].getText();
                 String replaceAll3 = email.replaceAll(" ", "");
-
+                
                 if (replaceAll1.length() > 0 || name.length() == 0
                         || replaceAll2.length() > 0 || lastname.length() == 0
                         || !email.equals(replaceAll3) || email.indexOf('@') <= 0 || email.indexOf('@') > email.indexOf('.', email.indexOf('@'))) {
                     correct = false;
                 }
-
+                
                 int tel_num = 0;
                 try {
                     if (!jtfPol[3].getText().replaceAll(" ", "").equals(jtfPol[3].getText()) || jtfPol[3].getText().length() != 9) {
@@ -794,7 +819,7 @@ public class RightWindow extends JPanel implements ActionListener {
                 }
                 if (!correct) {
                     JOptionPane.showMessageDialog(null, "Proszę wpisać poprawne dane", "Error", INFORMATION_MESSAGE);
-
+                    
                 } else {
                     MainWindow.rightPanel.MakeOrderPart4(booking, name, lastname, email, tel_num);
                 }
@@ -803,19 +828,19 @@ public class RightWindow extends JPanel implements ActionListener {
         add(next);
         repaint();
     }
-
+    
     private void MakeOrderPart4(final Booking booking, final String name, final String lastname, final String email, final int number) {
         removeAll();
         setLayout(null);
         setBounds(WindowConstants.BORDER, 0, WindowConstants.WIDTH - WindowConstants.BORDER, WindowConstants.HEIGHT);
-
+        
         JLabel check = new JLabel("Sprawdź poprawność danych do rezerwacji");
         check.setBounds(50, 60, 700, 50);
         check.setForeground(new Color(247, 214, 185));
         check.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 20));
         check.setHorizontalAlignment(SwingConstants.CENTER);
         add(check);
-
+        
         JLabel[] infoName = new JLabel[8];
         infoName[0] = new JLabel("Tytuł:");
         infoName[1] = new JLabel("Data:");
@@ -825,7 +850,7 @@ public class RightWindow extends JPanel implements ActionListener {
         infoName[5] = new JLabel("Nazwisko:");
         infoName[6] = new JLabel("Adres e-mail:");
         infoName[7] = new JLabel("Numer telefonu:");
-
+        
         for (int i = 0; i < infoName.length; i++) {
             infoName[i].setBounds(50, 120 + 40 * i, 250, 40);
             infoName[i].setForeground(new Color(247, 214, 185));
@@ -847,7 +872,7 @@ public class RightWindow extends JPanel implements ActionListener {
         ImageButton next = new ImageButton("res/Dalej.png");
         next.setRolloverIcon(new ImageIcon("res/DalejEntered.png"));
         next.setBounds(410, 450, 100, 40);
-
+        
         JLabel[] info = new JLabel[8];
         info[0] = new JLabel(booking.getInfo()[0]);
         info[1] = new JLabel(booking.getInfo()[1]);
@@ -857,7 +882,7 @@ public class RightWindow extends JPanel implements ActionListener {
         info[5] = new JLabel(lastname);
         info[6] = new JLabel(email);
         info[7] = new JLabel(Integer.toString(number));
-
+        
         for (int i = 0; i < info.length; i++) {
             info[i].setBounds(310, 120 + 40 * i, 390, 40);
             info[i].setForeground(new Color(247, 214, 185));
@@ -876,12 +901,12 @@ public class RightWindow extends JPanel implements ActionListener {
         add(next);
         repaint();
     }
-
+    
     private void makeFound(String str) {
         removeAll();
         setLayout(null);
         setBounds(WindowConstants.BORDER, 0, WindowConstants.WIDTH - WindowConstants.BORDER, WindowConstants.HEIGHT);
-
+        
         Search sear = new Search();
         sear.open();
         final Integer[] idTab = sear.byTitle(str);
@@ -889,7 +914,7 @@ public class RightWindow extends JPanel implements ActionListener {
         int ile = idTab.length;
         final int obecny = 0;
         final JPanel panel = new JPanel();
-        panel.setBounds(0, 50, WindowConstants.WIDTH - WindowConstants.BORDER, WindowConstants.HEIGHT-50);
+        panel.setBounds(0, 50, WindowConstants.WIDTH - WindowConstants.BORDER, WindowConstants.HEIGHT - 50);
         panel.setLayout(null);
         panel.setBackground(Color.black);
         add(panel);
@@ -899,7 +924,7 @@ public class RightWindow extends JPanel implements ActionListener {
                 final int k = i;
                 buttony[k] = new ImageButton("res/guzik.png");
                 buttony[k].setRolloverIcon(new ImageIcon("res/guzikEntered.png"));
-                buttony[k].setBounds((int) ((WindowConstants.WIDTH - WindowConstants.BORDER)/2 -ile*10+20*i), 30, 20, 20);
+                buttony[k].setBounds((int) ((WindowConstants.WIDTH - WindowConstants.BORDER) / 2 - ile * 10 + 20 * i), 30, 20, 20);
                 add(buttony[k]);
                 buttony[k].addActionListener(new ActionListener() {
                     @Override
@@ -912,7 +937,7 @@ public class RightWindow extends JPanel implements ActionListener {
                         JLabel labelIcon = new JLabel((ImageIcon) res[0]);
                         labelIcon.setBounds(51, 16, 198, 284);
                         panel.add(labelIcon);
-
+                        
                         JLabel[] infoName = new JLabel[9];
                         infoName[0] = new JLabel("Tytuł:");
                         infoName[1] = new JLabel("Gatunek:");
@@ -929,16 +954,16 @@ public class RightWindow extends JPanel implements ActionListener {
                             infoName[i].setForeground(new Color(247, 214, 185));
                             infoName[i].setFont(new Font("Arial Black", Font.CENTER_BASELINE, 12));
                             panel.add(infoName[i]);
-
+                            
                             infoFilm[i] = new JLabel(res[i + 1].toString());
                             infoFilm[i].setBounds(380, 16 + (i * 32), 400, 30);
                             infoFilm[i].setFont(new Font("Arial Black", Font.CENTER_BASELINE, 11));
                             infoFilm[i].setForeground(Color.white);
                             panel.add(infoFilm[i]);
                         }
-
+                        
                         JTextArea filmDescription = new JTextArea(res[11].toString());
-
+                        
                         filmDescription.setWrapStyleWord(true);
                         filmDescription.setLineWrap(true);
                         filmDescription.setEditable(false);
@@ -951,7 +976,7 @@ public class RightWindow extends JPanel implements ActionListener {
                         filmDescription.setBounds(0, 0, 490, 150);
                         filmDescription.setBackground(Color.black);
                         filmDescription.setBorder(BorderFactory.createLineBorder(Color.black, 1));
-
+                        
                         JScrollPane scroll = new JScrollPane(filmDescription,
                                 ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
                                 ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER
@@ -963,19 +988,19 @@ public class RightWindow extends JPanel implements ActionListener {
                             protected JButton createDecreaseButton(int orientation) {
                                 return createZeroButton();
                             }
-
+                            
                             @Override
                             protected JButton createIncreaseButton(int orientation) {
                                 return createZeroButton();
                             }
-
+                            
                             @Override
                             protected void configureScrollBarColors() {
                                 this.trackColor = Color.black;
                                 thumbColor = new Color(84, 54, 54);
-
+                                
                             }
-
+                            
                             private JButton createZeroButton() { // 
                                 JButton jbutton = new JButton();
                                 jbutton.setPreferredSize(new Dimension(0, 0));
@@ -984,7 +1009,7 @@ public class RightWindow extends JPanel implements ActionListener {
                                 return jbutton;
                             }
                         });
-
+                        
                         GridBagConstraints gbc_scrollPane = new GridBagConstraints();
                         gbc_scrollPane.fill = GridBagConstraints.BOTH;
                         gbc_scrollPane.gridx = 0;
