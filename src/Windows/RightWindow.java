@@ -893,7 +893,8 @@ public class RightWindow extends JPanel implements ActionListener {
         info[5] = new JLabel(lastname);
         info[6] = new JLabel(email);
         info[7] = new JLabel(Integer.toString(number));
-        info[8] = new JLabel(Double.toString(booking.price())+ " zł");
+        DecimalFormat df = new DecimalFormat("#.00");
+        info[8] = new JLabel(df.format(booking.price())+ " zł");
         
         for (int i = 0; i < info.length; i++) {
             info[i].setBounds(310, 120 +  30* i, 390, 30);
@@ -976,9 +977,15 @@ public class RightWindow extends JPanel implements ActionListener {
                         
                         
                         MoviesDB db = new MoviesDB();
+                        db.open();
                         double ocena = db.getNote(idTab[k]);
+                        System.out.println(ocena);
                         db.close();
-                        
+                        for(int i =0;i<ocena;i++){
+                            ImageButton ilegwiazdek = new ImageButton("res/gwiazdka.png");
+                            panel.add(ilegwiazdek);
+                            ilegwiazdek.setBounds(51+i*25, 310, 20, 20);
+                        }
                         JTextArea filmDescription = new JTextArea(res[11].toString());
                         
                         filmDescription.setWrapStyleWord(true);
