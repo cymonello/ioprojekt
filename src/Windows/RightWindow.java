@@ -23,6 +23,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -566,10 +567,11 @@ public class RightWindow extends JPanel implements ActionListener {
         add(date);
         double[] ceny = booking.ceny();
         JLabel[] ticket = new JLabel[4];
-        ticket[0] = new JLabel("Normalny " + ceny[0] +" zł");
-        ticket[1] = new JLabel("Szkolny " + ceny[1] +" zł");
-        ticket[2] = new JLabel("Seniorski " + ceny[2] +" zł");
-        ticket[3] = new JLabel("Studencki " + ceny[3] +" zł");
+        DecimalFormat df = new DecimalFormat("#.00"); 
+        ticket[0] = new JLabel("Normalny " + df.format(ceny[0]) +" zł");
+        ticket[1] = new JLabel("Szkolny " + df.format(ceny[1]) +" zł");
+        ticket[2] = new JLabel("Seniorski " + df.format(ceny[2]) +" zł");
+        ticket[3] = new JLabel("Studencki " + df.format(ceny[3]) +" zł");
         
         for (int i = 0; i < 4; i++) {
             ticket[i].setBounds(200, 190 + i * 50, 180, 50);
@@ -971,6 +973,11 @@ public class RightWindow extends JPanel implements ActionListener {
                             infoFilm[i].setForeground(Color.white);
                             panel.add(infoFilm[i]);
                         }
+                        
+                        
+                        MoviesDB db = new MoviesDB();
+                        double ocena = db.getNote(idTab[k]);
+                        db.close();
                         
                         JTextArea filmDescription = new JTextArea(res[11].toString());
                         
