@@ -54,7 +54,7 @@ public class Booking {
     
     public double[] ceny(){
         double[] ceny = new double[4];
-        ceny[0] = 24.00;
+        ceny[0] = 24.05;
         ceny[1] = 17.00;
         ceny[2] = 18.00;
         ceny[3] = 17.00;
