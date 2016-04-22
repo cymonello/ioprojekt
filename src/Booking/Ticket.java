@@ -13,7 +13,6 @@ public class Ticket {
     private String type;
     private int amount;
     private double price;
-    private double sum;
     static int total_amount;
     static double total_sum;
     private int ticketIndex;
@@ -34,6 +33,11 @@ public class Ticket {
                 break;
         }
         ++total_amount;
+        total_sum += price;
+    }
+    
+    public double koszt(){
+        return price;
     }
     
     public int getTicketIndex(){
