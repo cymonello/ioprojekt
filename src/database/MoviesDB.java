@@ -212,4 +212,54 @@ public class MoviesDB
         return mov;
     }
     
+    public double getNote(int id)
+    {
+        double note = 0;
+        ResultSet temp;
+        try
+        {
+            if(connect != null)
+            {
+                statement = connect.createStatement();
+                temp = statement.executeQuery("SELECT note_count, note_sum FROM Movies WHERE id=" + id); 
+                temp.next();
+                int count = temp.getInt("note_count");
+                int sum = temp.getInt("note_sum");
+                note = (double)sum / (double)count;
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(null, "Błąd! Brak połączenia z bazą filmów");
+            }
+        } catch (SQLException e)
+        {
+            JOptionPane.showMessageDialog(null, e.toString());
+        }
+        return note;
+    }
+    
+    public void addNote(int id, int note)
+    {
+        ResultSet temp;
+        try
+        {
+            if(connect != null)
+            {
+                statement = connect.createStatement();
+                temp = statement.executeQuery("SELECT note_count, note_sum FROM Movies WHERE id=" + id); 
+                temp.next();
+                int count = temp.getInt("note_count") + 1;
+                int sum = temp.getInt("note_sum") + note;
+                statement.executeUpdate("UPDATE Movies SET note_count='" + count + "', note_sum='" + sum + "' WHERE id='" + id + "';");
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(null, "Błąd! Brak połączenia z bazą filmów");
+            }
+        } catch (SQLException e)
+        {
+            JOptionPane.showMessageDialog(null, e.toString());
+        }
+    }
+    
 }
