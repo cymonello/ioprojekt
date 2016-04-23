@@ -1,13 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Windows;
 
-import Booking.Booking;
 import java.awt.Color;
-import java.awt.Font;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
@@ -36,13 +29,11 @@ public class MainWindow extends JFrame {
     public static void main(String[] args) {
         MainWindow main = new MainWindow();
         run(main, WindowConstants.WIDTH, WindowConstants.HEIGHT, "Projekt - prototyp 2");
-        //Booking bk = new Booking();
-        //bk.startBooking(120);
 
     }
 
-    public static MainMenu leftPanel;
-    public static RightWindow rightPanel;
+    static MainMenu leftPanel;
+    static RightWindow rightPanel;
 
     public MainWindow() {
         rightPanel = new RightWindow();
