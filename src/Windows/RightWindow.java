@@ -50,7 +50,7 @@ import javax.swing.table.JTableHeader;
  *
  * @author Bartłomiej
  */
-public class RightWindow extends JPanel implements ActionListener {
+public class RightWindow extends JPanel {
 
     JTable jTable = new JTable();
 
@@ -59,6 +59,11 @@ public class RightWindow extends JPanel implements ActionListener {
     }
     private ArrayList<Integer> lista = new ArrayList<>();
 
+    /**
+     * Funkcj uruchamiana przy starcie aplikacji powoduje wyświetlenie się 3
+     * losowy wybranych filmów po kliknięciu można przjesc do mapnelu ze
+     * szczegółowymi informacjami o filmie
+     */
     final public void StartWindow() {
         removeAll();
         setLayout(null);
@@ -125,8 +130,17 @@ public class RightWindow extends JPanel implements ActionListener {
         }
         repaint();
     }
+
+    /**
+     * Ten string służy do zapamiętania jaka data przy wyborze w repertuarze
+     * została wybrana jako ostatnia gdzieki temu po wygenerowaniu nowego
+     * repertuaru mamy zanaczony poprawny dzien, na kóry wskazuje repertuar
+     */
     private String dataa;
 
+    /**
+     * Funkcja tworzy panel z filmamy dostępnymi na wybrany dzień
+     */
     public void MakeRepertoire() {
         JComboBox jcbDate;
         dataa = null;
@@ -262,11 +276,24 @@ public class RightWindow extends JPanel implements ActionListener {
         aList.actionPerformed(new ActionEvent(jcbDate, 2, "ss"));
         repaint();
     }
+
+    /**
+     * zmienne niezbędne do poprawnego funkcjinowania wyszukiwarki
+     */
     private JTextField tf;
     private final Vector<String> v = new Vector<>();
     private JComboBox jtfSearch = new JComboBox();
     private boolean hide_flag = false;
 
+    /**
+     * Metoda odpowiedzialna za wyświatlanie poprawnie wyszukiwarki Wyszukiwarka
+     * działa w sposób dyanmiczny, po każdorazowej zmianie w polu tekstowym
+     * wyświetla się lista pasujących tytułów do zapytania możliwe jest
+     * naciśnięcie strzałki w duł aby wybrac filmy lub klawisza Enter
+     *
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
     void MakeSearch() throws SQLException, ClassNotFoundException {
         removeAll();
         setLayout(null);
@@ -387,12 +414,25 @@ public class RightWindow extends JPanel implements ActionListener {
         mdb.close();
     }
 
+    /**
+     * Funkcja pomocnicza do wyszukiwarki
+     *
+     * @param mdl
+     * @param str
+     */
     private void setModel(DefaultComboBoxModel mdl, String str) {
         jtfSearch.setModel(mdl);
         jtfSearch.setSelectedIndex(-1);
         tf.setText(str);
     }
 
+    /**
+     * Funkcja pomocniczna do wyszukiwarki
+     *
+     * @param list
+     * @param text
+     * @return
+     */
     private static DefaultComboBoxModel getSuggestedModel(java.util.List<String> list, String text) {
         DefaultComboBoxModel m = new DefaultComboBoxModel();
         for (String s : list) {
@@ -401,12 +441,6 @@ public class RightWindow extends JPanel implements ActionListener {
             }
         }
         return m;
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        Object source = e.getSource();
-
     }
 
     /*
@@ -423,18 +457,20 @@ public class RightWindow extends JPanel implements ActionListener {
                 10 - ocena
                 11 - opis
      */
-    void ShowInfoFilm(int ID) {
+    /**
+     * Panel wyświtlający informacje o filmie, informacje te pobiera
+     * bezpośrednio z bazy danych na podstawie ID filmu
+     *
+     * @param ID - ID filmu o którym wyświetlane mają być informacje
+     */
+    void ShowInfoFilm(final int ID) {
         removeAll();
-        setLayout(null);
-        setBackground(Color.BLACK);
-        setBounds(WindowConstants.BORDER, 0, WindowConstants.WIDTH - WindowConstants.BORDER, WindowConstants.HEIGHT);
-
         MoviesDB mdb = new MoviesDB();
         mdb.open();
         Object[] res = mdb.getMovieInfo(ID);
         mdb.close();
         JLabel labelIcon = new JLabel((ImageIcon) res[0]);
-        labelIcon.setBounds(51, 66, 198, 284);
+        labelIcon.setBounds(51, 16, 198, 284);
         add(labelIcon);
 
         JLabel[] infoName = new JLabel[9];
@@ -449,18 +485,99 @@ public class RightWindow extends JPanel implements ActionListener {
         infoName[8] = new JLabel("Rok produkcji:");
         JLabel[] infoFilm = new JLabel[9];
         for (int i = 0; i < infoName.length; i++) {
-            infoName[i].setBounds(260, 66 + (i * 32), 110, 30);
+            infoName[i].setBounds(260, 16 + (i * 32), 110, 30);
             infoName[i].setForeground(new Color(247, 214, 185));
             infoName[i].setFont(new Font("Arial Black", Font.CENTER_BASELINE, 12));
             add(infoName[i]);
 
             infoFilm[i] = new JLabel(res[i + 1].toString());
-            infoFilm[i].setBounds(380, 66 + (i * 32), 400, 30);
+            infoFilm[i].setBounds(380, 16 + (i * 32), 400, 30);
             infoFilm[i].setFont(new Font("Arial Black", Font.CENTER_BASELINE, 11));
             infoFilm[i].setForeground(Color.white);
             add(infoFilm[i]);
         }
 
+        MoviesDB db = new MoviesDB();
+        db.open();
+        double ocena = db.getNote(ID);
+        db.close();
+        for (int i = 0; i < (int) ocena; i++) {
+            ImageButton ilegwiazdek = new ImageButton("res/gwiazdka.png");
+            add(ilegwiazdek);
+            ilegwiazdek.setBounds(51 + i * 30, 310, 30, 30);
+        }
+        DecimalFormat df = new DecimalFormat("#.00");
+        JLabel ocen = new JLabel(df.format(ocena));
+        ocen.setBounds(61 + (int) ocena * 30, 310, 200, 30);
+        if (!(ocena > 0)) {
+            ocen.setText("Brak ocen");
+            ocen.setBounds(50, 310, 200, 30);
+        }
+        ocen.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 20));
+        ocen.setForeground(new Color(247, 214, 185));
+        add(ocen);
+
+        JLabel ocenfilm = new JLabel("Oceń film");
+        ocenfilm.setBounds(50, 350, 200, 30);
+        ocenfilm.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 12));
+        ocenfilm.setForeground(new Color(247, 214, 185));
+        add(ocenfilm);
+        final ImageButton[] gwiazdki = new ImageButton[5];
+        for (int i = 0; i < gwiazdki.length; i++) {
+            final int m = i + 1;
+            gwiazdki[i] = new ImageButton("res/gwiazdkaSzara.png");
+            add(gwiazdki[i]);
+            gwiazdki[i].setBounds(51 + i * 30, 380, 30, 30);
+            gwiazdki[i].addMouseListener(new MouseListener() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    for (int j = 0; j < gwiazdki.length; j++) {
+                        for (int l = 0; l < gwiazdki[j].getMouseListeners().length; l++) {
+                            gwiazdki[j].removeMouseListener(gwiazdki[j].getMouseListeners()[l]);
+                        }
+                    }
+                    for (int j = 0; j < gwiazdki.length; j++) {
+                        for (int l = 0; l < gwiazdki[j].getMouseListeners().length; l++) {
+                            gwiazdki[j].removeMouseListener(gwiazdki[j].getMouseListeners()[l]);
+                        }
+                    }
+                    for (int j = 0; j < m; j++) {
+                        gwiazdki[j].setIcon("res/gwiazdka.png");
+                    }
+                    MoviesDB db = new MoviesDB();
+                    db.open();
+                    db.addNote(ID, m);
+                    db.close();
+                    System.out.println(m);
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    if (gwiazdki[m - 1].getMouseListeners().length > 0) {
+                        for (int j = 0; j < m; j++) {
+                            gwiazdki[j].setIcon("res/gwiazdka.png");
+                        }
+                    }
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    if (gwiazdki[m - 1].getMouseListeners().length > 0) {
+                        for (int j = 0; j < m; j++) {
+                            gwiazdki[j].setIcon("res/gwiazdkaSzara.png");
+                        }
+                    }
+                }
+            });
+        }
         JTextArea filmDescription = new JTextArea(res[11].toString());
 
         filmDescription.setWrapStyleWord(true);
@@ -480,7 +597,7 @@ public class RightWindow extends JPanel implements ActionListener {
                 ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
                 ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER
         );
-        scroll.setBounds(260, 354, 530, 210);
+        scroll.setBounds(260, 304, 530, 210);
         scroll.setBorder(BorderFactory.createLineBorder(Color.black, 1));
         scroll.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
             @Override
@@ -514,10 +631,13 @@ public class RightWindow extends JPanel implements ActionListener {
         gbc_scrollPane.gridx = 0;
         gbc_scrollPane.gridy = 0;
         add(scroll, gbc_scrollPane);
-
         repaint();
     }
 
+    /**
+     * To będzie funkcja która jest podowiedzialna za edycję rezerwacji narazie
+     * pusty panel
+     */
     void MakeBookingEdit() {
         removeAll();
         setLayout(null);
@@ -527,6 +647,10 @@ public class RightWindow extends JPanel implements ActionListener {
         repaint();
     }
 
+    /**
+     * Funkca wyświatlająca informacje na temat kina
+     *
+     */
     void MakeInfoPage() {
         removeAll();
         setLayout(null);
@@ -536,6 +660,16 @@ public class RightWindow extends JPanel implements ActionListener {
         repaint();
     }
 
+    /**
+     * Metoda odpowiedzialna za pierwszy etap rezerwacji Na tym etapie dokonuje
+     * sie wyboru ilości biletów i rodzaju biletów W przypadku braku
+     * jakiegokolwiek wyboru wyświtlany zostaje komunikat, nie można przejść do
+     * kolejnego etapu rezerwacji
+     *
+     * @param booking - obiekt rezerwacji który w czasie porzechodzenia
+     * kolejnych etapów zbiera informacje na temat rezerwacji, poprawnym
+     * zakonczeniu rezerwuje miejsca w bazie danych
+     */
     private void MakeOrderPart1(final Booking booking) {
 
         removeAll();
@@ -611,6 +745,15 @@ public class RightWindow extends JPanel implements ActionListener {
         repaint();
     }
 
+    /**
+     * Kolejny etap rezerwacji W tym etapie wyberamy miejsca na stali zgodnie z
+     * ilością biletów wybranych wczesniej Do momozentu naciśnięcia przycisku
+     * "Dalej" istnieje możliwość zmienienia wybranych miejsc Na mapie sali
+     * pokazywane są miejsca które można wybrać, są już zajęte lub wybraliśmy je
+     * właśnie
+     *
+     * @param booking
+     */
     private void MakeOrderPart2(final Booking booking) {
         removeAll();
         setLayout(null);
@@ -737,6 +880,15 @@ public class RightWindow extends JPanel implements ActionListener {
         repaint();
     }
 
+    /**
+     * W tym etapie rezerwacji podaje się dane niezbędne do końcowego
+     * zatwierdzenia rezerwacji W przypadku nie poprawnych danych zostanie
+     * wyświtlony komunikat Imię, nazwisko - może zawierać jedynie znaki [a-z]
+     * oraz [A-Z] adres e-mail - musi zawierać znak @ oraz kropke "." które
+     * występuje dalej niż "@" numer telefonu - musi się składać z 9 cyfer
+     *
+     * @param booking
+     */
     private void MakeOrderPart3(final Booking booking) {
         removeAll();
         setLayout(null);
@@ -830,6 +982,19 @@ public class RightWindow extends JPanel implements ActionListener {
         repaint();
     }
 
+    /**
+     * Panel końcowy rezerwacji Należy potwierdzić poprawnyść wpisanych
+     * wcześniej danych w przypadku błędnych danych istnieje możliwość
+     * cołfnięćia się o 1 krok i poprawienia informacji po na ciśnięciu guzika
+     * końcowego zosatejw ysłany mail na podany wcześniej adres, wyświtla się
+     * okno startowe programu
+     *
+     * @param booking
+     * @param name
+     * @param lastname
+     * @param email
+     * @param number
+     */
     private void MakeOrderPart4(final Booking booking, final String name, final String lastname, final String email, final int number) {
         removeAll();
         setLayout(null);
@@ -906,6 +1071,14 @@ public class RightWindow extends JPanel implements ActionListener {
         repaint();
     }
 
+    /**
+     * Funkcja wyświetlający informacje pasujące do zapytania z wyszukiwarki
+     * filmy które zostały przyporządkowane są wyświtlane z pojedynczych
+     * panelach, istnieje możliwość zmiany filmu o którym wyświtlane są
+     * informacje, za pomocą kółeczek na górze panelu
+     *
+     * @param str
+     */
     private void makeFound(String str) {
         removeAll();
         setLayout(null);
@@ -969,13 +1142,14 @@ public class RightWindow extends JPanel implements ActionListener {
                         db.open();
                         double ocena = db.getNote(idTab[k]);
                         db.close();
-                        for (int i = 0; i < ocena; i++) {
+                        for (int i = 0; i < (int) ocena; i++) {
                             ImageButton ilegwiazdek = new ImageButton("res/gwiazdka.png");
                             panel.add(ilegwiazdek);
                             ilegwiazdek.setBounds(51 + i * 30, 310, 30, 30);
                         }
-                        JLabel ocen = new JLabel(Double.toString(ocena));
-                        ocen.setBounds((int) (61 + ocena * 30), 310, 200, 30);
+                        DecimalFormat df = new DecimalFormat("#.00");
+                        JLabel ocen = new JLabel(df.format(ocena));
+                        ocen.setBounds(61 + (int) ocena * 30, 310, 200, 30);
                         if (!(ocena > 0)) {
                             ocen.setText("Brak ocen");
                             ocen.setBounds(50, 310, 200, 30);
