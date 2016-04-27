@@ -222,7 +222,7 @@ public class Repertoire {
      *Getter dla ID filmu
      *
      * @param row
-     * @return
+     * @return konkretne ID filmu
      */
     public Integer getMovieID(Integer row){
         return movie[row];

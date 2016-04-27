@@ -7,13 +7,28 @@ package Search;
 
 //import BaseClasses.Film;
 
+import java.util.HashMap;
+
 /**
  *
  * @author robert
  */
 public class test {
-    
-    
+    public static void main(String[] args) {
+        Dates date = new Dates(3);
+        HashMap<String, Integer[]> hoursPerDay = date.getMapHoursOfMovie();
+        String[] dates = date.getDatesOfMovie();
+        for (int i = 0; i < dates.length; i++) {
+            System.out.println(dates[i]);
+            Integer[] hours = hoursPerDay.get(dates[i]);
+            for (int j = 0; j < hours.length; j++) {
+                System.out.print(hours[j]);
+            }
+            System.out.println();
+        }
+    }
+
+
     
     
 //    

@@ -9,7 +9,7 @@ import java.util.HashMap;
 public class Testowa {
     public static void main(String[] args) throws SQLException {
         try {
-            Repertoire repertuar = new Repertoire("10.04.16");
+            Repertoire repertuar = new Repertoire(".04.16");
             HashMap<Integer, String[]> aboutMovie = repertuar.getMapMovieInfo();
             HashMap<Integer, Integer[]> displayingHours = repertuar.getMapHours();
             Integer[] movieID = repertuar.getMovie();
@@ -23,12 +23,12 @@ public class Testowa {
                 System.out.println();
                 i++;
             }
-            /*for (int i = 0; i < movieID.length; i++) {
-                String[] info = aboutMovie.get(movieID[i]);
+            for (int k = 0; k < movieID.length; k++) {
+                String[] info = aboutMovie.get(movieID[k]);
                 for (int j = 0; j < info.length; j++) {
                     System.out.print(info[j] + " ");
                 }
-                Integer[] hours = displayingHours.get(movieID[i]);
+                Integer[] hours = displayingHours.get(movieID[k]);
                 for (int j = 0; j < hours.length; j++) {
                     System.out.print(hours[j] + " ");
                 }
@@ -36,12 +36,12 @@ public class Testowa {
             }
             System.out.println();
             String[][] tablica = repertuar.getValue();
-            for (int i = 0; i < movieID.length; i++) {
+            for (int k = 0; k < movieID.length; k++) {
                 for (int j = 0; j < 17; j++) {
-                    System.out.print(tablica[i][j] + " ");
+                    System.out.print(tablica[k][j] + " ");
                 }
                 System.out.println();
-            }*/
+            }
         } catch(SQLException e){
             System.out.println(e.getMessage());
         } catch (ClassNotFoundException e) {
