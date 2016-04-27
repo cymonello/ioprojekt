@@ -6,6 +6,7 @@
 package Booking;
 //import java.util.*;
 
+import Email.Mail;
 import database.HallDB;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -92,12 +93,17 @@ public class Booking {
         miejsce = msc;
     }
     
-    public void endBooking(String imie, String nazwisko, String email, int nr_tel){
+    public void endBooking(String imie, String nazwisko, String email, int nr_tel, String ilosc, String cena){
         OrdersDB odb = new OrdersDB();
         odb.open();
         odb.addOrder(termId, imie, nazwisko, email, nr_tel, "haslomaslo");
         int orderId = odb.getId();
         odb.close();
+        
+        //Wysłanie maila z potwierdzeniem
+        Integer tel_temp = new Integer(nr_tel);
+        Integer id_temp = new Integer(orderId);
+        Mail.send(informacje[0], informacje[1], informacje[2], informacje[3], ilosc, imie, nazwisko, email, tel_temp.toString(), cena, id_temp.toString());
         
         TicketsDB tdb = new TicketsDB();
         tdb.open();

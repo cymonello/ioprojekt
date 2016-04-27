@@ -1076,7 +1076,8 @@ public class RightWindow extends JPanel {
         next.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                booking.endBooking(name, lastname, email, number);
+                DecimalFormat df = new DecimalFormat("#.00");
+                booking.endBooking(name, lastname, email, number, Integer.toString(booking.listLength()), df.format(booking.price()) + " zł");
                 JOptionPane.showMessageDialog(null, "Proces rezerwacji przebiegł poprawnie", "Udana rezerwacja", INFORMATION_MESSAGE);
                 MainWindow.rightPanel.StartWindow();
             }
