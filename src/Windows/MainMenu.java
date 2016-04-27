@@ -110,7 +110,7 @@ public class MainMenu extends JPanel implements ActionListener {
  *
  */
 class ImageButton extends JButton {
-    String str;
+    private String str;
     public ImageButton(String img) {
         this(new ImageIcon(img));
         str= img;

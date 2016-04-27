@@ -54,9 +54,9 @@ import javax.swing.table.JTableHeader;
  */
 public class RightWindow extends JPanel {
 
-    JTable jTable = new JTable();
+    private JTable jTable = new JTable();
 
-    RightWindow() {
+    public RightWindow() {
         StartWindow();
     }
     private ArrayList<Integer> lista = new ArrayList<>();
@@ -465,7 +465,7 @@ public class RightWindow extends JPanel {
      *
      * @param ID - ID filmu o którym wyświetlane mają być informacje
      */
-    void ShowInfoFilm(final int ID) {
+    public void ShowInfoFilm(final int ID) {
         removeAll();
         MoviesDB mdb = new MoviesDB();
         mdb.open();
@@ -550,7 +550,6 @@ public class RightWindow extends JPanel {
                     db.open();
                     db.addNote(ID, m);
                     db.close();
-                    System.out.println(m);
                 }
 
                 @Override
@@ -580,6 +579,16 @@ public class RightWindow extends JPanel {
                 }
             });
         }
+        ImageButton terms = new ImageButton("res/sprawdz.png");
+        terms.setRolloverIcon(new ImageIcon("res/sprawdzEntered.png"));
+        add(terms);
+        terms.setBounds(50, 420, 150, 30);
+        terms.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MainWindow.rightPanel.Terms(ID);
+            }
+        });
         JTextArea filmDescription = new JTextArea(res[11].toString());
 
         filmDescription.setWrapStyleWord(true);
@@ -640,7 +649,7 @@ public class RightWindow extends JPanel {
      * To będzie funkcja która jest podowiedzialna za edycję rezerwacji narazie
      * pusty panel
      */
-    void MakeBookingEdit() {
+    public void MakeBookingEdit() {
         removeAll();
         setLayout(null);
         setBackground(Color.BLACK);
@@ -653,7 +662,7 @@ public class RightWindow extends JPanel {
      * Funkca wyświatlająca informacje na temat kina
      *
      */
-    void MakeInfoPage() {
+    public void MakeInfoPage() {
         removeAll();
         setLayout(null);
         setBackground(Color.BLACK);
@@ -1194,7 +1203,6 @@ public class RightWindow extends JPanel {
                                     db.open();
                                     db.addNote(idTab[k], m);
                                     db.close();
-                                    System.out.println(m);
                                 }
 
                                 @Override
@@ -1301,7 +1309,7 @@ public class RightWindow extends JPanel {
     /**
      *
      */
-    void Terms(int ID) {
+    private void Terms(int ID) {
         removeAll();
         setLayout(null);
         setBackground(Color.black);
