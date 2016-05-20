@@ -100,27 +100,42 @@ public class Booking {
         miejsce = msc;
     }
     
-    public void endBooking(String imie, String nazwisko, String email, int nr_tel, String ilosc, String cena){
+    public boolean endBooking(String imie, String nazwisko, String email, int nr_tel, String ilosc, String cena){
         Random rand1 = new Random();
         Integer pass = rand1.nextInt(899999) + 100000;
-        OrdersDB odb = new OrdersDB();
-        odb.open();
-        
-        odb.addOrder(termId, imie, nazwisko, email, nr_tel, pass.toString());
-        int orderId = odb.getId();
-        odb.close();
-        
-        //Wysłanie maila z potwierdzeniem
-        Integer tel_temp = new Integer(nr_tel);
-        Integer id_temp = new Integer(orderId);
-        Mail.send(informacje[0], informacje[1], informacje[2], informacje[3], ilosc, imie, nazwisko, email, tel_temp.toString(), cena, id_temp.toString(), pass.toString());
-        
-        TicketsDB tdb = new TicketsDB();
-        tdb.open();
-        for(int i = 0; i < ticket.size(); ++i){
-            tdb.addTicket(orderId, informacje[1], informacje[2], Integer.parseInt(informacje[3]), miejsce.get(i)[0], miejsce.get(i)[1] , ticket.get(i).getTicketIndex() );
+        Hall sala = new Hall(informacje[1], informacje[2], Integer.parseInt(informacje[3]));
+        boolean ok = true;
+        for(int i = 0; i < ticket.size(); ++i)
+        {
+            if(sala.checkSeat(Integer.parseInt(informacje[3]),  miejsce.get(i)[0], miejsce.get(i)[1]) == false)
+            {
+                ok = false;
+                break;
+            }
         }
-        tdb.close();
+        if(ok == true)
+        {
+            OrdersDB odb = new OrdersDB();
+            odb.open();
+
+            odb.addOrder(termId, imie, nazwisko, email, nr_tel, pass.toString());
+            int orderId = odb.getId();
+            odb.close();
+
+            //Wysłanie maila z potwierdzeniem
+            Integer tel_temp = new Integer(nr_tel);
+            Integer id_temp = new Integer(orderId);
+            Mail.send(informacje[0], informacje[1], informacje[2], informacje[3], ilosc, imie, nazwisko, email, tel_temp.toString(), cena, id_temp.toString(), pass.toString());
+
+            TicketsDB tdb = new TicketsDB();
+            tdb.open();
+            for(int i = 0; i < ticket.size(); ++i){
+                tdb.addTicket(orderId, informacje[1], informacje[2], Integer.parseInt(informacje[3]), miejsce.get(i)[0], miejsce.get(i)[1] , ticket.get(i).getTicketIndex() );
+            }
+            tdb.close();
+            return true;
+        }
+        return false;
     }
 }
 
