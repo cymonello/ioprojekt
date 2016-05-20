@@ -18,6 +18,7 @@ import database.TermsDB;
 import database.TicketsDB;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 
 
@@ -48,8 +49,14 @@ public class Booking {
     
     public double price(){
         double cena = 0;
-        for(int i = 0; i < ticket.size(); ++i)
-            cena += ticket.get(i).koszt();
+        if(ticket.size() >= 5){
+            for(int i = 0; i < ticket.size(); ++i)
+                cena += 0.7 * ticket.get(i).koszt();
+        }
+        else{
+            for(int i = 0; i < ticket.size(); ++i)
+                cena += ticket.get(i).koszt();
+        }
         return cena;
     }
     
@@ -94,16 +101,19 @@ public class Booking {
     }
     
     public void endBooking(String imie, String nazwisko, String email, int nr_tel, String ilosc, String cena){
+        Random rand1 = new Random();
+        Integer pass = rand1.nextInt(899999) + 100000;
         OrdersDB odb = new OrdersDB();
         odb.open();
-        odb.addOrder(termId, imie, nazwisko, email, nr_tel, "haslomaslo");
+        
+        odb.addOrder(termId, imie, nazwisko, email, nr_tel, pass.toString());
         int orderId = odb.getId();
         odb.close();
         
         //Wysłanie maila z potwierdzeniem
         Integer tel_temp = new Integer(nr_tel);
         Integer id_temp = new Integer(orderId);
-        Mail.send(informacje[0], informacje[1], informacje[2], informacje[3], ilosc, imie, nazwisko, email, tel_temp.toString(), cena, id_temp.toString());
+        Mail.send(informacje[0], informacje[1], informacje[2], informacje[3], ilosc, imie, nazwisko, email, tel_temp.toString(), cena, id_temp.toString(), pass.toString());
         
         TicketsDB tdb = new TicketsDB();
         tdb.open();
@@ -114,65 +124,3 @@ public class Booking {
     }
 }
 
-
-class Film{
-    String title;
-    String[] date;
-    String[] time;
-    int nr_auditorium;
-    
-}
-
-/*
-class Client{
-    String name;
-    String surname;
-    String mail;
-    String t_number;
-    static boolean mailCheck(String mail){
-        return true;
-    }
-    static boolean telephoneCheck(String t_number){
-        return true;
-    }
-    Client(String imie, String nazwisko, String email, String t_numer){
-        name = imie;
-        surname = nazwisko;
-        if(mailCheck(email))
-            this.mail = email;
-        else
-            System.out.println("Nieprawidlowy adres e-mail.");
-        if(telephoneCheck(t_numer))
-            this.t_number = t_numer;
-        else
-            System.out.println("Nieprawidlowy numer telefonu.");
-    }
-}
-
-class Seat{
-    public final int ROW = 10;
-    public final int COLUMN = 20;
-    private int row;
-    private int column;
-    static enum Place {szary, zielony, zolty }
-     Place[][] seats = new Place[ROW][COLUMN];
-    
-    Seat(int r, int c){
-        for(int i = 0; i < ROW; ++i){
-            for(int j = 0; j < COLUMN; ++j){
-                seats[i][j] = Place.szary;
-            }
-        }
-        if(seats[r][c] == Place.zielony){
-            row = r;
-            column = c;
-            seats[r][c] = Place.zolty;
-        }
-        else{
-            System.out.println("To miejsce jest zajete, sprobuj wybrac inne.");
-        }
-    
-    }
-
-}
-*/
