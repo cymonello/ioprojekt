@@ -101,4 +101,30 @@ public class OrdersDB
         }
         return id;
     }
+    
+    public boolean check(int id, String pass)
+    {
+        String temp_pass;
+        ResultSet temp;
+        try
+        {
+            if(connect != null)
+            {
+                statement = connect.createStatement();
+                temp = statement.executeQuery("SELECT password FROM Orders WHERE id=" + id);
+                temp.next();
+                temp_pass = temp.getString("password");
+                if(temp_pass.equals(pass))
+                    return true;
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(null, "Błąd! Brak połączenia z bazą filmów");
+            }
+        } catch (SQLException e)
+        {
+            JOptionPane.showMessageDialog(null, e.toString());
+        }
+        return false;
+    }
 }

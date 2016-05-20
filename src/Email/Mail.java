@@ -19,7 +19,7 @@ public class Mail
     private static final String USER_NAME = "kinoio.booking";
     private static final String PASSWORD = "ProjektNaIo";
     
-    public static void send(String title, String date, String hour, String hall, String ilosc, String name, String lastname, String email, String tel, String price, String id)
+    public static void send(String title, String date, String hour, String hall, String ilosc, String name, String lastname, String email, String tel, String price, String id, String pass)
     {
         String body = "Dziękujemy za dokonanie rezerwacji. Oto dane Twojego zamówienia:\n"
                 + "Tytuł: " + title + "\n"
@@ -32,6 +32,7 @@ public class Mail
                 + "Adres e-mail: " + email + "\n"
                 + "Nr. telefonu: " + tel + "\n"
                 + "Cena: " + price + "\n"
+                + "Hasło" + pass + "\n"
                 + "Życzymy udango seansu";
         sendMail(USER_NAME, PASSWORD, email, "Potwierdzenie rezerwacji nr: " + id, body);
     }

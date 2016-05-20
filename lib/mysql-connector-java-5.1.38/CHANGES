@@ -2499,7 +2499,7 @@ nn-nn-07 - Version 5.0.9
       retrieval methods on statements and result sets that are not synchronizable
       such as ResultSet.get*() and traversal methods, or Statement.execute*() closing
       result sets without effectively making the driver itself serializable across the
-      board.
+      Plansza.
 
       These changes should not have any effect on "normal" J(2)EE use cases
       where only one thread ever uses a connection instance and the objects created by
