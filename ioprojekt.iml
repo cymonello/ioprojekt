@@ -16,5 +16,9 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="javax.mail" level="project" />
+    <orderEntry type="library" name="org" level="project" />
+    <orderEntry type="library" name="lib" level="project" />
+    <orderEntry type="library" name="com" level="project" />
+    <orderEntry type="library" name="mysql-connector-java-5.1" level="project" />
   </component>
 </module>

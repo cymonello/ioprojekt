@@ -79,7 +79,7 @@ public class MainMenu extends JPanel implements ActionListener {
         schematPodstawowy.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                WindowConstants.schematKolorow = Colors.PODSTAWOWY;
+                //WindowConstants.schematKolorow = Colors.PODSTAWOWY;
                 MainWindow.leftPanel.setBackground(WindowConstants.schematKolorow.getTlo());
                 MainWindow.rightPanel.StartWindow();
                 MainWindow.rightPanel.StartWindow();
@@ -94,7 +94,7 @@ public class MainMenu extends JPanel implements ActionListener {
         schemat1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                WindowConstants.schematKolorow = Colors.TESTOWY;
+                //WindowConstants.schematKolorow = Colors.TESTOWY;
                 MainWindow.leftPanel.setBackground(WindowConstants.schematKolorow.getTlo());
                 MainWindow.rightPanel.StartWindow();
                 MainWindow.rightPanel.StartWindow();

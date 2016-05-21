@@ -208,10 +208,10 @@ public class Repertoire {
             for (int j = 0; j < 5; j++) {
                 connectedRow[j] = tempString[j];
             }
-            for (int j = 5; j < 17; j++) {
+            for (int j = 5; j < 18; j++) {
                 connectedRow[j] = tempIntToString[j-5];
             }
-            for (int k = 0; k < 17; k++) {
+            for (int k = 0; k < 18; k++) {
                 table[i][k] = connectedRow[k];
             }
         }

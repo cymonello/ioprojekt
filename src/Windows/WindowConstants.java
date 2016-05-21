@@ -14,6 +14,7 @@ abstract public class WindowConstants {
     public static final int HEIGHT = 600;
     public static final int WIDTH = 1000;
     public static final int BORDER = 200;
-    public static Colors schematKolorow = Colors.TESTOWY;
+    public static Colors schematKolorow = Colors.SCHEMAT3;
+    public static final String czcionka = "Arial";
     //public static final Image LOGOIMG = new ImageIcon("res/KinoLogo.png").getImage();
 }

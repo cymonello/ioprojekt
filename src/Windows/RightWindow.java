@@ -6,12 +6,8 @@ import Repertoire.Repertoire;
 import Search.Dates;
 import Search.Search;
 import database.MoviesDB;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.EventQueue;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
+
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -35,8 +31,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 import static Windows.WindowConstants.*;
-import java.awt.Component;
-import java.awt.Container;
+
 import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -165,7 +160,7 @@ public class RightWindow extends JPanel {
 
         JLabel jlChooseDate = new JLabel("WYBIERZ DATE:");
 
-        jlChooseDate.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 17));
+        jlChooseDate.setFont(new Font(WindowConstants.czcionka, Font.CENTER_BASELINE, 17));
         jlChooseDate.setBounds(10, 30, 180, 30);
         jlChooseDate.setForeground(WindowConstants.schematKolorow.getNazwy());
         add(jlChooseDate);
@@ -180,7 +175,7 @@ public class RightWindow extends JPanel {
             jcbDate.addItem(ft.format(cal.getTime()));
         }
         jcbDate.setBounds(200, 30, 120, 30);
-        jcbDate.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 17));
+        jcbDate.setFont(new Font(WindowConstants.czcionka, Font.CENTER_BASELINE, 17));
         jcbDate.setForeground(Color.GRAY);
         jcbDate.setBackground(Color.CYAN);
 
@@ -204,10 +199,10 @@ public class RightWindow extends JPanel {
                     UIManager.getDefaults().put("TableHeader.cellBorder", BorderFactory.createLineBorder(WindowConstants.schematKolorow.getTlo()));
 
                     header.setBackground(Color.yellow);
-                    header.setBackground(new Color(128, 17, 17));
-                    header.setForeground(new Color(255, 227, 227));
-                    jTable.setBackground(new Color(128, 17, 17));
-                    jTable.setForeground(new Color(255, 227, 227));
+                    header.setBackground(WindowConstants.schematKolorow.getKolorTabelkaHeader());
+                    header.setForeground(WindowConstants.schematKolorow.getKolorTabelkaNapisy());
+                    jTable.setBackground(WindowConstants.schematKolorow.getKolorTabelka());
+                    jTable.setForeground(WindowConstants.schematKolorow.getKolorTabelkaNapisy());
                     header.setReorderingAllowed(false);
                     jTable.getColumnModel().getColumn(0).setPreferredWidth(400);
                     jTable.addMouseListener(new MouseListener() {
@@ -246,7 +241,7 @@ public class RightWindow extends JPanel {
                         jTable.setRowHeight(i, 15);
                     }
                     MainWindow.rightPanel.removeAll();
-                    JLabel jlChooseDate = new JLabel("WYBIERZ DATE:");
+                    JLabel jlChooseDate = new JLabel("WYBIERZ DATĘ:");
 
                     jlChooseDate.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 17));
                     jlChooseDate.setBounds(10, 30, 180, 30);
@@ -264,8 +259,8 @@ public class RightWindow extends JPanel {
                     }
                     jcbDate1.setBounds(200, 30, 120, 30);
                     jcbDate1.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 17));
-                    jcbDate1.setForeground(Color.GRAY);
-                    jcbDate1.setBackground(Color.CYAN);
+                    jcbDate1.setForeground(WindowConstants.schematKolorow.getKolorDatyNapisy());
+                    jcbDate1.setBackground(WindowConstants.schematKolorow.getKolorDatyTlo());
                     for (int i = 0; i < jcbDate1.getItemCount(); i++) {
                         if (jcbDate1.getItemAt(i).toString().equals(dataa)) {
                             jcbDate1.setSelectedIndex(i);
@@ -290,8 +285,7 @@ public class RightWindow extends JPanel {
                         @Override
                         protected void configureScrollBarColors() {
                             this.trackColor = WindowConstants.schematKolorow.getTlo();
-                            thumbColor = new Color(84, 54, 54);//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+                            thumbColor = WindowConstants.schematKolorow.getKolorScroll();
                         }
 
                         private JButton createZeroButton() { // 
@@ -384,7 +378,7 @@ public class RightWindow extends JPanel {
             //jtfSearch.setBounds(150, (int) (WindowConstants.HEIGHT * 0.3), WindowConstants.WIDTH - WindowConstants.BORDER - 300, 100);
             //jtfSearch.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 36));
             //jtfSearch.setForeground(Color.WHITE);
-            //jtfSearch.setBorder(BorderFactory.createLineBorder(Color.YELLOW, 3));
+            jtfSearch.setBorder(BorderFactory.createLineBorder(WindowConstants.schematKolorow.getKolorRamkaWyszukiwania(), 3));
             //jtfSearch.setBackground(new Color(104, 158, 150));
 
             /*jtfSearch.setUI(new BasicComboBoxUI() {
@@ -424,8 +418,7 @@ public class RightWindow extends JPanel {
                     @Override
                     protected void configureScrollBarColors() {
                         this.trackColor = WindowConstants.schematKolorow.getTlo();
-                        thumbColor = new Color(84, 54, 54);//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+                        thumbColor = WindowConstants.schematKolorow.getKolorScroll();
                     }
 
                     private JButton createZeroButton() {
@@ -602,12 +595,12 @@ public class RightWindow extends JPanel {
         for (int i = 0; i < infoName.length; i++) {
             infoName[i].setBounds(260, 16 + (i * 32), 110, 30);
             infoName[i].setForeground(WindowConstants.schematKolorow.getNazwy());
-            infoName[i].setFont(new Font("Arial Black", Font.CENTER_BASELINE, 12));
+            infoName[i].setFont(new Font(WindowConstants.czcionka, Font.CENTER_BASELINE, 12));
             panel.add(infoName[i]);
 
             infoFilm[i] = new JLabel(res[i + 1].toString());
             infoFilm[i].setBounds(380, 16 + (i * 32), 400, 30);
-            infoFilm[i].setFont(new Font("Arial Black", Font.CENTER_BASELINE, 11));
+            infoFilm[i].setFont(new Font(WindowConstants.czcionka, Font.CENTER_BASELINE, 11));
             infoFilm[i].setForeground(WindowConstants.schematKolorow.getNapisy());
             panel.add(infoFilm[i]);
         }
@@ -710,7 +703,7 @@ public class RightWindow extends JPanel {
         filmDescription.setFocusable(false);
 
         filmDescription.setEditable(false);
-        filmDescription.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 11));
+        filmDescription.setFont(new Font(WindowConstants.czcionka, Font.CENTER_BASELINE, 11));
         filmDescription.setForeground(WindowConstants.schematKolorow.getNapisy());
         filmDescription.setBounds(0, 0, 490, 150);
         filmDescription.setBackground(WindowConstants.schematKolorow.getTlo());
@@ -736,8 +729,7 @@ public class RightWindow extends JPanel {
             @Override
             protected void configureScrollBarColors() {
                 this.trackColor = WindowConstants.schematKolorow.getTlo();
-                thumbColor = new Color(84, 54, 54);//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+                thumbColor = WindowConstants.schematKolorow.getKolorScroll();
             }
 
             private JButton createZeroButton() { // 
@@ -815,7 +807,7 @@ public class RightWindow extends JPanel {
         opis1.setFocusable(false);
 
         opis1.setEditable(false);
-        opis1.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 11));
+        opis1.setFont(new Font(WindowConstants.czcionka, Font.CENTER_BASELINE, 14));
         opis1.setForeground(WindowConstants.schematKolorow.getNapisy());
         opis1.setBounds(50, 100, 350, 275);
         opis1.setBackground(WindowConstants.schematKolorow.getTlo());
@@ -829,7 +821,7 @@ public class RightWindow extends JPanel {
         opis2.setFocusable(false);
 
         opis2.setEditable(false);
-        opis2.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 11));
+        opis2.setFont(new Font(WindowConstants.czcionka, Font.CENTER_BASELINE, 14));
         opis2.setForeground(WindowConstants.schematKolorow.getNapisy());
         opis2.setBounds(50, 373, 700, 260);
         opis2.setBackground(WindowConstants.schematKolorow.getTlo());
@@ -1081,21 +1073,21 @@ public class RightWindow extends JPanel {
         String[] info = booking.getInfo();
         JLabel title = new JLabel(info[0]);
         title.setForeground(WindowConstants.schematKolorow.getNazwy());
-        title.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 20));
+        title.setFont(new Font(WindowConstants.czcionka, Font.CENTER_BASELINE, 20));
         title.setHorizontalAlignment(SwingConstants.CENTER);
         title.setBounds(50, 70, 700, 50);
         add(title);
 
         JLabel date = new JLabel(info[1] + " : " + info[2]);
         date.setForeground(WindowConstants.schematKolorow.getNazwy());
-        date.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 15));
+        date.setFont(new Font(WindowConstants.czcionka, Font.CENTER_BASELINE, 15));
         date.setHorizontalAlignment(SwingConstants.CENTER);
         date.setBounds(50, 100, 700, 50);
         add(date);
 
         JLabel jlDane = new JLabel("Proszę podać następujące dane:");
         jlDane.setForeground(WindowConstants.schematKolorow.getNazwy());
-        jlDane.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 15));
+        jlDane.setFont(new Font(WindowConstants.czcionka, Font.CENTER_BASELINE, 15));
         jlDane.setHorizontalAlignment(SwingConstants.CENTER);
         jlDane.setBounds(50, 140, 700, 50);
         add(jlDane);
@@ -1108,7 +1100,7 @@ public class RightWindow extends JPanel {
 
         for (int i = 0; i < dane.length; i++) {
             dane[i].setForeground(WindowConstants.schematKolorow.getNazwy());
-            dane[i].setFont(new Font("Arial Black", Font.CENTER_BASELINE, 15));
+            dane[i].setFont(new Font(WindowConstants.czcionka, Font.CENTER_BASELINE, 15));
             dane[i].setHorizontalAlignment(SwingConstants.RIGHT);
             dane[i].setBounds(50, 190 + 50 * i, 340, 50);
             add(dane[i]);
@@ -1187,7 +1179,7 @@ public class RightWindow extends JPanel {
         JLabel check = new JLabel("Sprawdź poprawność danych do rezerwacji");
         check.setBounds(50, 60, 700, 50);
         check.setForeground(WindowConstants.schematKolorow.getNazwy());
-        check.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 20));
+        check.setFont(new Font(WindowConstants.czcionka, Font.CENTER_BASELINE, 20));
         check.setHorizontalAlignment(SwingConstants.CENTER);
         add(check);
 
@@ -1205,7 +1197,7 @@ public class RightWindow extends JPanel {
         for (int i = 0; i < infoName.length; i++) {
             infoName[i].setBounds(50, 120 + 30 * i, 250, 30);
             infoName[i].setForeground(WindowConstants.schematKolorow.getNazwy());
-            infoName[i].setFont(new Font("Arial Black", Font.CENTER_BASELINE, 16));
+            infoName[i].setFont(new Font(WindowConstants.czcionka, Font.CENTER_BASELINE, 16));
             infoName[i].setHorizontalAlignment(SwingConstants.RIGHT);
             add(infoName[i]);
         }
@@ -1239,7 +1231,7 @@ public class RightWindow extends JPanel {
         for (int i = 0; i < info.length; i++) {
             info[i].setBounds(310, 120 + 30 * i, 390, 30);
             info[i].setForeground(WindowConstants.schematKolorow.getNapisy());
-            info[i].setFont(new Font("Arial Black", Font.CENTER_BASELINE, 16));
+            info[i].setFont(new Font(WindowConstants.czcionka, Font.CENTER_BASELINE, 16));
             info[i].setHorizontalAlignment(SwingConstants.LEFT);
             add(info[i]);
         }
@@ -1320,18 +1312,18 @@ public class RightWindow extends JPanel {
         add(title);
         title.setBounds(50, 60, 700, 50);
         title.setForeground(WindowConstants.schematKolorow.getNazwy());
-        title.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 20));
+        title.setFont(new Font(WindowConstants.czcionka, Font.CENTER_BASELINE, 20));
         title.setHorizontalAlignment(SwingConstants.CENTER);
         for (int i = 0; i < 12; i++) {
             JLabel godz = new JLabel(Integer.toString(i + 10) + ":00");
-            godz.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 12));
+            godz.setFont(new Font(WindowConstants.czcionka, Font.CENTER_BASELINE, 12));
             godz.setForeground(WindowConstants.schematKolorow.getNazwy());
             godz.setBounds(170 + 50 * i, 110, 50, 30);
             add(godz);
         }
         for (int i = 0; i < dates.length; i++) {
             final JLabel data = new JLabel(dates[i]);
-            data.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 20));
+            data.setFont(new Font(WindowConstants.czcionka, Font.CENTER_BASELINE, 20));
             data.setForeground(WindowConstants.schematKolorow.getNazwy());
             add(data);
             data.setBounds(50, 150 + 40 * i, 110, 30);
