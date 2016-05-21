@@ -17,7 +17,7 @@ public class Repertoire {
     private ResultSet moviesRS; //referencja do ResultSet z TermsDB
     private TermsDB tdb;
     String date;
-    private Integer[] hours; // godzina filmuhttps://www.facebook.com/groups/620900221394681/631541116997258/
+    private Integer[] hours; // godzina filmu
     private Integer[] movie; //tablica id filmow na dany dzien
     private Integer[] termsID;
     // tablica asocjacyjna przechowujaca termID dla movieID
@@ -190,11 +190,11 @@ public class Repertoire {
      */
     public String[][] getValue(){
         Integer temp = movie.length;
-        String[][] table = new String[temp][17]; //12 godzin + 5 informacji
-        String[] tempIntToString = new String[12]; //tablica godzin zamienionych na stringi
+        String[][] table = new String[temp][18]; //12 godzin + 5 informacji
+        String[] tempIntToString = new String[13]; //tablica godzin zamienionych na stringi
         Integer[] tempInt; //tymczasowa tablica intów przechowujaca godziny
         String[] tempString; //tymczasowa tablica przechowująca wartość z tablicy asocjacyjnej
-        String[] connectedRow = new String[17]; // tablica przechowująca cały wiersz
+        String[] connectedRow = new String[18]; // tablica przechowująca cały wiersz
         for (int i = 0; i < movie.length; i++) {
             tempInt = mapHours.get(movie[i]);
             for (int j = 0; j < tempIntToString.length; j++) {
@@ -219,7 +219,7 @@ public class Repertoire {
     }
 
     /**
-     *Getter dla ID filmu
+     * Getter dla ID filmu
      *
      * @param row
      * @return konkretne ID filmu
