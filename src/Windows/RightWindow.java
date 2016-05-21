@@ -1080,11 +1080,8 @@ public class RightWindow extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 DecimalFormat df = new DecimalFormat("#.00");
-                boolean ok = booking.endBooking(name, lastname, email, number, Integer.toString(booking.listLength()), df.format(booking.price()) + " zł");
-                if(ok)
-                    JOptionPane.showMessageDialog(null, "Proces rezerwacji przebiegł poprawnie", "Udana rezerwacja", INFORMATION_MESSAGE);
-                else
-                    JOptionPane.showMessageDialog(null, "Przepraszamy ale ktoś wyprzedził Cię w zajmowaniu miejsc", "Nieudana rezerwacja", INFORMATION_MESSAGE);
+                booking.endBooking(name, lastname, email, number, Integer.toString(booking.listLength()), df.format(booking.price()) + " zł");
+                JOptionPane.showMessageDialog(null, "Proces rezerwacji przebiegł poprawnie", "Udana rezerwacja", INFORMATION_MESSAGE);
                 MainWindow.rightPanel.StartWindow();
             }
         });
