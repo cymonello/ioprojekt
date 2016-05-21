@@ -27,7 +27,7 @@ public class MainWindow extends JFrame {
      * @param args
      */
     public static void main(String[] args) {
-;        MainWindow main = new MainWindow();
+        MainWindow main = new MainWindow();
         run(main, WindowConstants.WIDTH, WindowConstants.HEIGHT, "Projekt - prototyp 2");
 
     }
@@ -41,9 +41,9 @@ public class MainWindow extends JFrame {
         add(rightPanel);
 
         leftPanel = new MainMenu();
-        leftPanel.setBackground(WindowConstants.MAINMENUCOLOR);
         leftPanel.setBounds(0, 0, WindowConstants.BORDER, WindowConstants.HEIGHT);
         add(leftPanel);
+        pack();
 
     }
 

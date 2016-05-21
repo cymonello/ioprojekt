@@ -6,10 +6,11 @@
 package Windows;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
+import java.io.File;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -35,32 +36,32 @@ public class MainMenu extends JPanel implements ActionListener {
 
     public MainMenu() {
         setLayout(null);
-
-        logo = new ImageButton("res/KinoLogo.png");
-        logo.setRolloverIcon(new ImageIcon("res/KinoLogoEntered.png"));
+        setBackground(WindowConstants.schematKolorow.getTlo());
+        logo = new ImageButton("res" + File.separator + "KinoLogo.png");
+        logo.setRolloverIcon(new ImageIcon("res" + File.separator + "KinoLogoEntered.png"));
         logo.addActionListener(this);
         add(logo);
 
-        repertuarButton = new ImageButton("res/Repertuar.png");
-        repertuarButton.setRolloverIcon(new ImageIcon("res/RepertuarEntered.png"));
+        repertuarButton = new ImageButton("res" + File.separator + "Repertuar.png");
+        repertuarButton.setRolloverIcon(new ImageIcon("res" + File.separator + "RepertuarEntered.png"));
         repertuarButton.setBounds(0, 100, 200, 70);
         repertuarButton.addActionListener(this);
         add(repertuarButton);
 
-        wyszukajFilmButton = new ImageButton("res/WyszukajFilm.png");
-        wyszukajFilmButton.setRolloverIcon(new ImageIcon("res/WyszukajFilmEntered.png"));
+        wyszukajFilmButton = new ImageButton("res" + File.separator + "WyszukajFilm.png");
+        wyszukajFilmButton.setRolloverIcon(new ImageIcon("res" + File.separator + "WyszukajFilmEntered.png"));
         wyszukajFilmButton.setBounds(0, 170, 200, 70);
         wyszukajFilmButton.addActionListener(this);
         add(wyszukajFilmButton);
 
-        mojaRezerwacjaButton = new ImageButton("res/MojaRezerwacja.png");
-        mojaRezerwacjaButton.setRolloverIcon(new ImageIcon("res/MojaRezerwacjaEntered.png"));
+        mojaRezerwacjaButton = new ImageButton("res" + File.separator + "MojaRezerwacja.png");
+        mojaRezerwacjaButton.setRolloverIcon(new ImageIcon("res" + File.separator + "MojaRezerwacjaEntered.png"));
         mojaRezerwacjaButton.setBounds(0, 240, 200, 70);
         mojaRezerwacjaButton.addActionListener(this);
         add(mojaRezerwacjaButton);
 
-        informacjeButton = new ImageButton("res/Informacje.png");
-        informacjeButton.setRolloverIcon(new ImageIcon("res/InformacjeEntered.png"));
+        informacjeButton = new ImageButton("res" + File.separator + "Informacje.png");
+        informacjeButton.setRolloverIcon(new ImageIcon("res" + File.separator + "InformacjeEntered.png"));
         informacjeButton.setBounds(0, 310, 200, 70);
         informacjeButton.addActionListener(this);
         add(informacjeButton);
@@ -69,6 +70,36 @@ public class MainMenu extends JPanel implements ActionListener {
         cpr.setForeground(Color.WHITE);
         cpr.setBounds(10, WindowConstants.HEIGHT - 60, 200, 30);
         add(cpr);
+        ImageButton schematPodstawowy = new ImageButton("res" + File.separator + "test.png");
+        schematPodstawowy.setBounds(0, 390, 40, 40);
+        schematPodstawowy.setOpaque(false);
+        schematPodstawowy.setBorderPainted(false);
+        schematPodstawowy.setContentAreaFilled(false);
+        add(schematPodstawowy);
+        schematPodstawowy.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                WindowConstants.schematKolorow = Colors.PODSTAWOWY;
+                MainWindow.leftPanel.setBackground(WindowConstants.schematKolorow.getTlo());
+                MainWindow.rightPanel.StartWindow();
+                MainWindow.rightPanel.StartWindow();
+            }
+        });
+        ImageButton schemat1 = new ImageButton("res" + File.separator + "test.png");
+        schemat1.setBounds(50, 390, 40, 40);
+        schemat1.setOpaque(false);
+        schemat1.setBorderPainted(false);
+        schemat1.setContentAreaFilled(false);
+        add(schemat1);
+        schemat1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                WindowConstants.schematKolorow = Colors.TESTOWY;
+                MainWindow.leftPanel.setBackground(WindowConstants.schematKolorow.getTlo());
+                MainWindow.rightPanel.StartWindow();
+                MainWindow.rightPanel.StartWindow();
+            }
+        });
     }
 
     /**
@@ -88,10 +119,7 @@ public class MainMenu extends JPanel implements ActionListener {
         } else if (source == repertuarButton) {
             MainWindow.rightPanel.MakeRepertoire();
         } else if (source == wyszukajFilmButton) {
-            try {
-                MainWindow.rightPanel.MakeSearch();
-            } catch (SQLException | ClassNotFoundException e1) {
-            }
+            MainWindow.rightPanel.MakeSearch();
         } else if (source == logo) {
             MainWindow.rightPanel.StartWindow();
         } else if (source == mojaRezerwacjaButton) {
@@ -110,10 +138,12 @@ public class MainMenu extends JPanel implements ActionListener {
  *
  */
 class ImageButton extends JButton {
+
     private String str;
+
     public ImageButton(String img) {
         this(new ImageIcon(img));
-        str= img;
+        str = img;
     }
 
     public ImageButton(ImageIcon icon) {
@@ -121,16 +151,21 @@ class ImageButton extends JButton {
         setMargin(new Insets(0, 0, 0, 0));
         setIconTextGap(0);
         setBorderPainted(false);
+        setOpaque(false);
+        setBorderPainted(false);
+        setContentAreaFilled(false);
         setBorder(null);
         setText(null);
         setSize(icon.getImage().getWidth(null), icon.getImage().getHeight(null));
     }
-    public void setIcon(String str){
-        this.str=str;
+
+    public void setIcon(String str) {
+        this.str = str;
         setIcon(new ImageIcon(str));
     }
+
     @Override
-    public boolean equals(Object obj){
+    public boolean equals(Object obj) {
         return str.equals(obj);
     }
 
