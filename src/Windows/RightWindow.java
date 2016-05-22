@@ -160,7 +160,7 @@ public class RightWindow extends JPanel {
 
         JLabel jlChooseDate = new JLabel("WYBIERZ DATE:");
 
-        jlChooseDate.setFont(new Font(WindowConstants.czcionka, Font.CENTER_BASELINE, 17));
+        jlChooseDate.setFont(new Font(WindowConstants.czcionka2, Font.CENTER_BASELINE, 17));
         jlChooseDate.setBounds(10, 30, 180, 30);
         jlChooseDate.setForeground(WindowConstants.schematKolorow.getNazwy());
         add(jlChooseDate);
@@ -190,7 +190,7 @@ public class RightWindow extends JPanel {
 
                     final Repertoire rep = new Repertoire(str);
                     final String[][] tab = rep.getValue();
-                    final String[] tab1 = {"Tytuł", "Wiek", "Info", "Język", "Czas", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21"};
+                    final String[] tab1 = {"Tytuł", "Wiek", "Info", "Język", "Czas", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21","22"};
 
                     jTable = new JTable(tab, tab1);
                     jTable.setGridColor(WindowConstants.schematKolorow.getTlo());
@@ -214,7 +214,7 @@ public class RightWindow extends JPanel {
                             if (col == 0) {
                                 MainWindow.rightPanel.ShowInfoFilm(rep.getMovieID(row), MainWindow.rightPanel);
                             }
-                            if (col >= 5 && col <= 16 && !" ".equals(tab[row][col])) {
+                            if (col >= 5 && col <= 17 && !" ".equals(tab[row][col])) {
                                 Booking b = new Booking();
                                 b.startBooking(rep.getTermID(row, col));
                                 MainWindow.rightPanel.MakeOrderPart1(b);
@@ -243,7 +243,7 @@ public class RightWindow extends JPanel {
                     MainWindow.rightPanel.removeAll();
                     JLabel jlChooseDate = new JLabel("WYBIERZ DATĘ:");
 
-                    jlChooseDate.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 17));
+                    jlChooseDate.setFont(new Font(WindowConstants.czcionka2, Font.CENTER_BASELINE, 17));
                     jlChooseDate.setBounds(10, 30, 180, 30);
                     jlChooseDate.setForeground(WindowConstants.schematKolorow.getNapisy());
                     add(jlChooseDate);
@@ -258,7 +258,7 @@ public class RightWindow extends JPanel {
                         jcbDate1.addItem(ft.format(cal.getTime()));
                     }
                     jcbDate1.setBounds(200, 30, 120, 30);
-                    jcbDate1.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 17));
+                    jcbDate1.setFont(new Font(WindowConstants.czcionka, Font.CENTER_BASELINE, 17));
                     jcbDate1.setForeground(WindowConstants.schematKolorow.getKolorDatyNapisy());
                     jcbDate1.setBackground(WindowConstants.schematKolorow.getKolorDatyTlo());
                     for (int i = 0; i < jcbDate1.getItemCount(); i++) {
@@ -342,7 +342,7 @@ public class RightWindow extends JPanel {
                     return b;
                 }
             });
-            setBorder(BorderFactory.createLineBorder(Color.yellow));
+            setBorder(BorderFactory.createLineBorder(WindowConstants.schematKolorow.getKolorRamkaWyszukiwania()));
         }
     };
     private boolean hide_flag = false;
@@ -373,32 +373,8 @@ public class RightWindow extends JPanel {
             }
             mdb.close();
 
-            //Przykładowe formatowanie wyszukiwarki - narazie niedopracowane - OFF
-            //jtfSearch.setModel(new DefaultComboBoxModel(str));
-            //jtfSearch.setBounds(150, (int) (WindowConstants.HEIGHT * 0.3), WindowConstants.WIDTH - WindowConstants.BORDER - 300, 100);
-            //jtfSearch.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 36));
-            //jtfSearch.setForeground(Color.WHITE);
             jtfSearch.setBorder(BorderFactory.createLineBorder(WindowConstants.schematKolorow.getKolorRamkaWyszukiwania(), 3));
-            //jtfSearch.setBackground(new Color(104, 158, 150));
 
-            /*jtfSearch.setUI(new BasicComboBoxUI() {
-                @Override
-                protected JButton createArrowButton() {
-                    JButton arrowB;
-                    arrowB = new JButton() {
-                        @Override
-                        public int getWidth() {
-                            return 20;
-                        }
-                    };
-                            arrowB.setBorderPainted(false);
-        arrowB.setOpaque(false);
-        arrowB.setBorderPainted(false);
-        arrowB.setContentAreaFilled(false);
-                    return arrowB;
-                }
-            });*/
-            //jtfSearch.removeArrowButton();
             jtfSearch.setEditable(true);
             Object popup = jtfSearch.getUI().getAccessibleChild(jtfSearch, 0);
             Component c = ((Container) popup).getComponent(0);
@@ -464,7 +440,11 @@ public class RightWindow extends JPanel {
                     int code = e.getKeyCode();
                     switch (code) {
                         case KeyEvent.VK_ENTER:
-                            makeFound(jtfSearch.getEditor().getItem().toString());
+                            Search sear = new Search();
+                            sear.open();
+                            final Integer[] idTab = sear.byTitle(jtfSearch.getEditor().getItem().toString());
+                            sear.close();
+                            makeFound(idTab);
                             break;
                         case KeyEvent.VK_ESCAPE:
                             hide_flag = true;
@@ -498,13 +478,17 @@ public class RightWindow extends JPanel {
             setPreferredSize(new Dimension(300, 150));
 
             ImageButton ibSearch;
-            ibSearch = new ImageButton("res"+File.separator+"Szukaj.png");
-            ibSearch.setRolloverIcon(new ImageIcon("res"+File.separator+"SzukajEntered.png"));
+            ibSearch = new ImageButton("res" + File.separator + "Szukaj.png");
+            ibSearch.setRolloverIcon(new ImageIcon("res" + File.separator + "SzukajEntered.png"));
             ibSearch.setBounds(210, (int) (WindowConstants.HEIGHT * 0.3) + 130, WindowConstants.WIDTH - BORDER - 420, 80);
             ibSearch.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    makeFound(jtfSearch.getEditor().getItem().toString());
+                    Search sear = new Search();
+                    sear.open();
+                    final Integer[] idTab = sear.byTitle(jtfSearch.getEditor().getItem().toString());
+                    sear.close();
+                    makeFound(idTab);
                 }
 
             });
@@ -591,7 +575,7 @@ public class RightWindow extends JPanel {
         infoName[6] = new JLabel("Obsada:");
         infoName[7] = new JLabel("Kraj:");
         infoName[8] = new JLabel("Rok produkcji:");
-        JLabel[] infoFilm = new JLabel[9];
+        final JLabel[] infoFilm = new JLabel[9];
         for (int i = 0; i < infoName.length; i++) {
             infoName[i].setBounds(260, 16 + (i * 32), 110, 30);
             infoName[i].setForeground(WindowConstants.schematKolorow.getNazwy());
@@ -604,13 +588,41 @@ public class RightWindow extends JPanel {
             infoFilm[i].setForeground(WindowConstants.schematKolorow.getNapisy());
             panel.add(infoFilm[i]);
         }
+        infoFilm[1].addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                Search sear = new Search();
+                sear.open();
+                final Integer[] idTab = sear.byGenre(infoFilm[1].getText());
+                sear.close();
+                makeFound(idTab);
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                infoFilm[1].setForeground(WindowConstants.schematKolorow.getPodswietlony());
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                infoFilm[1].setForeground(WindowConstants.schematKolorow.getNapisy());
+            }
+        });
 
         MoviesDB db = new MoviesDB();
         db.open();
         double ocena = db.getNote(ID);
         db.close();
         for (int i = 0; i < (int) ocena; i++) {
-            ImageButton ilegwiazdek = new ImageButton("res"+File.separator+"gwiazdka.png");
+            ImageButton ilegwiazdek = new ImageButton("res" + File.separator + "gwiazdka.png");
             panel.add(ilegwiazdek);
             ilegwiazdek.setBounds(51 + i * 30, 310, 30, 30);
         }
@@ -621,19 +633,19 @@ public class RightWindow extends JPanel {
             ocen.setText("Brak ocen");
             ocen.setBounds(50, 310, 200, 30);
         }
-        ocen.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 20));
+        ocen.setFont(new Font(WindowConstants.czcionka2, Font.CENTER_BASELINE, 20));
         ocen.setForeground(WindowConstants.schematKolorow.getNazwy());
         panel.add(ocen);
 
         JLabel ocenfilm = new JLabel("Oceń film");
         ocenfilm.setBounds(50, 350, 200, 30);
-        ocenfilm.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 12));
+        ocenfilm.setFont(new Font(WindowConstants.czcionka, Font.CENTER_BASELINE, 12));
         ocenfilm.setForeground(WindowConstants.schematKolorow.getNazwy());
         panel.add(ocenfilm);
         final ImageButton[] gwiazdki = new ImageButton[5];
         for (int i = 0; i < gwiazdki.length; i++) {
             final int m = i + 1;
-            gwiazdki[i] = new ImageButton("res"+File.separator+"/gwiazdkaSzara.png");
+            gwiazdki[i] = new ImageButton("res" + File.separator + "/gwiazdkaSzara.png");
             panel.add(gwiazdki[i]);
             gwiazdki[i].setBounds(51 + i * 30, 380, 30, 30);
             gwiazdki[i].addMouseListener(new MouseListener() {
@@ -650,7 +662,7 @@ public class RightWindow extends JPanel {
                         }
                     }
                     for (int j = 0; j < m; j++) {
-                        gwiazdki[j].setIcon("res"+File.separator+"gwiazdka.png");
+                        gwiazdki[j].setIcon("res" + File.separator + "gwiazdka.png");
                     }
                     MoviesDB db = new MoviesDB();
                     db.open();
@@ -670,7 +682,7 @@ public class RightWindow extends JPanel {
                 public void mouseEntered(MouseEvent e) {
                     if (gwiazdki[m - 1].getMouseListeners().length > 0) {
                         for (int j = 0; j < m; j++) {
-                            gwiazdki[j].setIcon("res"+File.separator+"gwiazdka.png");
+                            gwiazdki[j].setIcon("res" + File.separator + "gwiazdka.png");
                         }
                     }
                 }
@@ -685,8 +697,8 @@ public class RightWindow extends JPanel {
                 }
             });
         }
-        ImageButton terms = new ImageButton("res"+File.separator+"sprawdz.png");
-        terms.setRolloverIcon(new ImageIcon("res"+File.separator+"sprawdzEntered.png"));
+        ImageButton terms = new ImageButton("res" + File.separator + "sprawdz.png");
+        terms.setRolloverIcon(new ImageIcon("res" + File.separator + "sprawdzEntered.png"));
         panel.add(terms);
         terms.setBounds(50, 420, 150, 30);
         terms.addActionListener(new ActionListener() {
@@ -827,7 +839,7 @@ public class RightWindow extends JPanel {
         opis2.setBackground(WindowConstants.schematKolorow.getTlo());
         opis2.setBorder(BorderFactory.createLineBorder(WindowConstants.schematKolorow.getTlo(), 1));
         add(opis2);
-        JLabel labelIcon = new JLabel(new ImageIcon("res"+File.separator+"kino.png"));
+        JLabel labelIcon = new JLabel(new ImageIcon("res" + File.separator + "kino.png"));
         labelIcon.setBounds(400, 105, 342, 270);
         add(labelIcon);
         repaint();
@@ -853,14 +865,14 @@ public class RightWindow extends JPanel {
         String[] info = booking.getInfo();
         JLabel title = new JLabel(info[0]);
         title.setForeground(WindowConstants.schematKolorow.getNazwy());
-        title.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 20));
+        title.setFont(new Font(WindowConstants.czcionka2, Font.CENTER_BASELINE, 20));
         title.setHorizontalAlignment(SwingConstants.CENTER);
         title.setBounds(50, 70, 700, 50);
         add(title);
 
         JLabel date = new JLabel(info[1] + " : " + info[2]);
         date.setForeground(WindowConstants.schematKolorow.getNazwy());
-        date.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 15));
+        date.setFont(new Font(WindowConstants.czcionka2, Font.CENTER_BASELINE, 15));
         date.setHorizontalAlignment(SwingConstants.CENTER);
         date.setBounds(50, 120, 700, 50);
         add(date);
@@ -877,7 +889,7 @@ public class RightWindow extends JPanel {
             ticket[i].setHorizontalAlignment(SwingConstants.RIGHT);
             add(ticket[i]);
             ticket[i].setForeground(WindowConstants.schematKolorow.getNazwy());
-            ticket[i].setFont(new Font("Arial Black", Font.CENTER_BASELINE, 12));
+            ticket[i].setFont(new Font(WindowConstants.czcionka, Font.CENTER_BASELINE, 12));
 
         }
 
@@ -885,15 +897,32 @@ public class RightWindow extends JPanel {
 
         final JComboBox[] jcbTicketNumber = new JComboBox[4];
         for (int i = 0; i < 4; i++) {
-            jcbTicketNumber[i] = new JComboBox(tab);
+            jcbTicketNumber[i] = new JComboBox(tab) {
+                @Override
+                public void updateUI() {
+                    super.updateUI();
+                    UIManager.put("ComboBox.squareButton", Boolean.FALSE);
+                    setUI(new BasicComboBoxUI() {
+                        @Override
+                        protected JButton createArrowButton() {
+                            JButton b = new JButton();
+                            b.setBorder(BorderFactory.createEmptyBorder());
+                            b.setBackground(WindowConstants.schematKolorow.getKolorScroll());
+                            b.setVisible(true);
+                            return b;
+                        }
+                    });
+                    setBorder(BorderFactory.createLineBorder(WindowConstants.schematKolorow.getKolorRamkaWyszukiwania()));
+                }
+            };
             jcbTicketNumber[i].setBounds(400, 200 + i * 50, 50, 30);
             add(jcbTicketNumber[i]);
             jcbTicketNumber[i].setSelectedIndex(0);
 
         }
 
-        ImageButton next = new ImageButton("res"+File.separator+"dalej.png");
-        next.setRolloverIcon(new ImageIcon("res"+File.separator+"DalejEntered.png"));
+        ImageButton next = new ImageButton("res" + File.separator + "dalej.png");
+        next.setRolloverIcon(new ImageIcon("res" + File.separator + "DalejEntered.png"));
         next.setBounds(350, 400, 100, 40);
         next.addActionListener(new ActionListener() {
             @Override
@@ -938,14 +967,14 @@ public class RightWindow extends JPanel {
         String[] info = booking.getInfo();
         JLabel title = new JLabel(info[0]);
         title.setForeground(WindowConstants.schematKolorow.getNazwy());
-        title.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 20));
+        title.setFont(new Font(WindowConstants.czcionka2, Font.CENTER_BASELINE, 20));
         title.setHorizontalAlignment(SwingConstants.CENTER);
         title.setBounds(50, 20, 700, 50);
         add(title);
 
         JLabel date = new JLabel(info[1] + " : " + info[2]);
         date.setForeground(WindowConstants.schematKolorow.getNazwy());
-        date.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 15));
+        date.setFont(new Font(WindowConstants.czcionka2, Font.CENTER_BASELINE, 15));
         date.setHorizontalAlignment(SwingConstants.CENTER);
         date.setBounds(50, 50, 700, 50);
         add(date);
@@ -954,7 +983,7 @@ public class RightWindow extends JPanel {
         final int[][] sal = hal.getHall();
 
         final ArrayList<int[]> list = new ArrayList<>();
-        JLabel ekran = new JLabel(new ImageIcon("res"+File.separator+"Ekran.png"));
+        JLabel ekran = new JLabel(new ImageIcon("res" + File.separator + "Ekran.png"));
         ekran.setBounds(160, 110, 480, 28);
         add(ekran);
         for (int i = 0; i < sal.length; i++) {
@@ -962,22 +991,22 @@ public class RightWindow extends JPanel {
                 final int k = i;
                 final int l = j;
                 if (sal[i][j] == 0) {
-                    final ImageButton sala = new ImageButton("res"+File.separator+"miejsceDostepne.png");
-                    sala.setRolloverIcon(new ImageIcon("res"+File.separator+"miejsceWybrane.png"));
+                    final ImageButton sala = new ImageButton("res" + File.separator + "miejsceDostepne.png");
+                    sala.setRolloverIcon(new ImageIcon("res" + File.separator + "miejsceWybrane.png"));
                     sala.setBounds(100 + 30 * j, 150 + 30 * i, 28, 28);
                     add(sala);
                     sala.addMouseListener(new MouseListener() {
                         @Override
                         public void mouseClicked(MouseEvent e) {
-                            if (sala.equals("res"+File.separator+"miejsceDostepne.png")) {
+                            if (sala.equals("res" + File.separator + "miejsceDostepne.png")) {
                                 if (list.size() < booking.listLength()) {
-                                    sala.setIcon("res"+File.separator+"miejsceWybrane.png");
+                                    sala.setIcon("res" + File.separator + "miejsceWybrane.png");
                                     int[] tmp = {k, l};
                                     list.add(tmp);
                                 }
                             } else {
-                                sala.setIcon("res"+File.separator+"miejsceDostepne.png");
-                                sala.setRolloverIcon(new ImageIcon("res"+File.separator+"miejsceWybrane.png"));
+                                sala.setIcon("res" + File.separator + "miejsceDostepne.png");
+                                sala.setRolloverIcon(new ImageIcon("res" + File.separator + "miejsceWybrane.png"));
                                 for (int m = 0; m < list.size(); m++) {
                                     if (list.get(m)[0] == k && list.get(m)[1] == l) {
                                         list.remove(m);
@@ -1003,15 +1032,15 @@ public class RightWindow extends JPanel {
                         }
                     });
                 } else if (sal[i][j] == 1) {
-                    ImageButton sala = new ImageButton("res"+File.separator+"miejsceZajete.png");
+                    ImageButton sala = new ImageButton("res" + File.separator + "miejsceZajete.png");
                     sala.setBounds(100 + 30 * j, 150 + 30 * i, 28, 28);
                     add(sala);
                 }
             }
         }
-        ImageButton miejsceDostepne = new ImageButton("res"+File.separator+"miejsceDostepne.png");
-        ImageButton miejsceWybrane = new ImageButton("res"+File.separator+"miejsceWybrane.png");
-        ImageButton miejsceZajete = new ImageButton("res"+File.separator+"miejsceZajete.png");
+        ImageButton miejsceDostepne = new ImageButton("res" + File.separator + "miejsceDostepne.png");
+        ImageButton miejsceWybrane = new ImageButton("res" + File.separator + "miejsceWybrane.png");
+        ImageButton miejsceZajete = new ImageButton("res" + File.separator + "miejsceZajete.png");
         miejsceDostepne.setBounds(100, 480, 28, 28);
         miejsceWybrane.setBounds(300, 480, 28, 28);
         miejsceZajete.setBounds(500, 480, 28, 28);
@@ -1023,23 +1052,23 @@ public class RightWindow extends JPanel {
         JLabel wolne = new JLabel("Miejsce dostępne");
         JLabel wybrane = new JLabel("Miejsce wybrane");
         wolne.setBounds(130, 480, 270, 28);
-        wolne.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 12));
+        wolne.setFont(new Font(WindowConstants.czcionka, Font.CENTER_BASELINE, 12));
         wolne.setHorizontalAlignment(SwingConstants.LEFT);
         wolne.setForeground(WindowConstants.schematKolorow.getNapisy());
         wybrane.setBounds(330, 480, 270, 28);
-        wybrane.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 12));
+        wybrane.setFont(new Font(WindowConstants.czcionka, Font.CENTER_BASELINE, 12));
         wybrane.setHorizontalAlignment(SwingConstants.LEFT);
         wybrane.setForeground(WindowConstants.schematKolorow.getNapisy());
         zajete.setBounds(530, 480, 270, 28);
-        zajete.setFont(new Font("Arial Black", Font.CENTER_BASELINE, 12));
+        zajete.setFont(new Font(WindowConstants.czcionka, Font.CENTER_BASELINE, 12));
         zajete.setHorizontalAlignment(SwingConstants.LEFT);
         zajete.setForeground(WindowConstants.schematKolorow.getNapisy());
         add(wybrane);
         add(zajete);
         add(wolne);
 
-        ImageButton next = new ImageButton("res"+File.separator+"Dalej.png");
-        next.setRolloverIcon(new ImageIcon("res"+File.separator+"DalejEntered.png"));
+        ImageButton next = new ImageButton("res" + File.separator + "Dalej.png");
+        next.setRolloverIcon(new ImageIcon("res" + File.separator + "DalejEntered.png"));
         next.setBounds(350, 510, 100, 40);
         next.addActionListener(new ActionListener() {
             @Override
@@ -1073,21 +1102,21 @@ public class RightWindow extends JPanel {
         String[] info = booking.getInfo();
         JLabel title = new JLabel(info[0]);
         title.setForeground(WindowConstants.schematKolorow.getNazwy());
-        title.setFont(new Font(WindowConstants.czcionka, Font.CENTER_BASELINE, 20));
+        title.setFont(new Font(WindowConstants.czcionka2, Font.CENTER_BASELINE, 20));
         title.setHorizontalAlignment(SwingConstants.CENTER);
         title.setBounds(50, 70, 700, 50);
         add(title);
 
         JLabel date = new JLabel(info[1] + " : " + info[2]);
         date.setForeground(WindowConstants.schematKolorow.getNazwy());
-        date.setFont(new Font(WindowConstants.czcionka, Font.CENTER_BASELINE, 15));
+        date.setFont(new Font(WindowConstants.czcionka2, Font.CENTER_BASELINE, 15));
         date.setHorizontalAlignment(SwingConstants.CENTER);
         date.setBounds(50, 100, 700, 50);
         add(date);
 
         JLabel jlDane = new JLabel("Proszę podać następujące dane:");
         jlDane.setForeground(WindowConstants.schematKolorow.getNazwy());
-        jlDane.setFont(new Font(WindowConstants.czcionka, Font.CENTER_BASELINE, 15));
+        jlDane.setFont(new Font(WindowConstants.czcionka2, Font.CENTER_BASELINE, 15));
         jlDane.setHorizontalAlignment(SwingConstants.CENTER);
         jlDane.setBounds(50, 140, 700, 50);
         add(jlDane);
@@ -1112,45 +1141,18 @@ public class RightWindow extends JPanel {
             add(jtfPol[i]);
         }
 
-        ImageButton next = new ImageButton("res"+File.separator+"Dalej.png");
-        next.setRolloverIcon(new ImageIcon("res"+File.separator+"DalejEntered.png"));
+        ImageButton next = new ImageButton("res" + File.separator + "Dalej.png");
+        next.setRolloverIcon(new ImageIcon("res" + File.separator + "DalejEntered.png"));
         next.setBounds(350, 510, 100, 40);
         next.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                boolean correct = true;
-                String name = jtfPol[0].getText();
-                String replaceAll1 = name.replaceAll("[a-z]+", "").replaceAll("[A-Z]+", "").replaceAll(" ", "");
 
-                String lastname = jtfPol[1].getText();
-                String replaceAll2 = lastname.replaceAll("[a-z]+", "").replaceAll("[A-Z]+", "").replaceAll(" ", "");
-
-                String email = jtfPol[2].getText();
-                String replaceAll3 = email.replaceAll(" ", "");
-
-                if (replaceAll1.length() > 0 || name.length() == 0
-                        || replaceAll2.length() > 0 || lastname.length() == 0
-                        || !email.equals(replaceAll3) || email.indexOf('@') <= 0 || email.indexOf('@') > email.indexOf('.', email.indexOf('@'))) {
-                    correct = false;
-                }
-
-                int tel_num = 0;
-                try {
-                    if (!jtfPol[3].getText().replaceAll(" ", "").equals(jtfPol[3].getText()) || jtfPol[3].getText().length() != 9) {
-                        correct = false;
-                    }
-                    tel_num = Integer.parseInt(jtfPol[3].getText().replaceAll(" ", ""));
-                    if (tel_num <= 0) {
-                        correct = false;
-                    }
-                } catch (Exception exc) {
-                    correct = false;
-                }
-                if (!correct) {
+                if (!PoprawnoscDanych.poprawnosc(jtfPol[0].getText(), jtfPol[1].getText(), jtfPol[2].getText(), jtfPol[3].getText())) {
                     JOptionPane.showMessageDialog(null, "Proszę wpisać poprawne dane", "Error", INFORMATION_MESSAGE);
 
                 } else {
-                    MainWindow.rightPanel.MakeOrderPart4(booking, name, lastname, email, tel_num);
+                    MainWindow.rightPanel.MakeOrderPart4(booking, jtfPol[0].getText(), jtfPol[1].getText(), jtfPol[2].getText(), Integer.parseInt(jtfPol[3].getText()));
                 }
             }
         });
@@ -1179,7 +1181,7 @@ public class RightWindow extends JPanel {
         JLabel check = new JLabel("Sprawdź poprawność danych do rezerwacji");
         check.setBounds(50, 60, 700, 50);
         check.setForeground(WindowConstants.schematKolorow.getNazwy());
-        check.setFont(new Font(WindowConstants.czcionka, Font.CENTER_BASELINE, 20));
+        check.setFont(new Font(WindowConstants.czcionka2, Font.CENTER_BASELINE, 20));
         check.setHorizontalAlignment(SwingConstants.CENTER);
         add(check);
 
@@ -1197,12 +1199,12 @@ public class RightWindow extends JPanel {
         for (int i = 0; i < infoName.length; i++) {
             infoName[i].setBounds(50, 120 + 30 * i, 250, 30);
             infoName[i].setForeground(WindowConstants.schematKolorow.getNazwy());
-            infoName[i].setFont(new Font(WindowConstants.czcionka, Font.CENTER_BASELINE, 16));
+            infoName[i].setFont(new Font(WindowConstants.czcionka2, Font.CENTER_BASELINE, 16));
             infoName[i].setHorizontalAlignment(SwingConstants.RIGHT);
             add(infoName[i]);
         }
-        ImageButton wstecz = new ImageButton("res"+File.separator+"Wstecz.png");
-        wstecz.setRolloverIcon(new ImageIcon("res"+File.separator+"WsteczEntered.png"));
+        ImageButton wstecz = new ImageButton("res" + File.separator + "Wstecz.png");
+        wstecz.setRolloverIcon(new ImageIcon("res" + File.separator + "WsteczEntered.png"));
         wstecz.setBounds(WindowConstants.WIDTH, WindowConstants.WIDTH, WindowConstants.WIDTH, HEIGHT);
         wstecz.setBounds(290, 450, 100, 40);
         wstecz.addActionListener(new ActionListener() {
@@ -1212,8 +1214,8 @@ public class RightWindow extends JPanel {
             }
         });
         add(wstecz);
-        ImageButton next = new ImageButton("res"+File.separator+"Dalej.png");
-        next.setRolloverIcon(new ImageIcon("res"+File.separator+"DalejEntered.png"));
+        ImageButton next = new ImageButton("res" + File.separator + "Dalej.png");
+        next.setRolloverIcon(new ImageIcon("res" + File.separator + "DalejEntered.png"));
         next.setBounds(410, 450, 100, 40);
 
         JLabel[] info = new JLabel[9];
@@ -1256,16 +1258,12 @@ public class RightWindow extends JPanel {
      *
      * @param str
      */
-    private void makeFound(String str) {
+    private void makeFound(final Integer[] idTab) {
         removeAll();
         setLayout(null);
         setBackground(WindowConstants.schematKolorow.getTlo());
         setBounds(BORDER, 0, WindowConstants.WIDTH - BORDER, WindowConstants.HEIGHT);
 
-        Search sear = new Search();
-        sear.open();
-        final Integer[] idTab = sear.byTitle(str);
-        sear.close();
         int ile = idTab.length;
         final JPanel panel = new JPanel();
         panel.setBounds(0, 50, WindowConstants.WIDTH - BORDER, WindowConstants.HEIGHT - 50);
@@ -1276,8 +1274,8 @@ public class RightWindow extends JPanel {
             final ImageButton[] buttony = new ImageButton[ile];
             for (int i = 0; i < ile; i++) {
                 final int k = i;
-                buttony[k] = new ImageButton("res"+File.separator+"guzik.png");
-                buttony[k].setRolloverIcon(new ImageIcon("res"+File.separator+"guzikEntered.png"));
+                buttony[k] = new ImageButton("res" + File.separator + "guzik.png");
+                buttony[k].setRolloverIcon(new ImageIcon("res" + File.separator + "guzikEntered.png"));
                 buttony[k].setBounds((int) ((WindowConstants.WIDTH - WindowConstants.BORDER) / 2 - ile * 10 + 20 * i), 30, 20, 20);
                 add(buttony[k]);
                 buttony[k].addActionListener(new ActionListener() {
@@ -1312,13 +1310,13 @@ public class RightWindow extends JPanel {
         add(title);
         title.setBounds(50, 60, 700, 50);
         title.setForeground(WindowConstants.schematKolorow.getNazwy());
-        title.setFont(new Font(WindowConstants.czcionka, Font.CENTER_BASELINE, 20));
+        title.setFont(new Font(WindowConstants.czcionka2, Font.CENTER_BASELINE, 20));
         title.setHorizontalAlignment(SwingConstants.CENTER);
-        for (int i = 0; i < 12; i++) {
+        for (int i = 0; i < 13; i++) {
             JLabel godz = new JLabel(Integer.toString(i + 10) + ":00");
             godz.setFont(new Font(WindowConstants.czcionka, Font.CENTER_BASELINE, 12));
             godz.setForeground(WindowConstants.schematKolorow.getNazwy());
-            godz.setBounds(170 + 50 * i, 110, 50, 30);
+            godz.setBounds(140 + 50 * i, 110, 50, 30);
             add(godz);
         }
         for (int i = 0; i < dates.length; i++) {
@@ -1326,14 +1324,14 @@ public class RightWindow extends JPanel {
             data.setFont(new Font(WindowConstants.czcionka, Font.CENTER_BASELINE, 20));
             data.setForeground(WindowConstants.schematKolorow.getNazwy());
             add(data);
-            data.setBounds(50, 150 + 40 * i, 110, 30);
+            data.setBounds(20, 150 + 40 * i, 110, 30);
             final Integer[] hours = hoursPerDay.get(dates[i]);
             for (int j = 0; j < hours.length; j++) {
                 final int ind = j;
                 if (hours[j] > 0) {
-                    ImageButton godzina = new ImageButton("res"+File.separator+"Wyb.png");
-                    godzina.setRolloverIcon(new ImageIcon("res"+File.separator+"WybEntered.png"));
-                    godzina.setBounds(160 + 50 * j, 150 + 40 * i, 50, 30);
+                    ImageButton godzina = new ImageButton("res" + File.separator + "Wyb.png");
+                    godzina.setRolloverIcon(new ImageIcon("res" + File.separator + "WybEntered.png"));
+                    godzina.setBounds(130 + 50 * j, 150 + 40 * i, 50, 30);
                     add(godzina);
                     godzina.addActionListener(new ActionListener() {
                         @Override

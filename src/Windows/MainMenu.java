@@ -71,7 +71,7 @@ public class MainMenu extends JPanel implements ActionListener {
         cpr.setBounds(10, WindowConstants.HEIGHT - 60, 200, 30);
         add(cpr);
         ImageButton schematPodstawowy = new ImageButton("res" + File.separator + "test.png");
-        schematPodstawowy.setBounds(0, 390, 40, 40);
+        schematPodstawowy.setBounds(5, 390, 40, 40);
         schematPodstawowy.setOpaque(false);
         schematPodstawowy.setBorderPainted(false);
         schematPodstawowy.setContentAreaFilled(false);
@@ -79,14 +79,14 @@ public class MainMenu extends JPanel implements ActionListener {
         schematPodstawowy.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //WindowConstants.schematKolorow = Colors.PODSTAWOWY;
+                WindowConstants.schematKolorow = Colors.SCHEMAT0;
                 MainWindow.leftPanel.setBackground(WindowConstants.schematKolorow.getTlo());
                 MainWindow.rightPanel.StartWindow();
                 MainWindow.rightPanel.StartWindow();
             }
         });
         ImageButton schemat1 = new ImageButton("res" + File.separator + "test.png");
-        schemat1.setBounds(50, 390, 40, 40);
+        schemat1.setBounds(55, 390, 40, 40);
         schemat1.setOpaque(false);
         schemat1.setBorderPainted(false);
         schemat1.setContentAreaFilled(false);
@@ -94,7 +94,37 @@ public class MainMenu extends JPanel implements ActionListener {
         schemat1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //WindowConstants.schematKolorow = Colors.TESTOWY;
+                WindowConstants.schematKolorow = Colors.SCHEMAT1;
+                MainWindow.leftPanel.setBackground(WindowConstants.schematKolorow.getTlo());
+                MainWindow.rightPanel.StartWindow();
+                MainWindow.rightPanel.StartWindow();
+            }
+        });
+        ImageButton schemat2 = new ImageButton("res" + File.separator + "test.png");
+        schemat2.setBounds(105, 390, 40, 40);
+        schemat2.setOpaque(false);
+        schemat2.setBorderPainted(false);
+        schemat2.setContentAreaFilled(false);
+        add(schemat2);
+        schemat2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                WindowConstants.schematKolorow = Colors.SCHEMAT2;
+                MainWindow.leftPanel.setBackground(WindowConstants.schematKolorow.getTlo());
+                MainWindow.rightPanel.StartWindow();
+                MainWindow.rightPanel.StartWindow();
+            }
+        });
+        ImageButton schemat3 = new ImageButton("res" + File.separator + "test.png");
+        schemat3.setBounds(155, 390, 40, 40);
+        schemat3.setOpaque(false);
+        schemat3.setBorderPainted(false);
+        schemat3.setContentAreaFilled(false);
+        add(schemat3);
+        schemat3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                WindowConstants.schematKolorow = Colors.SCHEMAT3;
                 MainWindow.leftPanel.setBackground(WindowConstants.schematKolorow.getTlo());
                 MainWindow.rightPanel.StartWindow();
                 MainWindow.rightPanel.StartWindow();
