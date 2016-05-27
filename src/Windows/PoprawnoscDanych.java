@@ -1,16 +1,30 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Windows;
 
 /**
+ * Klasa posiadająca statyczną metodę do sprawdzania poprawności danych
+ * wprowadzanych przez urzytkownika w dostępnych polach
  *
  * @author Bartłomiej
  */
 public class PoprawnoscDanych {
 
+    /**
+     * Meotda sprawdzająca poprawność danych wprowadzonych przez urzystkownika
+     * na etapie rezerwacji.
+     *
+     * @param name - imię - może zawierać jedynie znaki a-z / A-Z - nie jest
+     * konieczne aby pierwszalitera była wielka
+     * @param lastname - nazwisko - może zawierać jedynie znaki a-z / A-Z - nie
+     * jest konieczne aby pierwszalitera była wielka
+     * @param email - adres e-mail - sprawdzane jest czy adres zawiera ciąg
+     * znaków po którym następuje znak '@' oraz inny ciąg znaków po po '@' za
+     * którym wystąpki znak '.' oraz kolejny ciąg znaków, ciągi takich znaków
+     * muszą być minimum 1-znakowe
+     * @param numer - numer teleronu - dowolna dziewięciocyfrowa liczba
+     * nieujemna różna od 0
+     * @return true jeżeli wszystkie powyższe warunki są spełnione, przeciwnie
+     * false
+     */
     public static boolean poprawnosc(String name, String lastname, String email, String numer) {
         String replaceAll1 = name.replaceAll("[a-z]+", "").replaceAll("[A-Z]+", "").replaceAll(" ", "");
         String replaceAll2 = lastname.replaceAll("[a-z]+", "").replaceAll("[A-Z]+", "").replaceAll(" ", "");

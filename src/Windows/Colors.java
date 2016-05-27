@@ -1,20 +1,20 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Windows;
 
 import java.awt.Color;
 
 /**
+ * Enum odpowiedzialny za zestawy kolorów jakie możeby brać urzytkownik. Są 4
+ * podstawowe schematy kolorystyczne Urzytkownik nie może tworzyć własnych
+ * nowych Można jedynie wybierać schetaty stworzone już
  *
  * @author Bartłomiej
  */
 public enum Colors {
-    //PODSTAWOWY(Color.black, Color.white, Color.gray, Color.blue),
-    //TESTOWY(Color.blue,Color.yellow,Color.white,Color.black),
 
+    /**
+     * Schemat podstawowy, wybierany automatycznie Dominują w nim kolory czarne
+     * (tło) oraz jasne kolory dla tekstów
+     */
     SCHEMAT0(Color.black, //tlo
             new Color(217, 252, 208), //nazwy
             Color.white, //napisy
@@ -76,6 +76,29 @@ public enum Colors {
     private final Color kolorScroll;
     private final Color kolorRamkaWyszukiwania;
 
+    /**
+     * Konstruktor twozrący zestawy schemtów kolorystycznych
+     *
+     * @param tlo - kolor tła
+     * @param nazwy - kolor tekstu dla ważnych nazw (np.: tytuł filmy, rodzaje
+     * biletów przy wyborze ich ilości)
+     * @param napisy - podstawowy kolor dla napisów wyświetlanych w oknie
+     * programu
+     * @param podswietlanie - kolor napisów które umżliwiają kliknięcie na sibie
+     * powodujące wyświetlenie nowego okna, kolor ten zmiania się po najechaniu
+     * na napis
+     * @param tabelkaHeader - kolor tla pierwszego wiersza tabelki w repertuarze
+     * ( tytuł, wiek, napisy ,godziny, itd...)
+     * @param tabelkaTlo - kolor tła tabelki z danymi w repertuarze (bez
+     * pierwszego wierrsza)
+     * @param tabelkaNapisy - kolor napisów w tabelce w repertuarze
+     * @param datyTlo - kolor tła przycisk umożliwiającego wybór daty w oknie
+     * repertuaru
+     * @param datyNapisy - kolor napisów dla przycisku wyboru daty w oknie
+     * repertuaru
+     * @param scroll - kolor wszystkich scrolli jaie występują w programie
+     * @param ramkaWyszukiwania - obrazmowanie pola wyszukiwarki
+     */
     Colors(Color tlo, Color nazwy, Color napisy, Color podswietlanie, Color tabelkaHeader, Color tabelkaTlo, Color tabelkaNapisy,
             Color datyTlo, Color datyNapisy, Color scroll, Color ramkaWyszukiwania) {
         kolorTla = tlo;

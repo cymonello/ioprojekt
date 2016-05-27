@@ -6,7 +6,6 @@ import Repertoire.Repertoire;
 import Search.Dates;
 import Search.Search;
 import database.MoviesDB;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -31,7 +30,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 import static Windows.WindowConstants.*;
-
 import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -52,10 +50,8 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
 /**
- * To jest klasa odpowiedzialna za poprawne wyświetlanie prawej strony naszego
- * programu. Narazie wszelkie kolorki, obrazki są jedynie po to by nie było
- * biało, wszelkie schematy czcionek, kolorów itd dobierze się chyba już po 1
- * prototypie
+ * Klasa odpowiedzialna za poprawne wyświetlanie prawej strony programu. Do
+ * ustalania szczegółowego wyglądu panelu korzysta z klasy WindowConstants.
  *
  * @author Bartłomiej
  */
@@ -63,6 +59,10 @@ public class RightWindow extends JPanel {
 
     private JTable jTable = new JTable();
 
+    /**
+     * Konstruktor odpowiedzialny za stworzenie panelu, domyślnie ustawia w nim
+     * okno startowe, 3 wybrane, proponowane filmy
+     */
     public RightWindow() {
         StartWindow();
     }
@@ -143,12 +143,19 @@ public class RightWindow extends JPanel {
     /**
      * Ten string służy do zapamiętania jaka data przy wyborze w repertuarze
      * została wybrana jako ostatnia gdzieki temu po wygenerowaniu nowego
-     * repertuaru mamy zanaczony poprawny dzien, na kóry wskazuje repertuar
+     * repertuaru mamy zaznaczony poprawny dzien, na kóry wskazuje repertuar
      */
     private String dataa;
 
     /**
-     * Funkcja tworzy panel z filmamy dostępnymi na wybrany dzień
+     * Funkcja tworzy panel z filmamy dostępnymi na wybrany dzień Istnieje
+     * możliwość wybnoru jednego z 5 kolejnych dni (łącznie z dniem dzisiejszym
+     * 6 dni do wyboru). W wyświetlonej tabeli z repertuarem urzytkownik może
+     * kliknąć na dowolną komórkę w pierwszej kolumnie w celu uzyskania
+     * informacji o dlanym filmie. Istnije możliwość klikania w komórki w
+     * kolumnach odpowiedzialnych za godziny w których można zobaczyć dany film,
+     * po kliknięciu w godzinę zostanie wyświtlone okno rezerwacji biletów na
+     * dany film o konkretnej godzinie danego dnia
      */
     public void MakeRepertoire() {
         JComboBox jcbDate;
@@ -190,7 +197,7 @@ public class RightWindow extends JPanel {
 
                     final Repertoire rep = new Repertoire(str);
                     final String[][] tab = rep.getValue();
-                    final String[] tab1 = {"Tytuł", "Wiek", "Info", "Język", "Czas", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21","22"};
+                    final String[] tab1 = {"Tytuł", "Wiek", "Info", "Język", "Czas", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22"};
 
                     jTable = new JTable(tab, tab1);
                     jTable.setGridColor(WindowConstants.schematKolorow.getTlo());
@@ -348,21 +355,23 @@ public class RightWindow extends JPanel {
     private boolean hide_flag = false;
 
     /**
-     * Metoda odpowiedzialna za wyświatlanie poprawnie wyszukiwarki Wyszukiwarka
-     * działa w sposób dyanmiczny, po każdorazowej zmianie w polu tekstowym
-     * wyświetla się lista pasujących tytułów do zapytania możliwe jest
-     * naciśnięcie strzałki w duł aby wybrac filmy lub klawisza Enter
-     *
-     * @throws SQLException
-     * @throws ClassNotFoundException
+     * Metoda odpowiedzialna za wyświatlanie poprawnie wyszukiwarki.
+     * Wyszukiwarka działa w sposób dyanmiczny, po każdorazowej zmianie w polu
+     * tekstowym wyświetla się lista pasujących tytułów do zapytania możliwe
+     * jest naciśnięcie strzałki w duł aby wybrac filmy lub klawisza Enter
      */
-    void MakeSearch() {
+    public void MakeSearch() {
         try {
             removeAll();
             setLayout(null);
             setBackground(WindowConstants.schematKolorow.getTlo());
             setBounds(BORDER, 0, WindowConstants.WIDTH - BORDER, WindowConstants.HEIGHT);
-
+            JLabel wyszukiwarka = new JLabel("Wyszukaj film");
+            add(wyszukiwarka);
+            wyszukiwarka.setBounds(50, 75, 700, 100);
+            wyszukiwarka.setForeground(WindowConstants.schematKolorow.getNazwy());
+            wyszukiwarka.setFont(new Font(WindowConstants.czcionka2, Font.CENTER_BASELINE, 25));
+            wyszukiwarka.setHorizontalAlignment(SwingConstants.CENTER);
             Class.forName("com.mysql.jdbc.Driver");
             MoviesDB mdb = new MoviesDB();
             mdb.open();
@@ -471,7 +480,7 @@ public class RightWindow extends JPanel {
             setModel(new DefaultComboBoxModel(v), "");
             JPanel p = new JPanel(new BorderLayout());
             p.add(jtfSearch, null);
-            p.setBounds(150, (int) (WindowConstants.HEIGHT * 0.3), WindowConstants.WIDTH - BORDER - 300, 100);
+            p.setBounds(250, 250, 300, 50);
 
             add(p);
             setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -518,7 +527,7 @@ public class RightWindow extends JPanel {
      *
      * @param list
      * @param text
-     * @return
+     * @return DefaultComboBoxModel
      */
     private static DefaultComboBoxModel getSuggestedModel(java.util.List<String> list, String text) {
         DefaultComboBoxModel m = new DefaultComboBoxModel();
@@ -531,26 +540,13 @@ public class RightWindow extends JPanel {
         return m;
     }
 
-    /*
-                0 - obrazek
-                !1 - tytuł
-                !2 - gatunek
-                !3 - długość
-                !4 - język 
-                !5 - wiek
-                !6 - reżyser
-                !7 - aktorzy
-                !8 - kraj
-                !9 - rok prod
-                10 - ocena
-                11 - opis
-     */
     /**
      * Panel wyświtlający informacje o filmie, informacje te pobiera
      * bezpośrednio z bazy danych na podstawie ID filmu
      *
      * @param ID - ID filmu o którym wyświetlane mają być informacje
-     * @param panel
+     * @param panel - panel w oknie programu w którym mają zostać umieszczone
+     * iformacje o filmie
      */
     public void ShowInfoFilm(final int ID, JPanel panel) {
         panel.removeAll();
@@ -762,8 +758,10 @@ public class RightWindow extends JPanel {
     }
 
     /**
-     * To będzie funkcja która jest podowiedzialna za edycję rezerwacji narazie
-     * pusty panel
+     * Metoda wyświetlająca panel odpwiedzialny za edycję rezerwacji, w panelu
+     * tym urzytkownik podaje numer rezerwacji oraz hasło, aby móc edytować
+     * rezerwację dane muszą być poprawne, muszą zostać zaakceptowane przez
+     * system
      */
     public void MakeBookingEdit() {
         removeAll();
@@ -790,7 +788,10 @@ public class RightWindow extends JPanel {
         repaint();
     }
 
-    public void editPart2() {
+    /**
+     * Wyświetla dalsze infromacje związane z edycją rezerwacji.
+     */
+    private void editPart2() {
         removeAll();
         setLayout(null);
         setBackground(WindowConstants.schematKolorow.getTlo());
@@ -800,7 +801,7 @@ public class RightWindow extends JPanel {
     }
 
     /**
-     * Funkca wyświatlająca informacje na temat kina
+     * Funkcja wyświtla informacje związane z działaniem aplikacji oraz z kinenm
      *
      */
     public void MakeInfoPage() {
@@ -957,7 +958,7 @@ public class RightWindow extends JPanel {
      * pokazywane są miejsca które można wybrać, są już zajęte lub wybraliśmy je
      * właśnie
      *
-     * @param booking
+     * @param booking - obiekt rezerwacji powstały w poprzednim kroku
      */
     private void MakeOrderPart2(final Booking booking) {
         removeAll();
@@ -1092,7 +1093,7 @@ public class RightWindow extends JPanel {
      * oraz [A-Z] adres e-mail - musi zawierać znak @ oraz kropke "." które
      * występuje dalej niż "@" numer telefonu - musi się składać z 9 cyfer
      *
-     * @param booking
+     * @param booking - obiekt rezerwacji powstały w poprzednich krokach
      */
     private void MakeOrderPart3(final Booking booking) {
         removeAll();
@@ -1164,14 +1165,14 @@ public class RightWindow extends JPanel {
      * Panel końcowy rezerwacji Należy potwierdzić poprawnyść wpisanych
      * wcześniej danych w przypadku błędnych danych istnieje możliwość
      * cołfnięćia się o 1 krok i poprawienia informacji po na ciśnięciu guzika
-     * końcowego zosatejw ysłany mail na podany wcześniej adres, wyświtla się
+     * końcowego zostaje wysłany e-mail na podany wcześniej adres, wyświtla się
      * okno startowe programu
      *
-     * @param booking
-     * @param name
-     * @param lastname
-     * @param email
-     * @param number
+     * @param booking - obiekt rezerwacji powstały w poprzednich krokach
+     * @param name - imie
+     * @param lastname - nazwisko
+     * @param email - adres e-mail
+     * @param number - numer telefonu
      */
     private void MakeOrderPart4(final Booking booking, final String name, final String lastname, final String email, final int number) {
         removeAll();
@@ -1254,9 +1255,10 @@ public class RightWindow extends JPanel {
      * Funkcja wyświetlający informacje pasujące do zapytania z wyszukiwarki
      * filmy które zostały przyporządkowane są wyświtlane z pojedynczych
      * panelach, istnieje możliwość zmiany filmu o którym wyświtlane są
-     * informacje, za pomocą kółeczek na górze panelu
+     * informacje, za pomocą kółeczek na górze panelu Po kliknięciu na nazwę
+     * gatunku filmu, wyświtlają sie wszytskief filmy dostępne o danym gatunku
      *
-     * @param str
+     * @param idTab - tablica ID filmów do wyświetlenia
      */
     private void makeFound(final Integer[] idTab) {
         removeAll();
@@ -1287,13 +1289,21 @@ public class RightWindow extends JPanel {
             }
             buttony[0].getActionListeners()[0].actionPerformed(new ActionEvent(buttony[0], 2, "symuluje"));
         } else {
-
+            JLabel brakWynikow = new JLabel("Nie znaleziono psujących filmów");
+            panel.add(brakWynikow);
+            brakWynikow.setBounds(50, 150, 700, 100);
+            brakWynikow.setForeground(WindowConstants.schematKolorow.getNazwy());
+            brakWynikow.setFont(new Font(WindowConstants.czcionka2, Font.CENTER_BASELINE, 25));
+            brakWynikow.setHorizontalAlignment(SwingConstants.CENTER);
         }
         repaint();
     }
 
     /**
+     * Metoda wyświtlająca dostępne terminy dla danego fimu możliwe do
+     * rezerwacji
      *
+     * @param ID - id filmu dla którego sprawdzamy dostępne terminy
      */
     private void Terms(int ID) {
         removeAll();

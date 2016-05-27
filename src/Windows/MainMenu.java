@@ -1,12 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Windows;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,10 +13,10 @@ import javax.swing.JPanel;
 /**
  * Klasa tworząca główne menu programu Klasa tworzy przyciski z obrazów, po
  * najechaniu na przycisk obrazek się zmienia imitując mrugnięcie guzika Jeśli
- * nie odnajdzie odpwiedniego obrazka w w katalogu res, zostanie stworzony
- * domyśly dla Javy przycisk Klikniecie na guzik powoduje zmiane wyświetlanej
- * zawartości na prawym panelu Przyciski niezależnie od systemu na którym
- * jesteśmy powinny wyglądać jednakowo
+ * nie odnajdzie odpwiedniego obrazka w katalogu res, zostanie stworzony
+ * przeźoczysty guzik(niewidoczny). Klikniecie na guzik powoduje zmiane
+ * wyświetlanej zawartości na prawym panelu Przyciski niezależnie od systemu na
+ * którym jesteśmy powinny wyglądać jednakowo
  *
  * @author Bartłomiej
  */
@@ -34,6 +28,13 @@ public class MainMenu extends JPanel implements ActionListener {
     private ImageButton mojaRezerwacjaButton;
     private ImageButton informacjeButton;
 
+    /**
+     * Konstruktor tworzący menu okna po jego lewej stronie W menu znajdują się
+     * główne przyciski odpoweidzialne za nawigowanie programem Z panelu menu
+     * możliwe jest również zmienienie schematu kolorystycznego dla całego
+     * programu Po wybraniu nowego schematy kolorystycznego program wyświtli
+     * okno startowe
+     */
     public MainMenu() {
         setLayout(null);
         setBackground(WindowConstants.schematKolorow.getTlo());
@@ -139,7 +140,7 @@ public class MainMenu extends JPanel implements ActionListener {
      * podstawie tworzy odpowiedni obiekt JPanel i wyświetla do po prawej
      * stronie okna
      *
-     * @param e
+     * @param e żrófło wystąpienia zdarzenia
      */
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -162,20 +163,33 @@ public class MainMenu extends JPanel implements ActionListener {
 
 /**
  * Klasa pomocnicza dostępna tylko wpakiecie Windows Klasa umożliwiająca
- * tworzenie przycisków na podstawie obrazka W kontruktorze klasy podajemy
- * ściezkę dostępu do danego pliku Jeśli nie ma podanego pliku, przycisk bęzie
- * wyglądał jak klasyczny JButton w Javie
+ * tworzenie przycisków na podstawie obrazka. W kontruktorze klasy podajemy
+ * ściezkę dostępu do danego pliku Jeśli nie ma podanego pliku, przyssk zostanie
+ * stwozrony alebęzie niewidoczny dla urzytkownika. Przyciski domyślnie nie
+ * posiadają obrazmowania, ich tło jest przeźroczyste, urzytkownik widzi jedynie
+ * obrazek
  *
  */
 class ImageButton extends JButton {
 
     private String str;
 
+    /**
+     * Konstruktor tworzący obiekt klasy ImageButton
+     *
+     * @param img - ścieżka dostępu do pliku który ma być widoczny jako przycisk
+     */
     public ImageButton(String img) {
         this(new ImageIcon(img));
         str = img;
     }
 
+    /**
+     * Konstruktor tworzący obiekt klasy ImageButton
+     *
+     * @param icon - obiekt ImageIcon - obraz który ma zostać suatwiony jako
+     * przycisk
+     */
     public ImageButton(ImageIcon icon) {
         setIcon(icon);
         setMargin(new Insets(0, 0, 0, 0));
@@ -189,11 +203,26 @@ class ImageButton extends JButton {
         setSize(icon.getImage().getWidth(null), icon.getImage().getHeight(null));
     }
 
+    /**
+     * Metoda umożliwiająca nowego obrazu jako przycisk
+     *
+     * @param str - ściażka dostępu do nowego obrazu przycisku
+     */
     public void setIcon(String str) {
         this.str = str;
         setIcon(new ImageIcon(str));
     }
 
+    /**
+     * Metoda sprawdzajaca czy obraz ustawiony jako przycisk to ten sam obraz
+     * dla którego została wywołana metoda, metoda porównuje ścieżkę dostępu do
+     * obecnego obrazu z innym obiektem, jeżeli obiek nie jest stringiem zwróci
+     * false, jeżeli jest stringiem porówna czy są takie same (porów ściażki
+     * dostępu do plików)
+     *
+     * @param obj - obikt z którym porównujemy ścieżkę do obecnego obrazu
+     * @return - true jeżeli ścieżki są identyczne, flase w przeciwnym przypadku
+     */
     @Override
     public boolean equals(Object obj) {
         return str.equals(obj);

@@ -1,17 +1,7 @@
 package Windows;
 
-import java.awt.Color;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFrame;
-import javax.swing.JRootPane;
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.plaf.ColorUIResource;
-import javax.swing.plaf.metal.DefaultMetalTheme;
-import javax.swing.plaf.metal.MetalLookAndFeel;
-import javax.swing.plaf.metal.MetalTheme;
 
 /**
  * Klasa powodująca wyświetlenie się głównego okna programu, łączy ona ze sobą
@@ -22,7 +12,8 @@ import javax.swing.plaf.metal.MetalTheme;
 public class MainWindow extends JFrame {
 
     /**
-     * Tu jest metoda main powodująca wyświetlenie okna
+     * Statyczna metoda main powoduję wyświtlenie głównego programu main poprzez
+     * wywołanie konstruktora klasy MainWindow oraz statycznej funkcji run
      *
      * @param args
      */
@@ -31,10 +22,15 @@ public class MainWindow extends JFrame {
         run(main, WindowConstants.WIDTH, WindowConstants.HEIGHT, "Projekt - prototyp 2");
 
     }
-
+    //zmienne pakietowe, aby móc z nich korzystyć w funkcjach klasy RightWindow
     static MainMenu leftPanel;
     static RightWindow rightPanel;
 
+    /**
+     * Konstrukor klasy MainWindow Tworzy nowe obiekt odpowiedzialne za
+     * wyświtlanie lewgo i prawego panelu w oknie główym programu, dodaje te
+     * panele do JFrame (siebie)
+     */
     public MainWindow() {
         rightPanel = new RightWindow();
         rightPanel.setBounds(WindowConstants.BORDER, 0, WindowConstants.WIDTH - WindowConstants.BORDER, WindowConstants.HEIGHT);
@@ -48,10 +44,7 @@ public class MainWindow extends JFrame {
     }
 
     /**
-     * Funkcja przez którą uruchamiamy okna naszej aplikacji Nasza aplikacja
-     * niestety jest jednowątkowa, nie powinno być to jednak widoczne, ale gdyby
-     * coś było nie tak, to nie można robić jednocześnie 2 poleceń pracujących
-     * na jednej zmiennej
+     * Funkcja przez którą uruchamiamy okna naszej aplikacji.
      *
      * @param f - obiekt ktory moze wyświetlić okno, musi dziedzyczyć po JFrame
      * @param width - szereokość okno w pikselach
@@ -66,65 +59,6 @@ public class MainWindow extends JFrame {
                 f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 f.setSize(width, height);
                 f.setResizable(false);
-                /*f.setUndecorated(true);
-                f.getRootPane().setWindowDecorationStyle(
-                        JRootPane.FRAME
-                );
-                MetalTheme th = MetalLookAndFeel.getCurrentTheme();
-                MetalLookAndFeel.setCurrentTheme(new DefaultMetalTheme() {
-                    @Override
-                    public ColorUIResource getWindowTitleInactiveBackground() {
-                        return new ColorUIResource(Color.black);
-                    }
-
-                    @Override
-                    public ColorUIResource getWindowTitleBackground() {
-                        return new ColorUIResource(Color.black);
-                    }
-
-                    @Override
-                    public ColorUIResource getPrimaryControlHighlight() {
-                        return new ColorUIResource(Color.black);
-                    }
-
-                    @Override
-                    public ColorUIResource getPrimaryControlDarkShadow() {
-                        return new ColorUIResource(Color.black);
-                    }
-
-                    @Override
-                    public ColorUIResource getPrimaryControl() {
-                        return new ColorUIResource(Color.black);
-                    }
-
-                    @Override
-                    public ColorUIResource getControlHighlight() {
-                        return new ColorUIResource(Color.black);
-                    }
-
-                    @Override
-                    public ColorUIResource getControlDarkShadow() {
-                        return new ColorUIResource(Color.black);
-                    }
-
-                    @Override
-                    public ColorUIResource getControl() {
-                        return new ColorUIResource(Color.black);
-                    }
-                    //end inActiveBumps
-
-                });
-
-                try {
-                    UIManager.setLookAndFeel(
-                            UIManager.getCrossPlatformLookAndFeelClassName()
-                    );
-                } catch (UnsupportedLookAndFeelException e) {
-                } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-                    Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-                SwingUtilities.updateComponentTreeUI(f);*/
                 f.setVisible(true);
             }
 
