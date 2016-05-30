@@ -26,19 +26,22 @@ public class PoprawnoscDanych {
      * false
      */
     public static boolean poprawnosc(String name, String lastname, String email, String numer) {
-        String replaceAll1 = name.replaceAll("[a-z]+", "").replaceAll("[A-Z]+", "").replaceAll(" ", "");
-        String replaceAll2 = lastname.replaceAll("[a-z]+", "").replaceAll("[A-Z]+", "").replaceAll(" ", "");
-        String replaceAll3 = email.replaceAll(" ", "");
-
+        String replaceAll1 = name.replaceAll("[a-z]+", "").replaceAll("[A-Z]+", "").replaceAll("[ąćłńżźśóęĄĆŁŃŻŹŚÓĘ]", "");
+        String replaceAll2 = lastname.replaceAll("[a-z]+", "").replaceAll("[A-Z]+", "").replaceAll("[ąćłńżźśóęĄĆŁŃŻŹŚÓĘ-]", "");
+        String replaceAll3 = email.replaceAll("[a-z]", "").replaceAll("[A-Z]", "").replaceAll("[0-9]", "").replaceAll("[!#$%&'*+-/=?^_`{|}~.@]", "");
+        if(String.valueOf(email.charAt(0)) == "[0-9]" || String.valueOf(email.charAt(0)) == "[_.-]"|| (email.length() - email.replaceAll("@","").length())>1){
+            return false;
+        }
+        System.out.println(replaceAll3.length()+" "+ replaceAll3);
         if (replaceAll1.length() > 0 || name.length() == 0
                 || replaceAll2.length() > 0 || lastname.length() == 0
-                || !email.equals(replaceAll3) || email.indexOf('@') <= 0 || email.indexOf('@') > email.indexOf('.', email.indexOf('@') + 2) || email.indexOf('.', email.indexOf('@') + 2) == email.length() - 1) {
+                || replaceAll3.length() > 0 || email.indexOf('@') <= 0 || email.indexOf('@') > email.indexOf('.', email.indexOf('@') + 2) || email.indexOf('.', email.indexOf('@') + 2) == email.length() - 1) {
             return false;
         }
 
         int tel_num = 0;
         try {
-            if (!numer.replaceAll(" ", "").equals(numer) || numer.length() != 9) {
+            if (!numer.replaceAll(" ", "").equals(numer) || numer.replaceAll(" ", "").length() != 9) {
                 return false;
             }
             tel_num = Integer.parseInt(numer);
