@@ -20,6 +20,10 @@ public class TicketsDB
 {
     private Connection connect = null;
     private Statement statement = null;
+    
+    /**
+     * Metoda otwiera połączenie z bazą
+     */
     public void open()
     {
         try
@@ -30,6 +34,10 @@ public class TicketsDB
             JOptionPane.showMessageDialog(null, e.toString());
         }
     }
+    
+    /**
+     * Metoda zamykająca połączenie z bazą danych
+     */
     public void close()
     {
         try
@@ -43,6 +51,16 @@ public class TicketsDB
         }
     }
     
+    /**
+     * Metoda dodająca bilet do bazy biletów
+     * @param order
+     * @param date
+     * @param hour
+     * @param hall
+     * @param row
+     * @param seat
+     * @param type 
+     */
     public void addTicket(int order, String date, String hour, int hall, int row, int seat, int type)
     {
         try
@@ -69,6 +87,13 @@ public class TicketsDB
         }
     }
     
+    /**
+     * MEtoda przeglądająca bazę biletów by sprawdzić które miejca na sali są już zajęte
+     * @param date
+     * @param hour
+     * @param hall
+     * @return zwraca tablicę int[][] symbolizującą salę (0 lub 1 - zajętość miejsc)
+     */
     public int[][] checkHall(String date, String hour, int hall)
     {
         int[][] sala = new int[10][20];

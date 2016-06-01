@@ -25,6 +25,9 @@ public class MoviesDB
     private Connection connect = null;
     private Statement statement = null;
     
+    /**
+     * Metoda otwiera połączenie z bazą
+     */
     public void open()
     {
         try
@@ -35,6 +38,10 @@ public class MoviesDB
             JOptionPane.showMessageDialog(null, e.toString());
         }
     }
+    
+    /**
+     * Metoda zamykająca połączenie z bazą danych
+     */
     public void close()
     {
         try
@@ -132,8 +139,10 @@ public class MoviesDB
         return desc;
     }
     
-    
-    // Metoda zwracająca max id z bazy filmów czyli ilość filmów w bazie
+    /**
+     * Metoda zwracająca max id z bazy filmów czyli ilość filmów w bazie
+     * @return 
+     */
     public int getMaxId()
     {
         int id = 0;
@@ -158,21 +167,23 @@ public class MoviesDB
         return id;
     }
     
-    /* Metoda zwracająca info o filmie + zdjęcie w tablicy Object
-    0 - obrazek
-    1 - tytuł
-    2 - gatunek
-    3 - długość
-    4 - język 
-    5 - wiek
-    6 - reżyser
-    7 - aktorzy
-    8 - kraj
-    9 - rok prod
-    10 - ocena
-    11 - opis
-    */
-    
+    /**
+     * Metoda zwracająca info o filmie + zdjęcie w tablicy Object
+     * 0 - obrazek
+     * 1 - tytuł
+     * 2 - gatunek
+     * 3 - długość
+     * 4 - język 
+     * 5 - wiek
+     * 6 - reżyser
+     * 7 - aktorzy
+     * 8 - kraj
+     * 9 - rok prod
+     * 10 - ocena
+     * 11 - opis
+     * @param id
+     * @return 
+     */
     public Object[] getMovieInfo(int id)
     {
         ResultSet r = null;
@@ -212,6 +223,11 @@ public class MoviesDB
         return mov;
     }
     
+    /**
+     * Metoda zwracająca ocenę filmu
+     * @param id
+     * @return 
+     */
     public double getNote(int id)
     {
         double note = 0;
@@ -238,6 +254,11 @@ public class MoviesDB
         return note;
     }
     
+    /**
+     * MEtoda dodająca ocenę filmu
+     * @param id
+     * @param note 
+     */
     public void addNote(int id, int note)
     {
         ResultSet temp;

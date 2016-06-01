@@ -20,6 +20,10 @@ public class OrdersDB
 {
     private Connection connect = null;
     private Statement statement = null;
+    
+    /**
+     * Metoda otwiera połączenie z bazą
+     */
     public void open()
     {
         try
@@ -30,6 +34,10 @@ public class OrdersDB
             JOptionPane.showMessageDialog(null, e.toString());
         }
     }
+    
+    /**
+     * Metoda zamykająca połączenie z bazą danych
+     */
     public void close()
     {
         try
@@ -44,7 +52,7 @@ public class OrdersDB
     }
     
     /**
-     * !!!!!!!!!!!!!!!!!!! KEY w tickets zamienić na auto żeby się sam dodawał przy wstawianiu!!!!!!!!!!!!!!!!!!!!!!!!
+     * Metoda dodająca zamówienie do bazy zamówień
      * @param id
      * @param term
      * @param name
@@ -78,6 +86,10 @@ public class OrdersDB
         }
     }
     
+    /**
+     * Metoda zwracająca id ostatniego zamówienia
+     * @return 
+     */
     public int getId()
     {
         int id = 0;
@@ -102,6 +114,12 @@ public class OrdersDB
         return id;
     }
     
+    /**
+     * Metoda sprawdzająca czy poprawność zgodność hasła z nr rezerwacji
+     * @param id
+     * @param pass
+     * @return 
+     */
     public boolean check(int id, String pass)
     {
         String temp_pass;
@@ -112,10 +130,13 @@ public class OrdersDB
             {
                 statement = connect.createStatement();
                 temp = statement.executeQuery("SELECT password FROM Orders WHERE id=" + id);
-                temp.next();
-                temp_pass = temp.getString("password");
-                if(temp_pass.equals(pass))
-                    return true;
+                if(temp.next())
+                {
+                    temp.next();
+                    temp_pass = temp.getString("password");
+                    if(temp_pass.equals(pass))
+                        return true;
+                }
             }
             else
             {

@@ -7,7 +7,6 @@ package Booking;
 //import java.util.*;
 
 import Email.Mail;
-import database.HallDB;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;

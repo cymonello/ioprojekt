@@ -20,6 +20,10 @@ public class TermsDB
 {
     private Connection connect = null;
     private Statement statement = null;
+    
+    /**
+     * Metoda otwiera połączenie z bazą
+     */
     public void open()
     {
         try
@@ -30,6 +34,10 @@ public class TermsDB
             JOptionPane.showMessageDialog(null, e.toString());
         }
     }
+    
+    /**
+     * Metoda zamykająca połączenie z bazą danych
+     */
     public void close()
     {
         try
@@ -50,7 +58,7 @@ public class TermsDB
      * Aby uzupełnić repertuar zwróconym obiektem ResultSet trzeba skorzystać z funkcjonalności klasy ResultSet (np metoda next() do przechodzenia po wierszach tablei, coś jak foreach)
      * Korzystając z metod RasultSet trzeba wybrać dla każdego wiersza kolumny hour, movie, hall
      * A następnie wywołaść metodę getMovieInfo(int id) gdzie id to będzie movie z ResultSet
-     * @param date
+     * @param date - data na którą chcemy pobrać terminy
      * @return
      */
 
@@ -80,7 +88,7 @@ public class TermsDB
      * Jako parametr przymuje id wg którego wybierze odpowiedni film
      * Zwraca tablicę stringów, której pola to odpowiednie informacje o filmie które trzeba umiejscowić w tabeli
      * @param id
-     * @return
+     * @return tablica string z informacjami o filmie
      */
     public String[] getMovieInfo(int id)
     {
@@ -113,8 +121,7 @@ public class TermsDB
 
     /**
      * Zwraca tytuł filmu z konkretnego terminu
-     * @param date
-     * @param time
+     * @param id - id terminu, z którego chcemy dowiedzieć się tytułu filmu
      * @return
      */
     public String getTitle(int id)
@@ -145,6 +152,11 @@ public class TermsDB
         return title;
     }
     
+    /**
+     * Zwraca dane terminu o wybranym id
+     * @param id
+     * @return Dane w tablicy String
+     */
     public String[] getTermInfo(int id)
     {
         String info[] = new String[4];

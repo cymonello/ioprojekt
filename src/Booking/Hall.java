@@ -5,7 +5,6 @@
  */
 package Booking;
 
-import database.HallDB;
 import database.TicketsDB;
 import java.util.ArrayList;
 

@@ -19,6 +19,21 @@ public class Mail
     private static final String USER_NAME = "kinoio.booking";
     private static final String PASSWORD = "ProjektNaIo";
     
+    /**
+     * Metoda statyczna generująca email składający się z danych przekazaych jako parametry i wywołująca metodę wysyłającą
+     * @param title
+     * @param date
+     * @param hour
+     * @param hall
+     * @param ilosc
+     * @param name
+     * @param lastname
+     * @param email
+     * @param tel
+     * @param price
+     * @param id
+     * @param pass 
+     */
     public static void send(String title, String date, String hour, String hall, String ilosc, String name, String lastname, String email, String tel, String price, String id, String pass)
     {
         String body = "Dziękujemy za dokonanie rezerwacji. Oto dane Twojego zamówienia:\n"
@@ -37,6 +52,14 @@ public class Mail
         sendMail(USER_NAME, PASSWORD, email, "Potwierdzenie rezerwacji nr: " + id, body);
     }
     
+    /**
+     * Metoda wysyłająca email
+     * @param from
+     * @param pass
+     * @param to
+     * @param subject
+     * @param body 
+     */
     public static void sendMail(String from, String pass, String to, String subject, String body)
     {
         Properties props = System.getProperties();
