@@ -114,46 +114,92 @@ public enum Colors {
         kolorRamkaWyszukiwania = ramkaWyszukiwania;
     }
 
+    /**
+     * @return kolor tła
+     */
     public Color getTlo() {
         return kolorTla;
     }
 
+    /**
+     *
+     * @return kolor napisów które umżliwiają kliknięcie na sibie powodujące
+     * wyświetlenie nowego okna, kolor ten zmiania się po najechaniu na napis
+     */
     public Color getPodswietlony() {
         return kolorPodswietlania;
     }
 
+    /**
+     *
+     * @return podstawowy kolor dla napisów wyświetlanych w oknie programu
+     */
     public Color getNapisy() {
         return kolorNapisow;
     }
 
+    /**
+     * @return kolor tekstu dla ważnych nazw (np.: tytuł filmy, rodzaje biletów
+     * przy wyborze ich ilości)
+     */
     public Color getNazwy() {
         return kolorNazw;
     }
 
+    /**
+     *
+     * @return kolor tla pierwszego wiersza tabelki w repertuarze ( tytuł, wiek,
+     * napisy ,godziny, itd...)
+     */
     public Color getKolorTabelkaHeader() {
         return kolorTabelkaHeader;
     }
 
+    /**
+     *
+     * @return kolor tła tabelki z danymi w repertuarze (bez pierwszego
+     * wierrsza)
+     */
     public Color getKolorTabelka() {
         return kolorTabelkaTlo;
     }
 
+    /**
+     *
+     * @return kolor napisów w tabelce w repertuarze
+     */
     public Color getKolorTabelkaNapisy() {
         return kolorTabelkaNapisy;
     }
 
+    /**
+     *
+     * @return kolor napisów dla przycisku wyboru daty w oknie repertuaru
+     */
     public Color getKolorDatyNapisy() {
         return kolorDatyNapisy;
     }
 
+    /**
+     *
+     * @return kolor tła przycisk umożliwiającego wybór daty w oknie repertuaru
+     */
     public Color getKolorDatyTlo() {
         return kolorDatyTlo;
     }
 
+    /**
+     *
+     * @return kolor wszystkich scrolli jaie występują w programie
+     */
     public Color getKolorScroll() {
         return kolorScroll;
     }
 
+    /**
+     *
+     * @return obrazmowanie pola wyszukiwarki
+     */
     public Color getKolorRamkaWyszukiwania() {
         return kolorRamkaWyszukiwania;
     }
