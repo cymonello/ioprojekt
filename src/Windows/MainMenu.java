@@ -71,7 +71,7 @@ public class MainMenu extends JPanel implements ActionListener {
         cpr.setForeground(Color.WHITE);
         cpr.setBounds(10, WindowConstants.HEIGHT - 60, 200, 30);
         add(cpr);
-        ImageButton schematPodstawowy = new ImageButton("res" + File.separator + "test.png");
+        ImageButton schematPodstawowy = new ImageButton("res" + File.separator + "schemat0.png");
         schematPodstawowy.setBounds(5, 390, 40, 40);
         schematPodstawowy.setOpaque(false);
         schematPodstawowy.setBorderPainted(false);
@@ -86,7 +86,7 @@ public class MainMenu extends JPanel implements ActionListener {
                 MainWindow.rightPanel.StartWindow();
             }
         });
-        ImageButton schemat1 = new ImageButton("res" + File.separator + "test.png");
+        ImageButton schemat1 = new ImageButton("res" + File.separator + "schemat1.png");
         schemat1.setBounds(55, 390, 40, 40);
         schemat1.setOpaque(false);
         schemat1.setBorderPainted(false);
@@ -100,7 +100,7 @@ public class MainMenu extends JPanel implements ActionListener {
                 MainWindow.rightPanel.StartWindow();
             }
         });
-        ImageButton schemat2 = new ImageButton("res" + File.separator + "test.png");
+        ImageButton schemat2 = new ImageButton("res" + File.separator + "schemat2.png");
         schemat2.setBounds(105, 390, 40, 40);
         schemat2.setOpaque(false);
         schemat2.setBorderPainted(false);
@@ -114,7 +114,7 @@ public class MainMenu extends JPanel implements ActionListener {
                 MainWindow.rightPanel.StartWindow();
             }
         });
-        ImageButton schemat3 = new ImageButton("res" + File.separator + "test.png");
+        ImageButton schemat3 = new ImageButton("res" + File.separator + "schemat3.png");
         schemat3.setBounds(155, 390, 40, 40);
         schemat3.setOpaque(false);
         schemat3.setBorderPainted(false);
@@ -128,6 +128,9 @@ public class MainMenu extends JPanel implements ActionListener {
                 MainWindow.rightPanel.StartWindow();
             }
         });
+        JLabel schematy = new JLabel(new ImageIcon("res" + File.separator+"schematy.png"));
+        schematy.setBounds(0,415,200,50);
+        add(schematy);
     }
 
     /**
