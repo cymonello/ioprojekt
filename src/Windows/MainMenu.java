@@ -98,7 +98,6 @@ public class MainMenu extends JPanel implements ActionListener {
                 WindowConstants.schematKolorow = Colors.SCHEMAT1;
                 MainWindow.leftPanel.setBackground(WindowConstants.schematKolorow.getTlo());
                 MainWindow.rightPanel.StartWindow();
-                MainWindow.rightPanel.StartWindow();
             }
         });
         ImageButton schemat2 = new ImageButton("res" + File.separator + "test.png");
@@ -113,7 +112,6 @@ public class MainMenu extends JPanel implements ActionListener {
                 WindowConstants.schematKolorow = Colors.SCHEMAT2;
                 MainWindow.leftPanel.setBackground(WindowConstants.schematKolorow.getTlo());
                 MainWindow.rightPanel.StartWindow();
-                MainWindow.rightPanel.StartWindow();
             }
         });
         ImageButton schemat3 = new ImageButton("res" + File.separator + "test.png");
@@ -127,7 +125,6 @@ public class MainMenu extends JPanel implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 WindowConstants.schematKolorow = Colors.SCHEMAT3;
                 MainWindow.leftPanel.setBackground(WindowConstants.schematKolorow.getTlo());
-                MainWindow.rightPanel.StartWindow();
                 MainWindow.rightPanel.StartWindow();
             }
         });

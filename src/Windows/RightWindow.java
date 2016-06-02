@@ -30,6 +30,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 import static Windows.WindowConstants.*;
+import database.OrdersDB;
 import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -197,126 +198,135 @@ public class RightWindow extends JPanel {
 
                     final Repertoire rep = new Repertoire(str);
                     final String[][] tab = rep.getValue();
-                    final String[] tab1 = {"Tytuł", "Wiek", "Info", "Język", "Czas", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22"};
+                    if (tab.length > 0) {
+                        final String[] tab1 = {"Tytuł", "Wiek", "Info", "Język", "Czas", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22"};
 
-                    jTable = new JTable(tab, tab1);
-                    jTable.setGridColor(WindowConstants.schematKolorow.getTlo());
-                    jTable.setEnabled(false);
-                    JTableHeader header = jTable.getTableHeader();
-                    UIManager.getDefaults().put("TableHeader.cellBorder", BorderFactory.createLineBorder(WindowConstants.schematKolorow.getTlo()));
+                        jTable = new JTable(tab, tab1);
+                        jTable.setGridColor(WindowConstants.schematKolorow.getTlo());
+                        jTable.setEnabled(false);
+                        JTableHeader header = jTable.getTableHeader();
+                        UIManager.getDefaults().put("TableHeader.cellBorder", BorderFactory.createLineBorder(WindowConstants.schematKolorow.getTlo()));
 
-                    header.setBackground(Color.yellow);
-                    header.setBackground(WindowConstants.schematKolorow.getKolorTabelkaHeader());
-                    header.setForeground(WindowConstants.schematKolorow.getKolorTabelkaNapisy());
-                    jTable.setBackground(WindowConstants.schematKolorow.getKolorTabelka());
-                    jTable.setForeground(WindowConstants.schematKolorow.getKolorTabelkaNapisy());
-                    header.setReorderingAllowed(false);
-                    jTable.getColumnModel().getColumn(0).setPreferredWidth(400);
-                    jTable.addMouseListener(new MouseListener() {
-                        @Override
-                        public void mouseClicked(MouseEvent e) {
-                            int row = jTable.rowAtPoint(e.getPoint());
-                            int col = jTable.columnAtPoint(e.getPoint());
+                        header.setBackground(Color.yellow);
+                        header.setBackground(WindowConstants.schematKolorow.getKolorTabelkaHeader());
+                        header.setForeground(WindowConstants.schematKolorow.getKolorTabelkaNapisy());
+                        jTable.setBackground(WindowConstants.schematKolorow.getKolorTabelka());
+                        jTable.setForeground(WindowConstants.schematKolorow.getKolorTabelkaNapisy());
+                        header.setReorderingAllowed(false);
+                        jTable.getColumnModel().getColumn(0).setPreferredWidth(400);
+                        jTable.addMouseListener(new MouseListener() {
+                            @Override
+                            public void mouseClicked(MouseEvent e) {
+                                int row = jTable.rowAtPoint(e.getPoint());
+                                int col = jTable.columnAtPoint(e.getPoint());
 
-                            if (col == 0) {
-                                MainWindow.rightPanel.ShowInfoFilm(rep.getMovieID(row), MainWindow.rightPanel);
+                                if (col == 0) {
+                                    MainWindow.rightPanel.ShowInfoFilm(rep.getMovieID(row), MainWindow.rightPanel);
+                                }
+                                if (col >= 5 && col <= 17 && !" ".equals(tab[row][col])) {
+                                    Booking b = new Booking();
+                                    b.startBooking(rep.getTermID(row, col));
+                                    MainWindow.rightPanel.MakeOrderPart1(b);
+                                }
                             }
-                            if (col >= 5 && col <= 17 && !" ".equals(tab[row][col])) {
-                                Booking b = new Booking();
-                                b.startBooking(rep.getTermID(row, col));
-                                MainWindow.rightPanel.MakeOrderPart1(b);
+
+                            @Override
+                            public void mousePressed(MouseEvent e) {
                             }
+
+                            @Override
+                            public void mouseReleased(MouseEvent e) {
+                            }
+
+                            @Override
+                            public void mouseEntered(MouseEvent e) {
+                            }
+
+                            @Override
+                            public void mouseExited(MouseEvent e) {
+                            }
+                        });
+                        for (int i = 0; i < jTable.getRowCount(); i++) {
+                            jTable.setRowHeight(i, 15);
                         }
+                        MainWindow.rightPanel.removeAll();
+                        JLabel jlChooseDate = new JLabel("WYBIERZ DATĘ:");
 
-                        @Override
-                        public void mousePressed(MouseEvent e) {
-                        }
+                        jlChooseDate.setFont(new Font(WindowConstants.czcionka2, Font.CENTER_BASELINE, 17));
+                        jlChooseDate.setBounds(10, 30, 180, 30);
+                        jlChooseDate.setForeground(WindowConstants.schematKolorow.getNapisy());
+                        add(jlChooseDate);
 
-                        @Override
-                        public void mouseReleased(MouseEvent e) {
-                        }
-
-                        @Override
-                        public void mouseEntered(MouseEvent e) {
-                        }
-
-                        @Override
-                        public void mouseExited(MouseEvent e) {
-                        }
-                    });
-                    for (int i = 0; i < jTable.getRowCount(); i++) {
-                        jTable.setRowHeight(i, 15);
-                    }
-                    MainWindow.rightPanel.removeAll();
-                    JLabel jlChooseDate = new JLabel("WYBIERZ DATĘ:");
-
-                    jlChooseDate.setFont(new Font(WindowConstants.czcionka2, Font.CENTER_BASELINE, 17));
-                    jlChooseDate.setBounds(10, 30, 180, 30);
-                    jlChooseDate.setForeground(WindowConstants.schematKolorow.getNapisy());
-                    add(jlChooseDate);
-
-                    JComboBox jcbDate1 = new JComboBox();
-                    SimpleDateFormat ft = new SimpleDateFormat("dd.MM.yy");
-                    Calendar cal = Calendar.getInstance();
-                    jcbDate1.addItem(ft.format(cal.getTime()));
-
-                    for (int i = 0; i < 5; i++) {
-                        cal.add(Calendar.DAY_OF_MONTH, 1);
+                        JComboBox jcbDate1 = new JComboBox();
+                        SimpleDateFormat ft = new SimpleDateFormat("dd.MM.yy");
+                        Calendar cal = Calendar.getInstance();
                         jcbDate1.addItem(ft.format(cal.getTime()));
+
+                        for (int i = 0; i < 5; i++) {
+                            cal.add(Calendar.DAY_OF_MONTH, 1);
+                            jcbDate1.addItem(ft.format(cal.getTime()));
+                        }
+                        jcbDate1.setBounds(200, 30, 120, 30);
+                        jcbDate1.setFont(new Font(WindowConstants.czcionka, Font.CENTER_BASELINE, 17));
+                        jcbDate1.setForeground(WindowConstants.schematKolorow.getKolorDatyNapisy());
+                        jcbDate1.setBackground(WindowConstants.schematKolorow.getKolorDatyTlo());
+                        for (int i = 0; i < jcbDate1.getItemCount(); i++) {
+                            if (jcbDate1.getItemAt(i).toString().equals(dataa)) {
+                                jcbDate1.setSelectedIndex(i);
+                            }
+                        }
+                        add(jcbDate1);
+                        jcbDate1.addActionListener(this);
+                        JScrollPane scrollPane = new JScrollPane(jTable, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
+                        scrollPane.setBorder(BorderFactory.createLineBorder(WindowConstants.schematKolorow.getTlo(), 1));
+                        scrollPane.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
+                            @Override
+                            protected JButton createDecreaseButton(int orientation) {
+                                return createZeroButton();
+                            }
+
+                            @Override
+                            protected JButton createIncreaseButton(int orientation) {
+                                return createZeroButton();
+                            }
+
+                            @Override
+                            protected void configureScrollBarColors() {
+                                this.trackColor = WindowConstants.schematKolorow.getTlo();
+                                thumbColor = WindowConstants.schematKolorow.getKolorScroll();
+                            }
+
+                            private JButton createZeroButton() { // 
+                                JButton jbutton = new JButton();
+                                jbutton.setPreferredSize(new Dimension(0, 0));
+                                jbutton.setMinimumSize(new Dimension(0, 0));
+                                jbutton.setMaximumSize(new Dimension(0, 0));
+                                return jbutton;
+                            }
+                        });
+
+                        GridBagConstraints gbc_scrollPane = new GridBagConstraints();
+                        gbc_scrollPane.fill = GridBagConstraints.BOTH;
+                        gbc_scrollPane.gridx = 0;
+                        gbc_scrollPane.gridy = 0;
+
+                        int hei = jTable.getRowCount() * jTable.getRowHeight() + 22;
+                        if (hei > 400) {
+                            hei = 400;
+                        }
+                        scrollPane.getViewport().setBackground(WindowConstants.schematKolorow.getTlo());
+                        scrollPane.setBounds(10, 150, 780, hei);
+                        MainWindow.rightPanel.add(scrollPane);
+                        MainWindow.rightPanel.repaint();
+                    } else {
+                        JLabel brak = new JLabel("Brak repertuaru w wybranym dniu");
+                        brak.setBounds(50, 150, 700, 50);
+                        brak.setForeground(WindowConstants.schematKolorow.getNazwy());
+                        brak.setFont(new Font(WindowConstants.czcionka2, Font.CENTER_BASELINE, 25));
+                        brak.setHorizontalAlignment(SwingConstants.CENTER);
+                        add(brak);
                     }
-                    jcbDate1.setBounds(200, 30, 120, 30);
-                    jcbDate1.setFont(new Font(WindowConstants.czcionka, Font.CENTER_BASELINE, 17));
-                    jcbDate1.setForeground(WindowConstants.schematKolorow.getKolorDatyNapisy());
-                    jcbDate1.setBackground(WindowConstants.schematKolorow.getKolorDatyTlo());
-                    for (int i = 0; i < jcbDate1.getItemCount(); i++) {
-                        if (jcbDate1.getItemAt(i).toString().equals(dataa)) {
-                            jcbDate1.setSelectedIndex(i);
-                        }
-                    }
-                    add(jcbDate1);
-                    jcbDate1.addActionListener(this);
-                    JScrollPane scrollPane = new JScrollPane(jTable, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-
-                    scrollPane.setBorder(BorderFactory.createLineBorder(WindowConstants.schematKolorow.getTlo(), 1));
-                    scrollPane.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
-                        @Override
-                        protected JButton createDecreaseButton(int orientation) {
-                            return createZeroButton();
-                        }
-
-                        @Override
-                        protected JButton createIncreaseButton(int orientation) {
-                            return createZeroButton();
-                        }
-
-                        @Override
-                        protected void configureScrollBarColors() {
-                            this.trackColor = WindowConstants.schematKolorow.getTlo();
-                            thumbColor = WindowConstants.schematKolorow.getKolorScroll();
-                        }
-
-                        private JButton createZeroButton() { // 
-                            JButton jbutton = new JButton();
-                            jbutton.setPreferredSize(new Dimension(0, 0));
-                            jbutton.setMinimumSize(new Dimension(0, 0));
-                            jbutton.setMaximumSize(new Dimension(0, 0));
-                            return jbutton;
-                        }
-                    });
-
-                    GridBagConstraints gbc_scrollPane = new GridBagConstraints();
-                    gbc_scrollPane.fill = GridBagConstraints.BOTH;
-                    gbc_scrollPane.gridx = 0;
-                    gbc_scrollPane.gridy = 0;
-
-                    int hei = jTable.getRowCount() * jTable.getRowHeight() + 22;
-                    if (hei > 400) {
-                        hei = 400;
-                    }
-                    scrollPane.getViewport().setBackground(WindowConstants.schematKolorow.getTlo());
-                    scrollPane.setBounds(10, 150, 780, hei);
-                    MainWindow.rightPanel.add(scrollPane);
-                    MainWindow.rightPanel.repaint();
 
                 } catch (ClassNotFoundException | SQLException ex) {
                 }
@@ -768,23 +778,49 @@ public class RightWindow extends JPanel {
         setLayout(null);
         setBackground(WindowConstants.schematKolorow.getTlo());
         setBounds(BORDER, 0, WindowConstants.WIDTH - BORDER, WindowConstants.HEIGHT);
+        JLabel jlNumer = new JLabel("Numer rezerwacji:");
+        jlNumer.setBounds(100, 100, 250, 50);
+        jlNumer.setForeground(WindowConstants.schematKolorow.getNazwy());
+        jlNumer.setFont(new Font(WindowConstants.czcionka2, Font.CENTER_BASELINE, 20));
+        jlNumer.setHorizontalAlignment(SwingConstants.RIGHT);
+        add(jlNumer);
+        JLabel jlHaslo = new JLabel("Hasło:");
+        jlHaslo.setBounds(100, 150, 250, 50);
+        jlHaslo.setForeground(WindowConstants.schematKolorow.getNazwy());
+        jlHaslo.setFont(new Font(WindowConstants.czcionka2, Font.CENTER_BASELINE, 20));
+        jlHaslo.setHorizontalAlignment(SwingConstants.RIGHT);
+        add(jlHaslo);
         final JTextField jtfNumer = new JTextField();
-        jtfNumer.setBounds(100, 100, 100, 40);
+        jtfNumer.setBounds(370, 105, 150, 40);
         add(jtfNumer);
 
         final JPasswordField jtfPassw = new JPasswordField();
-        jtfPassw.setBounds(100, 150, 100, 40);
+        jtfPassw.setBounds(370, 155, 150, 40);
         add(jtfPassw);
-        JButton dalej = new JButton("Dalej");
-        dalej.setBounds(220, 120, 150, 40);
-        add(dalej);
-        dalej.addActionListener(new ActionListener() {
+        ImageButton next = new ImageButton("res" + File.separator + "Dalej.png");
+        next.setRolloverIcon(new ImageIcon("res" + File.separator + "DalejEntered.png"));
+        next.setBounds(310, 220, 100, 40);
+        next.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String pass = new String(jtfPassw.getPassword());
-
+                boolean isOk = false;
+                OrdersDB odb = new OrdersDB();
+                odb.open();
+                try {
+                    isOk = odb.check(Integer.parseInt(jtfNumer.getText()), new String(jtfPassw.getPassword()));
+                } catch (NumberFormatException nfe) {
+                    isOk = false;
+                }
+                odb.close();
+                if (isOk) {
+                    MainWindow.rightPanel.editPart2();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Niepoprawne dane rezerwacji", "Udana rezerwacja", INFORMATION_MESSAGE);
+                    MainWindow.rightPanel.editPart2();
+                }
             }
         });
+        add(next);
         repaint();
     }
 
@@ -987,11 +1023,13 @@ public class RightWindow extends JPanel {
         JLabel ekran = new JLabel(new ImageIcon("res" + File.separator + "Ekran.png"));
         ekran.setBounds(160, 110, 480, 28);
         add(ekran);
+        int ileMiejscWolnych = 0;
         for (int i = 0; i < sal.length; i++) {
             for (int j = 0; j < sal[i].length; j++) {
                 final int k = i;
                 final int l = j;
                 if (sal[i][j] == 0) {
+                    ileMiejscWolnych++;
                     final ImageButton sala = new ImageButton("res" + File.separator + "miejsceDostepne.png");
                     sala.setRolloverIcon(new ImageIcon("res" + File.separator + "miejsceWybrane.png"));
                     sala.setBounds(100 + 30 * j, 150 + 30 * i, 28, 28);
@@ -1084,6 +1122,10 @@ public class RightWindow extends JPanel {
         });
         add(next);
         repaint();
+        if (ileMiejscWolnych < booking.listLength()) {
+            JOptionPane.showMessageDialog(null, "Niewystarczająca ilość wolnych miejsc, dostępne: " + ileMiejscWolnych, "Błąd", javax.swing.JOptionPane.OK_OPTION);
+            MainWindow.rightPanel.StartWindow();
+        }
     }
 
     /**
@@ -1141,6 +1183,10 @@ public class RightWindow extends JPanel {
             jtfPol[i].setBounds(410, 200 + 50 * i, 120, 30);
             add(jtfPol[i]);
         }
+        jtfPol[0].setToolTipText("Wprowadź swoje imię");
+        jtfPol[1].setToolTipText("Wprowadź swoje nazwisko");
+        jtfPol[2].setToolTipText("Wprowadź poprawny adres e-mail, na który zostanie wysłane potwierdzenie");
+        jtfPol[3].setToolTipText("Wprowadź numer telefonu komurkowego, lub numer telefonu stacjonalnego poprzedzony dwucyfrowym numerek kierunkowym");
 
         ImageButton next = new ImageButton("res" + File.separator + "Dalej.png");
         next.setRolloverIcon(new ImageIcon("res" + File.separator + "DalejEntered.png"));
@@ -1149,7 +1195,7 @@ public class RightWindow extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                if (!PoprawnoscDanych.poprawnosc(jtfPol[0].getText(), jtfPol[1].getText(), jtfPol[2].getText(), jtfPol[3].getText())) {
+                if (!PoprawnoscDanych.poprawnosc(jtfPol[0].getText(), jtfPol[1].getText(), jtfPol[2].getText(), jtfPol[3].getText().replaceAll(" ", ""))) {
                     JOptionPane.showMessageDialog(null, "Proszę wpisać poprawne dane", "Error", INFORMATION_MESSAGE);
 
                 } else {
