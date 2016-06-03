@@ -47,7 +47,7 @@ public class Mail
                 + "Adres e-mail: " + email + "\n"
                 + "Nr. telefonu: " + tel + "\n"
                 + "Cena: " + price + "\n"
-                + "Hasło" + pass + "\n"
+                + "Hasło: " + pass + "\n"
                 + "Życzymy udango seansu";
         sendMail(USER_NAME, PASSWORD, email, "Potwierdzenie rezerwacji nr: " + id, body);
     }
