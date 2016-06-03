@@ -214,4 +214,25 @@ public class TicketsDB
         }
         return true;
     }
+    
+    /**
+     * Metoda usuwająca bilety należące do zamówienia oraz sam rekord zamówienia z odpowiednich tabeli w bazie danych
+     * @param id - id usuwanego zamówienia
+     */
+    public void deleteOrder(int id)
+    {
+        try
+        {
+            if (connect != null)
+            {
+                statement = connect.createStatement();
+                statement.executeUpdate("DELETE Tickets WHERE orderid='" + id + "';");
+                statement.executeUpdate("DELETE Orders WHERE id='" + id + "';");
+            } 
+        }
+        catch (Exception e)
+        {
+            JOptionPane.showMessageDialog(null, e.toString());
+        }
+    }
 }
