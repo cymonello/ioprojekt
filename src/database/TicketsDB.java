@@ -131,7 +131,7 @@ public class TicketsDB
     public Object[] orderToEdit(int id)
     {
         ResultSet temp = null;
-        int count = 0;
+        Integer count = 0;
         Object[] informacje = new String[5];
         int[][] sala = null;
         try
@@ -143,7 +143,7 @@ public class TicketsDB
                 temp.next();
                 informacje[0] = temp.getString("date");
                 informacje[1] = temp.getString("hour");
-                informacje[2] = temp.getInt("hall");
+                informacje[2] = String.valueOf(temp.getInt("hall"));
                 sala = checkHall(temp.getString("date"), temp.getString("hour"), temp.getInt("hall"));
                 temp.beforeFirst();
                 while(temp.next())
@@ -154,7 +154,7 @@ public class TicketsDB
                 for(int i=0; i<10; i++)
                     for (int j=9; j<11; j++)
                         sala[i][j] = -1;
-                informacje[3] = count;
+                informacje[3] = count.toString();
                 informacje[4] = sala;
             }
         } catch (Exception e)
