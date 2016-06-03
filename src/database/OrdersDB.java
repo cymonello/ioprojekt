@@ -132,7 +132,6 @@ public class OrdersDB
                 temp = statement.executeQuery("SELECT password FROM Orders WHERE id=" + id);
                 if(temp.next())
                 {
-                    temp.next();
                     temp_pass = temp.getString("password");
                     if(temp_pass.equals(pass))
                         return true;

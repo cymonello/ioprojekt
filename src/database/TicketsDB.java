@@ -122,5 +122,45 @@ public class TicketsDB
         }
         return sala;
     }
-    
+    /**
+     * Metoda zwracająca tablicę z elementami potrzebymi do edycji zamówieinia
+     * Data, godzina, sala, ilość miejsc oraz tablica reprezentująca salę z zaznaczonymi przez użytkownika miejsami do edycji
+     * @param id id erdytowanego zamówienia
+     * @return informacje - tablica obiektów z informacjami
+     */
+    public Object[] orderToEdit(int id)
+    {
+        ResultSet temp = null;
+        int count = 0;
+        Object[] informacje = new String[5];
+        int[][] sala = null;
+        try
+        {
+            if (connect != null)
+            {
+                statement = connect.createStatement();
+                temp = statement.executeQuery("SELECT date, hour, hall, row, seat, type FROM Tickets WHERE orderid='" + id + "';");
+                temp.next();
+                informacje[0] = temp.getString("date");
+                informacje[1] = temp.getString("hour");
+                informacje[2] = temp.getInt("hall");
+                sala = checkHall(temp.getString("date"), temp.getString("hour"), temp.getInt("hall"));
+                temp.beforeFirst();
+                while(temp.next())
+                {
+                    sala[temp.getInt("row")][temp.getInt("seat")] = 2;
+                    count++;
+                }
+                for(int i=0; i<10; i++)
+                    for (int j=9; j<11; j++)
+                        sala[i][j] = -1;
+                informacje[3] = count;
+                informacje[4] = sala;
+            }
+        } catch (Exception e)
+        {
+            JOptionPane.showMessageDialog(null, e.toString());
+        }
+        return informacje;
+    }
 }
