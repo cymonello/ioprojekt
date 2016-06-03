@@ -10,6 +10,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Arrays;
 import javax.swing.JOptionPane;
 
 /**
@@ -18,10 +19,12 @@ import javax.swing.JOptionPane;
  */
 public class TicketsDB
 {
+
     private Connection connect = null;
     private Statement statement = null;
-    private int[][] stareMiejsca;
-    int ilosc;
+    private static int[][] stareMiejsca;
+    private static int ilosc;
+
     /**
      * Metoda otwiera połączenie z bazą
      */
@@ -35,7 +38,7 @@ public class TicketsDB
             JOptionPane.showMessageDialog(null, e.toString());
         }
     }
-    
+
     /**
      * Metoda zamykająca połączenie z bazą danych
      */
@@ -43,30 +46,32 @@ public class TicketsDB
     {
         try
         {
-            if(connect != null)
+            if (connect != null)
+            {
                 connect.close();
-        }
-        catch(SQLException e)
+            }
+        } catch (SQLException e)
         {
             JOptionPane.showMessageDialog(null, e.toString());
         }
     }
-    
+
     /**
      * Metoda dodająca bilet do bazy biletów
+     *
      * @param order
      * @param date
      * @param hour
      * @param hall
      * @param row
      * @param seat
-     * @param type 
+     * @param type
      */
     public void addTicket(int order, String date, String hour, int hall, int row, int seat, int type)
     {
         try
         {
-            if(connect != null)
+            if (connect != null)
             {
                 statement = connect.createStatement();
                 statement.executeUpdate("INSERT INTO Tickets (orderid, date, hour, hall, row, seat, type) VALUES ("
@@ -77,8 +82,7 @@ public class TicketsDB
                         + "'" + row + "',"
                         + "'" + seat + "',"
                         + "'" + type + "')");
-            }
-            else
+            } else
             {
                 JOptionPane.showMessageDialog(null, "Błąd! Brak połączenia z bazą filmów");
             }
@@ -87,13 +91,16 @@ public class TicketsDB
             JOptionPane.showMessageDialog(null, e.toString());
         }
     }
-    
+
     /**
-     * MEtoda przeglądająca bazę biletów by sprawdzić które miejca na sali są już zajęte
+     * MEtoda przeglądająca bazę biletów by sprawdzić które miejca na sali są
+     * już zajęte
+     *
      * @param date
      * @param hour
      * @param hall
-     * @return zwraca tablicę int[][] symbolizującą salę (0 lub 1 - zajętość miejsc)
+     * @return zwraca tablicę int[][] symbolizującą salę (0 lub 1 - zajętość
+     * miejsc)
      */
     public int[][] checkHall(String date, String hour, int hall)
     {
@@ -101,19 +108,22 @@ public class TicketsDB
         ResultSet term = null;
         try
         {
-            if(connect != null)
+            if (connect != null)
             {
                 statement = connect.createStatement();
                 term = statement.executeQuery("SELECT row, seat FROM Tickets WHERE hall='" + hall + "' AND date='" + date + "' AND hour='" + hour + "';");
-                while(term.next())
+                while (term.next())
                 {
                     sala[term.getInt("row")][term.getInt("seat")] = 1;
                 }
-                for(int i=0; i<10; i++)
-                    for (int j=9; j<11; j++)
+                for (int i = 0; i < 10; i++)
+                {
+                    for (int j = 9; j < 11; j++)
+                    {
                         sala[i][j] = -1;
-            }
-            else
+                    }
+                }
+            } else
             {
                 JOptionPane.showMessageDialog(null, "Błąd! Brak połączenia z bazą biletow");
             }
@@ -123,9 +133,12 @@ public class TicketsDB
         }
         return sala;
     }
+
     /**
      * Metoda zwracająca tablicę z elementami potrzebymi do edycji zamówieinia
-     * Data, godzina, sala, ilość miejsc oraz tablica reprezentująca salę z zaznaczonymi przez użytkownika miejsami do edycji
+     * Data, godzina, sala, ilość miejsc oraz tablica reprezentująca salę z
+     * zaznaczonymi przez użytkownika miejsami do edycji
+     *
      * @param id id erdytowanego zamówienia
      * @return informacje - tablica obiektów z informacjami
      */
@@ -135,6 +148,7 @@ public class TicketsDB
         Integer count = 0;
         Object[] informacje = new Object[5];
         int[][] sala = null;
+        stareMiejsca = new int[10][20];
         try
         {
             if (connect != null)
@@ -147,17 +161,28 @@ public class TicketsDB
                 informacje[2] = String.valueOf(temp.getInt("hall"));
                 sala = checkHall(temp.getString("date"), temp.getString("hour"), temp.getInt("hall"));
                 temp.beforeFirst();
-                while(temp.next())
+                while (temp.next())
                 {
                     sala[temp.getInt("row")][temp.getInt("seat")] = 2;
                     count++;
                 }
-                for(int i=0; i<10; i++)
-                    for (int j=9; j<11; j++)
+                for (int i = 0; i < 10; i++)
+                {
+                    for (int j = 9; j < 11; j++)
+                    {
                         sala[i][j] = -1;
+                    }
+                }
                 informacje[3] = count.toString();
                 informacje[4] = sala;
-                stareMiejsca = sala;
+                for (int i = 0; i < 10; i++)
+                {
+                    for (int j = 0; j < 20; j++)
+                    {
+                        stareMiejsca[i][j] = sala[i][j];
+                    }
+                }
+                ilosc = count;
             }
         } catch (Exception e)
         {
@@ -165,25 +190,26 @@ public class TicketsDB
         }
         return informacje;
     }
-    
+
     /**
      * Metoda uaktualniająca miejsca po edycji rezerwacji
-     * @param id id rezerwacji 
+     *
+     * @param id id rezerwacji
      * @param sala tablica reprezentująca salę z nowo wybranymi miejscami
-     * @return 
+     * @return
      */
-    public boolean saveEdited(int id, int [][] sala)
+    public boolean saveEdited(int id, int[][] sala)
     {
         try
         {
             int[] rows = new int[ilosc];
             int[] seats = new int[ilosc];
             int k = 0;
-            for(int i = 0; i < 10; i++)
+            for (int i = 0; i < 10; i++)
             {
                 for (int j = 0; j < 20; j++)
                 {
-                    if(sala[i][j] == 2)
+                    if (stareMiejsca[i][j] == 2)
                     {
                         rows[k] = i;
                         seats[k] = j;
@@ -194,11 +220,11 @@ public class TicketsDB
             k = 0;
             if (connect != null)
             {
-                for(int i = 0; i < 10; i++)
+                for (int i = 0; i < 10; i++)
                 {
                     for (int j = 0; j < 20; j++)
                     {
-                        if(sala[i][j] == 2)
+                        if (sala[i][j] == 2)
                         {
                             statement = connect.createStatement();
                             statement.executeUpdate("UPDATE Tickets SET row='" + i + "', seat='" + j + "' WHERE orderid='" + id + "' AND row='" + rows[k] + "' AND seat='" + seats[k] + "';");
@@ -206,17 +232,18 @@ public class TicketsDB
                         }
                     }
                 }
-            } 
-        }
-        catch (Exception e)
+            }
+        } catch (Exception e)
         {
             JOptionPane.showMessageDialog(null, e.toString());
         }
         return true;
     }
-    
+
     /**
-     * Metoda usuwająca bilety należące do zamówienia oraz sam rekord zamówienia z odpowiednich tabeli w bazie danych
+     * Metoda usuwająca bilety należące do zamówienia oraz sam rekord zamówienia
+     * z odpowiednich tabeli w bazie danych
+     *
      * @param id - id usuwanego zamówienia
      */
     public void deleteOrder(int id)
@@ -226,11 +253,10 @@ public class TicketsDB
             if (connect != null)
             {
                 statement = connect.createStatement();
-                statement.executeUpdate("DELETE Tickets WHERE orderid='" + id + "';");
-                statement.executeUpdate("DELETE Orders WHERE id='" + id + "';");
-            } 
-        }
-        catch (Exception e)
+                statement.executeUpdate("DELETE FROM Tickets WHERE orderid=" + id + ";");
+                statement.executeUpdate("DELETE FROM Orders WHERE id=" + id + ";");
+            }
+        } catch (Exception e)
         {
             JOptionPane.showMessageDialog(null, e.toString());
         }
