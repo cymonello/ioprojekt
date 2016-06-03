@@ -31,6 +31,7 @@ import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 import static Windows.WindowConstants.*;
 import database.OrdersDB;
+import database.TicketsDB;
 import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -810,13 +811,13 @@ public class RightWindow extends JPanel {
                     isOk = odb.check(Integer.parseInt(jtfNumer.getText()), new String(jtfPassw.getPassword()));
                 } catch (NumberFormatException nfe) {
                     isOk = false;
+                } finally {
+                    odb.close();
                 }
-                odb.close();
                 if (isOk) {
-                    MainWindow.rightPanel.editPart2();
+                    MainWindow.rightPanel.editPart2(Integer.parseInt(jtfNumer.getText()));
                 } else {
-                    JOptionPane.showMessageDialog(null, "Niepoprawne dane rezerwacji", "Udana rezerwacja", INFORMATION_MESSAGE);
-                    MainWindow.rightPanel.editPart2();
+                    JOptionPane.showMessageDialog(null, "Niepoprawne dane rezerwacji", "Błąd", INFORMATION_MESSAGE);
                 }
             }
         });
@@ -827,12 +828,218 @@ public class RightWindow extends JPanel {
     /**
      * Wyświetla dalsze infromacje związane z edycją rezerwacji.
      */
-    private void editPart2() {
+    private void editPart2(final int numer) {
         removeAll();
         setLayout(null);
         setBackground(WindowConstants.schematKolorow.getTlo());
         setBounds(BORDER, 0, WindowConstants.WIDTH - BORDER, WindowConstants.HEIGHT);
+        JLabel[] co = new JLabel[4];
+        co[0] = new JLabel("Data:");
+        co[1] = new JLabel("Godzina:");
+        co[2] = new JLabel("Numer sali:");
+        co[3] = new JLabel("Ilosc miejsc:");
+        for (int i = 0; i < co.length; i++) {
+            co[i].setBounds(140, 120 + 30 * i, 250, 30);
+            co[i].setForeground(WindowConstants.schematKolorow.getNazwy());
+            co[i].setFont(new Font(WindowConstants.czcionka2, Font.CENTER_BASELINE, 16));
+            co[i].setHorizontalAlignment(SwingConstants.RIGHT);
+            add(co[i]);
+        }
+        TicketsDB tdb = new TicketsDB();
+        tdb.open();
+        final Object[] informacje = tdb.orderToEdit(numer);
+        final JLabel[] infor = new JLabel[4];
+        for (int i = 0; i < infor.length; i++) {
+            infor[i] = new JLabel((String) informacje[i]);
+            infor[i].setBounds(400, 120 + 30 * i, 250, 30);
+            infor[i].setForeground(WindowConstants.schematKolorow.getNazwy());
+            infor[i].setFont(new Font(WindowConstants.czcionka2, Font.CENTER_BASELINE, 16));
+            infor[i].setHorizontalAlignment(SwingConstants.LEFT);
+            add(infor[i]);
+        }
+        final int[][] sala = (int[][]) informacje[4];
+        tdb.close();
 
+        ImageButton zmienMiejsce = new ImageButton("res" + File.separator + "zmienMiejsca.png");
+        zmienMiejsce.setRolloverIcon(new ImageIcon("res" + File.separator + "zmienMiejscaEntered.png"));
+        zmienMiejsce.setBounds(200, 300, 200, 23);
+        zmienMiejsce.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                zmienMiejsca(numer, sala, Integer.parseInt(informacje[3].toString()));
+            }
+
+        });
+        add(zmienMiejsce);
+        ImageButton usunRezerwacje = new ImageButton("res" + File.separator + "usunRez.png");
+        usunRezerwacje.setRolloverIcon(new ImageIcon("res" + File.separator + "usunRezEntered.png"));
+        usunRezerwacje.setBounds(400, 300, 200, 23);
+        usunRezerwacje.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String[] options = new String[2];
+                options[0] = "TAK";
+                options[1] = "NIE";
+                int wynik = JOptionPane.showOptionDialog(null, "Czy napewno chcesz usunąć swoją rezerwację?", "Jesteś pewien?", 0, JOptionPane.INFORMATION_MESSAGE, null, options, null);
+                if (wynik == JOptionPane.YES_OPTION) {
+                    System.out.println("Usuwa rezerwacje");
+                    MainWindow.rightPanel.StartWindow();
+                }
+            }
+
+        });
+        add(usunRezerwacje);
+        repaint();
+    }
+
+    private void zmienMiejsca(final int numer, final int[][] salaTab, final int ilemiejsc) {
+        removeAll();
+        setLayout(null);
+        setBounds(BORDER, 0, WindowConstants.WIDTH - BORDER, WindowConstants.HEIGHT);
+        final ArrayList<Integer> list = new ArrayList<>();
+        for (int i = 0; i < ilemiejsc; i++) {
+            list.add(1);
+        }
+        JLabel ekran = new JLabel(new ImageIcon("res" + File.separator + "Ekran.png"));
+        ekran.setBounds(160, 110, 480, 28);
+        add(ekran);
+        for (int i = 0; i < salaTab.length; i++) {
+            for (int j = 0; j < salaTab[i].length; j++) {
+                final int k = i;
+                final int l = j;
+                switch (salaTab[i][j]) {
+                    case 0: {
+                        final ImageButton sala = new ImageButton("res" + File.separator + "miejsceDostepne.png");
+                        sala.setRolloverIcon(new ImageIcon("res" + File.separator + "miejsceWybrane.png"));
+                        sala.setBounds(100 + 30 * j, 150 + 30 * i, 28, 28);
+                        add(sala);
+                        sala.addMouseListener(new MouseListener() {
+                            @Override
+                            public void mouseClicked(MouseEvent e) {
+                                if (sala.equals("res" + File.separator + "miejsceDostepne.png")) {
+                                    if (list.size() < ilemiejsc) {
+                                        sala.setIcon("res" + File.separator + "miejsceWybrane.png");
+                                        list.add(1);
+                                        salaTab[k][l] = 2;
+                                    }
+                                } else {
+                                    sala.setIcon("res" + File.separator + "miejsceDostepne.png");
+                                    sala.setRolloverIcon(new ImageIcon("res" + File.separator + "miejsceWybrane.png"));
+                                    list.remove(0);
+                                    salaTab[k][l] = 0;
+                                }
+                            }
+
+                            @Override
+                            public void mousePressed(MouseEvent e) {
+                            }
+
+                            @Override
+                            public void mouseReleased(MouseEvent e) {
+                            }
+
+                            @Override
+                            public void mouseEntered(MouseEvent e) {
+                            }
+
+                            @Override
+                            public void mouseExited(MouseEvent e) {
+                            }
+                        });
+                        break;
+                    }
+                    case 1: {
+                        ImageButton sala = new ImageButton("res" + File.separator + "miejsceZajete.png");
+                        sala.setBounds(100 + 30 * j, 150 + 30 * i, 28, 28);
+                        add(sala);
+                        break;
+                    }
+                    case 2: {
+                        final ImageButton sala = new ImageButton("res" + File.separator + "miejsceWybrane.png");
+                        sala.setRolloverIcon(new ImageIcon("res" + File.separator + "miejsceWybrane.png"));
+                        sala.setBounds(100 + 30 * j, 150 + 30 * i, 28, 28);
+                        add(sala);
+                        sala.addMouseListener(new MouseListener() {
+                            @Override
+                            public void mouseClicked(MouseEvent e) {
+                                if (sala.equals("res" + File.separator + "miejsceWybrane.png")) {
+                                    sala.setIcon("res" + File.separator + "miejsceDostepne.png");
+                                    list.remove(0);
+                                    salaTab[k][l] = 0;
+
+                                } else if (list.size() < ilemiejsc) {
+                                    sala.setIcon("res" + File.separator + "miejsceWybrane.png");
+                                    salaTab[k][l] = 2;
+                                    list.add(1);
+                                }
+                            }
+
+                            @Override
+                            public void mousePressed(MouseEvent e) {
+                            }
+
+                            @Override
+                            public void mouseReleased(MouseEvent e) {
+                            }
+
+                            @Override
+                            public void mouseEntered(MouseEvent e) {
+                            }
+
+                            @Override
+                            public void mouseExited(MouseEvent e) {
+                            }
+                        });
+                        break;
+                    }
+                    default:
+                        break;
+                }
+            }
+        }
+        ImageButton miejsceDostepne = new ImageButton("res" + File.separator + "miejsceDostepne.png");
+        ImageButton miejsceWybrane = new ImageButton("res" + File.separator + "miejsceWybrane.png");
+        ImageButton miejsceZajete = new ImageButton("res" + File.separator + "miejsceZajete.png");
+        miejsceDostepne.setBounds(100, 480, 28, 28);
+        miejsceWybrane.setBounds(300, 480, 28, 28);
+        miejsceZajete.setBounds(500, 480, 28, 28);
+        add(miejsceWybrane);
+        add(miejsceZajete);
+        add(miejsceDostepne);
+
+        JLabel zajete = new JLabel("Miejsce niedostępne");
+        JLabel wolne = new JLabel("Miejsce dostępne");
+        JLabel wybrane = new JLabel("Miejsce wybrane");
+        wolne.setBounds(130, 480, 270, 28);
+        wolne.setFont(new Font(WindowConstants.czcionka, Font.CENTER_BASELINE, 12));
+        wolne.setHorizontalAlignment(SwingConstants.LEFT);
+        wolne.setForeground(WindowConstants.schematKolorow.getNapisy());
+        wybrane.setBounds(330, 480, 270, 28);
+        wybrane.setFont(new Font(WindowConstants.czcionka, Font.CENTER_BASELINE, 12));
+        wybrane.setHorizontalAlignment(SwingConstants.LEFT);
+        wybrane.setForeground(WindowConstants.schematKolorow.getNapisy());
+        zajete.setBounds(530, 480, 270, 28);
+        zajete.setFont(new Font(WindowConstants.czcionka, Font.CENTER_BASELINE, 12));
+        zajete.setHorizontalAlignment(SwingConstants.LEFT);
+        zajete.setForeground(WindowConstants.schematKolorow.getNapisy());
+        add(wybrane);
+        add(zajete);
+        add(wolne);
+
+        ImageButton next = new ImageButton("res" + File.separator + "Dalej.png");
+        next.setRolloverIcon(new ImageIcon("res" + File.separator + "DalejEntered.png"));
+        next.setBounds(350, 510, 100, 40);
+        next.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (list.size() < ilemiejsc) {
+                    JOptionPane.showMessageDialog(null, "Proszę wybrać następującą liczbę miejsc: " + ilemiejsc, "Error", INFORMATION_MESSAGE);
+                } else {
+                    MainWindow.rightPanel.editPart2(numer);
+                }
+            }
+        });
+        add(next);
         repaint();
     }
 
@@ -1289,10 +1496,11 @@ public class RightWindow extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 DecimalFormat df = new DecimalFormat("#.00");
                 boolean ok = booking.endBooking(name, lastname, email, number, Integer.toString(booking.listLength()), df.format(booking.price()) + " zł");
-                if(ok)
+                if (ok) {
                     JOptionPane.showMessageDialog(null, "Proces rezerwacji przebiegł poprawnie", "Udana rezerwacja", INFORMATION_MESSAGE);
-                else
+                } else {
                     JOptionPane.showMessageDialog(null, "Przepraszamy ale ktoś wyprzedził Cię w zajmowaniu miejsc", "Nieudana rezerwacja", INFORMATION_MESSAGE);
+                }
                 MainWindow.rightPanel.StartWindow();
             }
         });
