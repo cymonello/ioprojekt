@@ -132,7 +132,7 @@ public class TicketsDB
     {
         ResultSet temp = null;
         Integer count = 0;
-        Object[] informacje = new String[5];
+        Object[] informacje = new Object[5];
         int[][] sala = null;
         try
         {
