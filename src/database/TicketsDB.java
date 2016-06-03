@@ -168,10 +168,11 @@ public class TicketsDB
     
     /**
      * Metoda uaktualniająca miejsca po edycji rezerwacji
-     * @param id
-     * @param sala 
+     * @param id id rezerwacji 
+     * @param sala tablica reprezentująca salę z nowo wybranymi miejscami
+     * @return 
      */
-    public void saveEdited(int id, int [][] sala)
+    public boolean saveEdited(int id, int [][] sala)
     {
         try
         {
@@ -211,5 +212,6 @@ public class TicketsDB
         {
             JOptionPane.showMessageDialog(null, e.toString());
         }
+        return true;
     }
 }
