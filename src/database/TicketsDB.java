@@ -20,7 +20,8 @@ public class TicketsDB
 {
     private Connection connect = null;
     private Statement statement = null;
-    
+    private int[][] stareMiejsca;
+    int ilosc;
     /**
      * Metoda otwiera połączenie z bazą
      */
@@ -156,11 +157,59 @@ public class TicketsDB
                         sala[i][j] = -1;
                 informacje[3] = count.toString();
                 informacje[4] = sala;
+                stareMiejsca = sala;
             }
         } catch (Exception e)
         {
             JOptionPane.showMessageDialog(null, e.toString());
         }
         return informacje;
+    }
+    
+    /**
+     * Metoda uaktualniająca miejsca po edycji rezerwacji
+     * @param id
+     * @param sala 
+     */
+    public void saveEdited(int id, int [][] sala)
+    {
+        try
+        {
+            int[] rows = new int[ilosc];
+            int[] seats = new int[ilosc];
+            int k = 0;
+            for(int i = 0; i < 10; i++)
+            {
+                for (int j = 0; j < 20; j++)
+                {
+                    if(sala[i][j] == 2)
+                    {
+                        rows[k] = i;
+                        seats[k] = j;
+                        k++;
+                    }
+                }
+            }
+            k = 0;
+            if (connect != null)
+            {
+                for(int i = 0; i < 10; i++)
+                {
+                    for (int j = 0; j < 20; j++)
+                    {
+                        if(sala[i][j] == 2)
+                        {
+                            statement = connect.createStatement();
+                            statement.executeUpdate("UPDATE Tickets SET row='" + i + "', seat='" + j + "' WHERE orderid='" + id + "' AND row='" + rows[k] + "' AND seat='" + seats[k] + "';");
+                            k++;
+                        }
+                    }
+                }
+            } 
+        }
+        catch (Exception e)
+        {
+            JOptionPane.showMessageDialog(null, e.toString());
+        }
     }
 }
