@@ -9,7 +9,7 @@ import java.util.HashMap;
 public class Testowa {
     public static void main(String[] args) throws SQLException {
         try {
-            Repertoire repertuar = new Repertoire("20.05.16");
+            Repertoire repertuar = new Repertoire("20.05.17");
             HashMap<Integer, String[]> aboutMovie = repertuar.getMapMovieInfo();
             HashMap<Integer, Integer[]> displayingHours = repertuar.getMapHours();
             Integer[] movieID = repertuar.getMovie();
@@ -42,6 +42,8 @@ public class Testowa {
                 }
                 System.out.println();
             }
+            String[][] rep = repertuar.getValue();
+            System.out.println("y: " + rep.length);
         } catch(SQLException e){
             System.out.println(e.getMessage());
         } catch (ClassNotFoundException e) {

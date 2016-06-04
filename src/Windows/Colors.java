@@ -115,15 +115,16 @@ public enum Colors {
     }
 
     /**
-     * @return kolor tła
+     * Zwraca kolor tła
+     * @return kolor tła - color
      */
     public Color getTlo() {
         return kolorTla;
     }
 
     /**
-     *
-     * @return kolor napisów które umżliwiają kliknięcie na sibie powodujące
+     * Zwraca kolor, która ustawia się po najechaniu na element
+     * @return kolor napisów które umożliwiają kliknięcie na siebie powodujące
      * wyświetlenie nowego okna, kolor ten zmiania się po najechaniu na napis
      */
     public Color getPodswietlony() {
@@ -131,7 +132,7 @@ public enum Colors {
     }
 
     /**
-     *
+     * Zwraca podstawowy kolor napisów
      * @return podstawowy kolor dla napisów wyświetlanych w oknie programu
      */
     public Color getNapisy() {
@@ -139,6 +140,7 @@ public enum Colors {
     }
 
     /**
+     * Zwraca kolor tekstów wyróżnionych
      * @return kolor tekstu dla ważnych nazw (np.: tytuł filmy, rodzaje biletów
      * przy wyborze ich ilości)
      */
@@ -147,25 +149,25 @@ public enum Colors {
     }
 
     /**
-     *
-     * @return kolor tla pierwszego wiersza tabelki w repertuarze ( tytuł, wiek,
-     * napisy ,godziny, itd...)
+     * Zwraca kolor tła pierwszego wiersza tabelki
+     * @return kolor tła pierwszego wiersza tabelki w repertuarze (tytuł, wiek,
+     * napisy, godziny, itd...)
      */
     public Color getKolorTabelkaHeader() {
         return kolorTabelkaHeader;
     }
 
     /**
-     *
+     * Zwraca kolor tła tabelki od drugiego wiersza
      * @return kolor tła tabelki z danymi w repertuarze (bez pierwszego
-     * wierrsza)
+     * wiersza)
      */
     public Color getKolorTabelka() {
         return kolorTabelkaTlo;
     }
 
     /**
-     *
+     * Zwraca kolor napisów w tabeli repertuaru
      * @return kolor napisów w tabelce w repertuarze
      */
     public Color getKolorTabelkaNapisy() {
@@ -173,7 +175,7 @@ public enum Colors {
     }
 
     /**
-     *
+     * Zwraca kolor napisów w przycisku wyboru daty
      * @return kolor napisów dla przycisku wyboru daty w oknie repertuaru
      */
     public Color getKolorDatyNapisy() {
@@ -181,24 +183,24 @@ public enum Colors {
     }
 
     /**
-     *
-     * @return kolor tła przycisk umożliwiającego wybór daty w oknie repertuaru
+     * Zwraca kolor tła przycisków wyboru daty
+     * @return kolor tła przycisku umożliwiającego wybór daty w oknie repertuaru
      */
     public Color getKolorDatyTlo() {
         return kolorDatyTlo;
     }
 
     /**
-     *
-     * @return kolor wszystkich scrolli jaie występują w programie
+     * Zwraca kolory scrolli
+     * @return kolor wszystkich scrolli jakie występują w programie
      */
     public Color getKolorScroll() {
         return kolorScroll;
     }
 
     /**
-     *
-     * @return obrazmowanie pola wyszukiwarki
+     * Zwraca kolor obramowania wyszukiwarki
+     * @return kolor obramowania pola wyszukiwarki
      */
     public Color getKolorRamkaWyszukiwania() {
         return kolorRamkaWyszukiwania;

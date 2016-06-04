@@ -9,14 +9,20 @@ import java.util.HashMap;
 
 
 /**
- * Created on 23.03.16.
+ * Created by deleviretta on 23.03.16.
  */
 
+
+/**
+ * Klasa odpowiedzialna za operacje na repertuarze i obsługę funcjonalności, w które wymagają wyświetlania
+ * dla danego terminu listy filmów wraz z godzinami.
+ *
+ */
 
 public class Repertoire {
     private ResultSet moviesRS; //referencja do ResultSet z TermsDB
     private TermsDB tdb;
-    String date;
+    private String date;
     private Integer[] hours; // godzina filmu
     private Integer[] movie; //tablica id filmow na dany dzien
     private Integer[] termsID;
@@ -30,10 +36,9 @@ public class Repertoire {
     /**
      * Konstruktor przyjmujący date filmu, tworzy ResultSet dla bazy Terms, skąd zostaną następnie pobrane ID
      * filmów przyjmuje datę jako String, wywoluje sie rowniez w nim funkcja, ktora inicjalizuje pozostaje pola,
-     * w szczególności tablice asocjacyjne za pomocą metody gettingInfo()
-     *
+     * w szczególności tablice asocjacyjne
      * @param dateOfMovies data filmu
-     * @throws ClassNotFoundException
+     * @throws ClassNotFoundException wyjątek klasy Class
      */
 
 
@@ -48,13 +53,14 @@ public class Repertoire {
             tdb.close();
         }
         catch(ClassNotFoundException e){
+            e.getMessage();
         }
     }
 
     /**
-     * Metoda pobierajaca wszystkie informacje o filmie
-     *
-     * @throws SQLException
+     * Metoda pobierajaca z bazy danych wszystkie informacje o filmie: tytuł, rok wydania,
+     * informacje o formie wyświetlania, język, czas trwania
+     * @throws SQLException wyjątek bazodanowy
      */
 
 
@@ -71,14 +77,14 @@ public class Repertoire {
     }
 
     /**
-     * Metoda służąca do sprawdzenia czy wartość znajduje się w tablicy
+     * Prywatna metoda służąca do sprawdzenia czy wartość znajduje się w tablicy
      * @param tab tablica wartości
      * @param key szukana wartość
      * @return zwraca liczbę dodatnią gdy wartość jest w tablicy, ujemną gdy wartość jest poza tablicą
      */
     private Integer searchingIfValue(Integer[] tab, Integer key){
         for (int i = 0; i < tab.length; i++) {
-            if(tab[i]==key){
+            if(tab[i].equals(key)){
                 return 1;
             }
         }
@@ -86,9 +92,9 @@ public class Repertoire {
     }
 
     /**
-     * Metoda, która tworzy tablicę godzin wyświetlania dla filmów wg ich ID
+     * Prywatna metoda, która tworzy tablicę godzin wyświetlania dla filmów wg ich ID
      * @param index indeks w tablicy movie, informuje dla jakiego filmu szukamy godzin
-     * @throws SQLException
+     * @throws SQLException wyjątek bazodanowy
      */
 
     private void gettingHours(Integer index) throws SQLException{
@@ -100,7 +106,7 @@ public class Repertoire {
         Integer[] tempID = new Integer[13];
         while (moviesRS.next()) {
             id = moviesRS.getInt("movie");
-            if (id == movie[index]) {
+            if (id.equals(movie[index])) {
                 tempHours[k] = moviesRS.getInt("hour");
                 tempID[k] = moviesRS.getInt("id");
                 k++;
@@ -126,9 +132,8 @@ public class Repertoire {
     }
 
     /**
-     * Metoda, która tworzy tablicę z ID filmów wyświetlanych danego dnia
-     *
-     * @throws SQLException
+     * Prywatna metoda, która tworzy tablicę z ID filmów wyświetlanych danego dnia
+     * @throws SQLException wyjątek bazodanowy
      */
     private void gettingMovieId() throws SQLException {
         Integer j = 0;
@@ -147,46 +152,43 @@ public class Repertoire {
     }
 
     /**
-     * Getter dla tablicy przechowujące informacje o filmie: title, age, info, lang, duration
-     *
-     * @return tablica asocjacyjna, HashMap
+     * Zwraca tablice przechowującą informacje o filmie: tytuł, rok wydania, informacje o formie wyświetlania,
+     * język, czas trwania
+     * @return tablica z informacji o filmie (dla każdego z nich)
      */
     public HashMap<Integer, String[]> getMapMovieInfo() {
         return mapMovieInfo;
     }
 
     /**
-     * Getter dla tablicy przechowującej godziny wyświetlania danego filmu
-     *
-     * @return tablica asocjacyjna, HashMap
+     * Zwraca tablicę przechowującą godziny wyświetlania danego filmu
+     * @return tablica asocjacyjna zawierająca godziny wyświetlania dla danego filmu na dany dzień
      */
-
     public HashMap<Integer, Integer[]> getMapHours(){
         return mapHours;
     }
 
     /**
-     * Getter dla tablicy przechowującej numery ID filmów
-     *
-     * @return tablica Integerów
+     * Zwraca tablice przechowującą numery ID filmów
+     * @return tablica id filmów na dany dzień
      */
     public Integer[] getMovie(){
         return movie;
     }
 
     /**
-     * Getter dla tablicy ID
-     * @return
+     * Zwraca tablice ID
+     * @return tablica asocjacyjna id terminów dla filmów
      */
     public HashMap<Integer, Integer[]> getMapTermsID() {
         return mapTermsID;
     }
 
     /**
-     * Metoda, ktora w oparciu o HashMap i tablice Integerów(movie) tworzy wynikową tablice dwuwymiarową,
+     * Metoda, która w oparciu o tablicę asocjacyjną godzin i tablice id filmów tworzy wynikową tablice dwuwymiarową,
      * za pomocą, której tworzona jest tabelka w okienku repertuaru
-     *
-     * @return tablica dwuwymiarowa zawierająca w wierszu wszystkie informacje o danym filmie
+     * @return tablica dwuwymiarowa zawierająca w wierszu wszystkie informacje o danym filmie: godziny i podstawowe
+     * informacje
      */
     public String[][] getValue(){
         Integer temp = movie.length;
@@ -219,15 +221,20 @@ public class Repertoire {
     }
 
     /**
-     * Getter dla ID filmu
-     *
-     * @param row
+     * Zwraca ID filmu
+     * @param row wiersz filmu
      * @return konkretne ID filmu
      */
     public Integer getMovieID(Integer row){
         return movie[row];
     }
 
+    /**
+     * Metoda zwracająca id terminu
+     * @param row wiersz w tabeli
+     * @param column kolumna tabeli
+     * @return konkretne id terminu, które występuje w bazie
+     */
     public Integer getTermID(Integer row, Integer column){
         Integer[] tempTable = mapTermsID.get(movie[row]);
         return tempTable[column-5];
