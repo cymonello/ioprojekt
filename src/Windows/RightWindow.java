@@ -1565,7 +1565,7 @@ public class RightWindow extends JPanel {
             }
             buttony[0].getActionListeners()[0].actionPerformed(new ActionEvent(buttony[0], 2, "symuluje"));
         } else {
-            JLabel brakWynikow = new JLabel("Nie znaleziono psujących filmów");
+            JLabel brakWynikow = new JLabel("Nie znaleziono pasujących filmów");
             panel.add(brakWynikow);
             brakWynikow.setBounds(50, 150, 700, 100);
             brakWynikow.setForeground(WindowConstants.schematKolorow.getNazwy());
