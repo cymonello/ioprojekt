@@ -58,7 +58,7 @@ import javax.swing.text.StyleConstants;
  * @author Bartłomiej
  */
 public class RightWindow extends JPanel {
-    
+
     private JTable jTable = new JTable();
 
     /**
@@ -80,7 +80,7 @@ public class RightWindow extends JPanel {
         setLayout(null);
         setBounds(BORDER, 0, WindowConstants.WIDTH - BORDER, WindowConstants.HEIGHT);
         setBackground(WindowConstants.schematKolorow.getTlo());
-        
+
         MoviesDB db = new MoviesDB();
         db.open();
         ArrayList<Object[]> listaRes = new ArrayList<>();
@@ -94,41 +94,41 @@ public class RightWindow extends JPanel {
             }
         }
         db.close();
-        
+
         for (int i = 0; i < 3; i++) {
             final int ID = lista.get(i);
             Object[] res = listaRes.get(i);
             JLabel labelIcon = new JLabel((ImageIcon) res[0]);
             labelIcon.setBounds(51 + (i * 250), 66, 198, 284);
-            
+
             MouseListener aList = new MouseListener() {
-                
+
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     MainWindow.rightPanel.ShowInfoFilm(ID, MainWindow.rightPanel);
                 }
-                
+
                 @Override
                 public void mousePressed(MouseEvent e) {
                 }
-                
+
                 @Override
                 public void mouseReleased(MouseEvent e) {
                 }
-                
+
                 @Override
                 public void mouseEntered(MouseEvent e) {
                     JLabel label = (JLabel) e.getSource();
                     label.setForeground(WindowConstants.schematKolorow.getPodswietlony());
                 }
-                
+
                 @Override
                 public void mouseExited(MouseEvent e) {
                     JLabel label = (JLabel) e.getSource();
                     label.setForeground(WindowConstants.schematKolorow.getNapisy());
                 }
             };
-            
+
             labelIcon.addMouseListener(aList);
             add(labelIcon);
             JLabel opis = new JLabel((String) res[1]);
@@ -140,7 +140,7 @@ public class RightWindow extends JPanel {
             opis.addMouseListener(aList);
         }
         validate();
-        
+
         repaint();
     }
 
@@ -168,19 +168,19 @@ public class RightWindow extends JPanel {
         setLayout(null);
         setBounds(BORDER, 0, WindowConstants.WIDTH - BORDER, WindowConstants.HEIGHT);
         setBackground(WindowConstants.schematKolorow.getTlo());
-        
+
         JLabel jlChooseDate = new JLabel("WYBIERZ DATE:");
-        
+
         jlChooseDate.setFont(new Font(WindowConstants.czcionka2, Font.CENTER_BASELINE, 17));
         jlChooseDate.setBounds(10, 30, 180, 30);
         jlChooseDate.setForeground(WindowConstants.schematKolorow.getNazwy());
         add(jlChooseDate);
-        
+
         jcbDate = new JComboBox();
         SimpleDateFormat ft = new SimpleDateFormat("dd.MM.yy");
         Calendar cal = Calendar.getInstance();
         jcbDate.addItem(ft.format(cal.getTime()));
-        
+
         for (int i = 0; i < 5; i++) {
             cal.add(Calendar.DAY_OF_MONTH, 1);
             jcbDate.addItem(ft.format(cal.getTime()));
@@ -189,27 +189,27 @@ public class RightWindow extends JPanel {
         jcbDate.setFont(new Font(WindowConstants.czcionka, Font.CENTER_BASELINE, 17));
         jcbDate.setForeground(Color.GRAY);
         jcbDate.setBackground(Color.CYAN);
-        
+
         ActionListener aList = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                
+
                 JComboBox source = (JComboBox) e.getSource();
                 dataa = source.getSelectedItem().toString();
                 String str = (String) source.getSelectedItem();
                 try {
-                    
+
                     final Repertoire rep = new Repertoire(str);
                     final String[][] tab = rep.getValue();
                     if (tab.length > 0) {
                         final String[] tab1 = {"Tytuł", "Wiek", "Info", "Język", "Czas", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22"};
-                        
+
                         jTable = new JTable(tab, tab1);
                         jTable.setGridColor(WindowConstants.schematKolorow.getTlo());
                         jTable.setEnabled(false);
                         JTableHeader header = jTable.getTableHeader();
                         UIManager.getDefaults().put("TableHeader.cellBorder", BorderFactory.createLineBorder(WindowConstants.schematKolorow.getTlo()));
-                        
+
                         header.setBackground(Color.yellow);
                         header.setBackground(WindowConstants.schematKolorow.getKolorTabelkaHeader());
                         header.setForeground(WindowConstants.schematKolorow.getKolorTabelkaNapisy());
@@ -222,7 +222,7 @@ public class RightWindow extends JPanel {
                             public void mouseClicked(MouseEvent e) {
                                 int row = jTable.rowAtPoint(e.getPoint());
                                 int col = jTable.columnAtPoint(e.getPoint());
-                                
+
                                 if (col == 0) {
                                     MainWindow.rightPanel.ShowInfoFilm(rep.getMovieID(row), MainWindow.rightPanel);
                                 }
@@ -232,19 +232,19 @@ public class RightWindow extends JPanel {
                                     MainWindow.rightPanel.MakeOrderPart1(b);
                                 }
                             }
-                            
+
                             @Override
                             public void mousePressed(MouseEvent e) {
                             }
-                            
+
                             @Override
                             public void mouseReleased(MouseEvent e) {
                             }
-                            
+
                             @Override
                             public void mouseEntered(MouseEvent e) {
                             }
-                            
+
                             @Override
                             public void mouseExited(MouseEvent e) {
                             }
@@ -254,17 +254,17 @@ public class RightWindow extends JPanel {
                         }
                         MainWindow.rightPanel.removeAll();
                         JLabel jlChooseDate = new JLabel("WYBIERZ DATĘ:");
-                        
+
                         jlChooseDate.setFont(new Font(WindowConstants.czcionka2, Font.CENTER_BASELINE, 17));
                         jlChooseDate.setBounds(10, 30, 180, 30);
                         jlChooseDate.setForeground(WindowConstants.schematKolorow.getNapisy());
                         add(jlChooseDate);
-                        
+
                         JComboBox jcbDate1 = new JComboBox();
                         SimpleDateFormat ft = new SimpleDateFormat("dd.MM.yy");
                         Calendar cal = Calendar.getInstance();
                         jcbDate1.addItem(ft.format(cal.getTime()));
-                        
+
                         for (int i = 0; i < 5; i++) {
                             cal.add(Calendar.DAY_OF_MONTH, 1);
                             jcbDate1.addItem(ft.format(cal.getTime()));
@@ -281,25 +281,25 @@ public class RightWindow extends JPanel {
                         add(jcbDate1);
                         jcbDate1.addActionListener(this);
                         JScrollPane scrollPane = new JScrollPane(jTable, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-                        
+
                         scrollPane.setBorder(BorderFactory.createLineBorder(WindowConstants.schematKolorow.getTlo(), 1));
                         scrollPane.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
                             @Override
                             protected JButton createDecreaseButton(int orientation) {
                                 return createZeroButton();
                             }
-                            
+
                             @Override
                             protected JButton createIncreaseButton(int orientation) {
                                 return createZeroButton();
                             }
-                            
+
                             @Override
                             protected void configureScrollBarColors() {
                                 this.trackColor = WindowConstants.schematKolorow.getTlo();
                                 thumbColor = WindowConstants.schematKolorow.getKolorScroll();
                             }
-                            
+
                             private JButton createZeroButton() { // 
                                 JButton jbutton = new JButton();
                                 jbutton.setPreferredSize(new Dimension(0, 0));
@@ -308,12 +308,12 @@ public class RightWindow extends JPanel {
                                 return jbutton;
                             }
                         });
-                        
+
                         GridBagConstraints gbc_scrollPane = new GridBagConstraints();
                         gbc_scrollPane.fill = GridBagConstraints.BOTH;
                         gbc_scrollPane.gridx = 0;
                         gbc_scrollPane.gridy = 0;
-                        
+
                         int hei = jTable.getRowCount() * jTable.getRowHeight() + 22;
                         if (hei > 400) {
                             hei = 400;
@@ -330,13 +330,13 @@ public class RightWindow extends JPanel {
                         brak.setHorizontalAlignment(SwingConstants.CENTER);
                         add(brak);
                     }
-                    
+
                 } catch (ClassNotFoundException | SQLException ex) {
                 }
             }
-            
+
         };
-        
+
         jcbDate.addActionListener(aList);
         add(jcbDate);
         aList.actionPerformed(new ActionEvent(jcbDate, 2, "ss"));
@@ -394,9 +394,9 @@ public class RightWindow extends JPanel {
                 str[j] = mdb.getTitle(j + 1);
             }
             mdb.close();
-            
+
             jtfSearch.setBorder(BorderFactory.createLineBorder(WindowConstants.schematKolorow.getKolorRamkaWyszukiwania(), 3));
-            
+
             jtfSearch.setEditable(true);
             Object popup = jtfSearch.getUI().getAccessibleChild(jtfSearch, 0);
             Component c = ((Container) popup).getComponent(0);
@@ -407,18 +407,18 @@ public class RightWindow extends JPanel {
                     protected JButton createDecreaseButton(int orientation) {
                         return createZeroButton();
                     }
-                    
+
                     @Override
                     protected JButton createIncreaseButton(int orientation) {
                         return createZeroButton();
                     }
-                    
+
                     @Override
                     protected void configureScrollBarColors() {
                         this.trackColor = WindowConstants.schematKolorow.getTlo();
                         thumbColor = WindowConstants.schematKolorow.getKolorScroll();
                     }
-                    
+
                     private JButton createZeroButton() {
                         JButton jbutton = new JButton();
                         jbutton.setPreferredSize(new Dimension(0, 0));
@@ -427,9 +427,9 @@ public class RightWindow extends JPanel {
                         return jbutton;
                     }
                 });
-                
+
             }
-            
+
             tf = (JTextField) jtfSearch.getEditor().getEditorComponent();
             tf.addKeyListener(new KeyAdapter() {
                 @Override
@@ -445,7 +445,7 @@ public class RightWindow extends JPanel {
                                 DefaultComboBoxModel m = getSuggestedModel(v, text);
                                 if (m.getSize() == 0 || hide_flag) {
                                     jtfSearch.hidePopup();
-                                    
+
                                     hide_flag = false;
                                 } else {
                                     setModel(m, text);
@@ -455,7 +455,7 @@ public class RightWindow extends JPanel {
                         }
                     });
                 }
-                
+
                 @Override
                 public void keyPressed(KeyEvent e) {
                     String text = tf.getText();
@@ -494,11 +494,11 @@ public class RightWindow extends JPanel {
             JPanel p = new JPanel(new BorderLayout());
             p.add(jtfSearch, null);
             p.setBounds(250, 250, 300, 50);
-            
+
             add(p);
             setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
             setPreferredSize(new Dimension(300, 150));
-            
+
             ImageButton ibSearch;
             ibSearch = new ImageButton("res" + File.separator + "Szukaj.png");
             ibSearch.setRolloverIcon(new ImageIcon("res" + File.separator + "SzukajEntered.png"));
@@ -512,10 +512,10 @@ public class RightWindow extends JPanel {
                     sear.close();
                     makeFound(idTab);
                 }
-                
+
             });
             add(ibSearch);
-            
+
             repaint();
             mdb.close();
         } catch (ClassNotFoundException ex) {
@@ -544,7 +544,7 @@ public class RightWindow extends JPanel {
      */
     private static DefaultComboBoxModel getSuggestedModel(java.util.List<String> list, String text) {
         DefaultComboBoxModel m = new DefaultComboBoxModel();
-        
+
         for (String s : list) {
             if (s.toLowerCase().contains(text.toLowerCase())) {
                 m.addElement(s);
@@ -565,7 +565,7 @@ public class RightWindow extends JPanel {
         panel.removeAll();
         panel.setLayout(null);
         panel.setBackground(WindowConstants.schematKolorow.getTlo());
-        
+
         MoviesDB mdb = new MoviesDB();
         mdb.open();
         Object[] res = mdb.getMovieInfo(ID);
@@ -573,7 +573,7 @@ public class RightWindow extends JPanel {
         JLabel labelIcon = new JLabel((ImageIcon) res[0]);
         labelIcon.setBounds(51, 16, 198, 284);
         panel.add(labelIcon);
-        
+
         JLabel[] infoName = new JLabel[9];
         infoName[0] = new JLabel("Tytuł:");
         infoName[1] = new JLabel("Gatunek:");
@@ -590,7 +590,7 @@ public class RightWindow extends JPanel {
             infoName[i].setForeground(WindowConstants.schematKolorow.getNazwy());
             infoName[i].setFont(new Font(WindowConstants.czcionka, Font.CENTER_BASELINE, 12));
             panel.add(infoName[i]);
-            
+
             infoFilm[i] = new JLabel(res[i + 1].toString());
             infoFilm[i].setBounds(380, 16 + (i * 32), 400, 30);
             infoFilm[i].setFont(new Font(WindowConstants.czcionka, Font.CENTER_BASELINE, 11));
@@ -606,26 +606,26 @@ public class RightWindow extends JPanel {
                 sear.close();
                 makeFound(idTab);
             }
-            
+
             @Override
             public void mousePressed(MouseEvent e) {
             }
-            
+
             @Override
             public void mouseReleased(MouseEvent e) {
             }
-            
+
             @Override
             public void mouseEntered(MouseEvent e) {
                 infoFilm[1].setForeground(WindowConstants.schematKolorow.getPodswietlony());
             }
-            
+
             @Override
             public void mouseExited(MouseEvent e) {
                 infoFilm[1].setForeground(WindowConstants.schematKolorow.getNapisy());
             }
         });
-        
+
         MoviesDB db = new MoviesDB();
         db.open();
         double ocena = db.getNote(ID);
@@ -645,7 +645,7 @@ public class RightWindow extends JPanel {
         ocen.setFont(new Font(WindowConstants.czcionka2, Font.CENTER_BASELINE, 20));
         ocen.setForeground(WindowConstants.schematKolorow.getNazwy());
         panel.add(ocen);
-        
+
         JLabel ocenfilm = new JLabel("Oceń film");
         ocenfilm.setBounds(50, 350, 200, 30);
         ocenfilm.setFont(new Font(WindowConstants.czcionka, Font.CENTER_BASELINE, 12));
@@ -678,15 +678,15 @@ public class RightWindow extends JPanel {
                     db.addNote(ID, m);
                     db.close();
                 }
-                
+
                 @Override
                 public void mousePressed(MouseEvent e) {
                 }
-                
+
                 @Override
                 public void mouseReleased(MouseEvent e) {
                 }
-                
+
                 @Override
                 public void mouseEntered(MouseEvent e) {
                     if (gwiazdki[m - 1].getMouseListeners().length > 0) {
@@ -695,7 +695,7 @@ public class RightWindow extends JPanel {
                         }
                     }
                 }
-                
+
                 @Override
                 public void mouseExited(MouseEvent e) {
                     if (gwiazdki[m - 1].getMouseListeners().length > 0) {
@@ -717,19 +717,19 @@ public class RightWindow extends JPanel {
             }
         });
         JTextArea filmDescription = new JTextArea(res[11].toString());
-        
+
         filmDescription.setWrapStyleWord(true);
         filmDescription.setLineWrap(true);
         filmDescription.setEditable(false);
         filmDescription.setFocusable(false);
-        
+
         filmDescription.setEditable(false);
         filmDescription.setFont(new Font(WindowConstants.czcionka, Font.CENTER_BASELINE, 11));
         filmDescription.setForeground(WindowConstants.schematKolorow.getNapisy());
         filmDescription.setBounds(0, 0, 490, 150);
         filmDescription.setBackground(WindowConstants.schematKolorow.getTlo());
         filmDescription.setBorder(BorderFactory.createLineBorder(WindowConstants.schematKolorow.getTlo(), 1));
-        
+
         JScrollPane scroll = new JScrollPane(filmDescription,
                 ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
                 ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER
@@ -741,18 +741,18 @@ public class RightWindow extends JPanel {
             protected JButton createDecreaseButton(int orientation) {
                 return createZeroButton();
             }
-            
+
             @Override
             protected JButton createIncreaseButton(int orientation) {
                 return createZeroButton();
             }
-            
+
             @Override
             protected void configureScrollBarColors() {
                 this.trackColor = WindowConstants.schematKolorow.getTlo();
                 thumbColor = WindowConstants.schematKolorow.getKolorScroll();
             }
-            
+
             private JButton createZeroButton() { // 
                 JButton jbutton = new JButton();
                 jbutton.setPreferredSize(new Dimension(0, 0));
@@ -761,7 +761,7 @@ public class RightWindow extends JPanel {
                 return jbutton;
             }
         });
-        
+
         GridBagConstraints gbc_scrollPane = new GridBagConstraints();
         gbc_scrollPane.fill = GridBagConstraints.BOTH;
         gbc_scrollPane.gridx = 0;
@@ -796,7 +796,7 @@ public class RightWindow extends JPanel {
         final JTextField jtfNumer = new JTextField();
         jtfNumer.setBounds(370, 105, 150, 40);
         add(jtfNumer);
-        
+
         final JPasswordField jtfPassw = new JPasswordField();
         jtfPassw.setBounds(370, 155, 150, 40);
         add(jtfPassw);
@@ -861,7 +861,7 @@ public class RightWindow extends JPanel {
         }
         final int[][] sala = (int[][]) informacje[4];
         tdb.close();
-        
+
         ImageButton zmienMiejsce = new ImageButton("res" + File.separator + "zmienMiejsca.png");
         zmienMiejsce.setRolloverIcon(new ImageIcon("res" + File.separator + "zmienMiejscaEntered.png"));
         zmienMiejsce.setBounds(200, 300, 200, 23);
@@ -870,7 +870,7 @@ public class RightWindow extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 zmienMiejsca(numer, sala, Integer.parseInt(informacje[3].toString()));
             }
-            
+
         });
         add(zmienMiejsce);
         ImageButton usunRezerwacje = new ImageButton("res" + File.separator + "usunRez.png");
@@ -891,12 +891,12 @@ public class RightWindow extends JPanel {
                     MainWindow.rightPanel.StartWindow();
                 }
             }
-            
+
         });
         add(usunRezerwacje);
         repaint();
     }
-    
+
     private void zmienMiejsca(final int numer, final int[][] salaTab, final int ilemiejsc) {
         removeAll();
         setLayout(null);
@@ -934,19 +934,19 @@ public class RightWindow extends JPanel {
                                     salaTab[k][l] = 0;
                                 }
                             }
-                            
+
                             @Override
                             public void mousePressed(MouseEvent e) {
                             }
-                            
+
                             @Override
                             public void mouseReleased(MouseEvent e) {
                             }
-                            
+
                             @Override
                             public void mouseEntered(MouseEvent e) {
                             }
-                            
+
                             @Override
                             public void mouseExited(MouseEvent e) {
                             }
@@ -971,26 +971,26 @@ public class RightWindow extends JPanel {
                                     sala.setIcon("res" + File.separator + "miejsceDostepne.png");
                                     list.remove(0);
                                     salaTab[k][l] = 0;
-                                    
+
                                 } else if (list.size() < ilemiejsc) {
                                     sala.setIcon("res" + File.separator + "miejsceWybrane.png");
                                     salaTab[k][l] = 2;
                                     list.add(1);
                                 }
                             }
-                            
+
                             @Override
                             public void mousePressed(MouseEvent e) {
                             }
-                            
+
                             @Override
                             public void mouseReleased(MouseEvent e) {
                             }
-                            
+
                             @Override
                             public void mouseEntered(MouseEvent e) {
                             }
-                            
+
                             @Override
                             public void mouseExited(MouseEvent e) {
                             }
@@ -1011,7 +1011,7 @@ public class RightWindow extends JPanel {
         add(miejsceWybrane);
         add(miejsceZajete);
         add(miejsceDostepne);
-        
+
         JLabel zajete = new JLabel("Miejsce niedostępne");
         JLabel wolne = new JLabel("Miejsce dostępne");
         JLabel wybrane = new JLabel("Miejsce wybrane");
@@ -1030,7 +1030,7 @@ public class RightWindow extends JPanel {
         add(wybrane);
         add(zajete);
         add(wolne);
-        
+
         ImageButton next = new ImageButton("res" + File.separator + "Dalej.png");
         next.setRolloverIcon(new ImageIcon("res" + File.separator + "DalejEntered.png"));
         next.setBounds(350, 510, 100, 40);
@@ -1048,6 +1048,12 @@ public class RightWindow extends JPanel {
                         MainWindow.rightPanel.editPart2(numer);
                     } else {
                         JOptionPane.showMessageDialog(null, "Ktoś już zarezerwował wybrane miejsca, wybierz inne.", "Error", INFORMATION_MESSAGE);
+                        TicketsDB tdb2 = new TicketsDB();
+                        tdb2.open();
+                        final Object[] informacje = tdb.orderToEdit(numer);
+                        final int[][] salatmp = (int[][]) informacje[4];
+                        tdb.close();
+                        zmienMiejsca(numer, salatmp, ilemiejsc);
                     }
                 }
             }
@@ -1067,14 +1073,14 @@ public class RightWindow extends JPanel {
         setBounds(BORDER, 0, WindowConstants.WIDTH - BORDER, WindowConstants.HEIGHT);
         JTextPane opis1 = new JTextPane();
         opis1.setText("\t\tZa pomocą aplikacji możesz wybrać seans, który Cię interesuje, a następnie dokonać rezerwacji. Oferujemy szeroką gamę filmów, zatem każdy znajdzie dla siebie coś ciekawego. W zakładce repertuar znajduję się rozpiska godzinowa filmów na 6 kolejnych dni. Po wybraniu godziny z tabeli możesz dokonać rezerwacji. Aplikacja naszego kina jest również obszerną bazą najpotrzebniejszych informacji niezbędnych do podjęcia decyzji o wyborze filmu. Dzięki systemowi ocen możesz zobaczyć, jak film został oceniony przez społeczność odwiedzającą aplikację naszego kina. Również z poziomu informacji o filmie istnieje możliwość dokonania rezerwacji, o ile film jest w danym czasie grany.");
-        
+
         SimpleAttributeSet sa = new SimpleAttributeSet();
         StyleConstants.setAlignment(sa, StyleConstants.ALIGN_JUSTIFIED);
-        
+
         opis1.getStyledDocument().setParagraphAttributes(0, 0, sa, false);
         opis1.setEditable(false);
         opis1.setFocusable(false);
-        
+
         opis1.setEditable(false);
         opis1.setFont(new Font(WindowConstants.czcionka, Font.CENTER_BASELINE, 14));
         opis1.setForeground(WindowConstants.schematKolorow.getNapisy());
@@ -1082,13 +1088,13 @@ public class RightWindow extends JPanel {
         opis1.setBackground(WindowConstants.schematKolorow.getTlo());
         opis1.setBorder(BorderFactory.createLineBorder(WindowConstants.schematKolorow.getTlo(), 1));
         add(opis1);
-        
+
         JTextPane opis2 = new JTextPane();
         opis2.setText("\t\tOferujemy wysokich standardów sale kinowe, dzięki czemu oglądanie u nas filmów jest czystą przyjemnością. Nasze kino przystosowane jest do seansów 3D, przed wejściem na taki pokaz każdy z klientów dostaje okulary umożliwiające mu pełne cieszenie się z filmów w formacie 3D. W budynku kina znajduję się również sklepik, w którym możecie dokonać zakupu produktów spożywczych niezbędnych do osiągnięcia pełnego zadowolenia z seansów. W razie jakichkolwiek pytań piszcie na adres: (wklej tu adres kina xD).");
         opis2.getStyledDocument().setParagraphAttributes(0, 0, sa, false);
         opis2.setEditable(false);
         opis2.setFocusable(false);
-        
+
         opis2.setEditable(false);
         opis2.setFont(new Font(WindowConstants.czcionka, Font.CENTER_BASELINE, 14));
         opis2.setForeground(WindowConstants.schematKolorow.getNapisy());
@@ -1113,12 +1119,12 @@ public class RightWindow extends JPanel {
      * zakonczeniu rezerwuje miejsca w bazie danych
      */
     private void MakeOrderPart1(final Booking booking) {
-        
+
         removeAll();
         setLayout(null);
         setBounds(BORDER, 0, WindowConstants.WIDTH - BORDER, WindowConstants.HEIGHT);
         setBackground(WindowConstants.schematKolorow.getTlo());
-        
+
         String[] info = booking.getInfo();
         JLabel title = new JLabel(info[0]);
         title.setForeground(WindowConstants.schematKolorow.getNazwy());
@@ -1126,7 +1132,7 @@ public class RightWindow extends JPanel {
         title.setHorizontalAlignment(SwingConstants.CENTER);
         title.setBounds(50, 70, 700, 50);
         add(title);
-        
+
         JLabel date = new JLabel(info[1] + " : " + info[2]);
         date.setForeground(WindowConstants.schematKolorow.getNazwy());
         date.setFont(new Font(WindowConstants.czcionka2, Font.CENTER_BASELINE, 15));
@@ -1140,18 +1146,18 @@ public class RightWindow extends JPanel {
         ticket[1] = new JLabel("Szkolny " + df.format(ceny[1]) + " zł");
         ticket[2] = new JLabel("Seniorski " + df.format(ceny[2]) + " zł");
         ticket[3] = new JLabel("Studencki " + df.format(ceny[3]) + " zł");
-        
+
         for (int i = 0; i < 4; i++) {
             ticket[i].setBounds(200, 190 + i * 50, 180, 50);
             ticket[i].setHorizontalAlignment(SwingConstants.RIGHT);
             add(ticket[i]);
             ticket[i].setForeground(WindowConstants.schematKolorow.getNazwy());
             ticket[i].setFont(new Font(WindowConstants.czcionka, Font.CENTER_BASELINE, 12));
-            
+
         }
-        
+
         String[] tab = {"0", "1", "2", "3", "4", "5"};
-        
+
         final JComboBox[] jcbTicketNumber = new JComboBox[4];
         for (int i = 0; i < 4; i++) {
             jcbTicketNumber[i] = new JComboBox(tab) {
@@ -1175,9 +1181,9 @@ public class RightWindow extends JPanel {
             jcbTicketNumber[i].setBounds(400, 200 + i * 50, 50, 30);
             add(jcbTicketNumber[i]);
             jcbTicketNumber[i].setSelectedIndex(0);
-            
+
         }
-        
+
         ImageButton next = new ImageButton("res" + File.separator + "dalej.png");
         next.setRolloverIcon(new ImageIcon("res" + File.separator + "DalejEntered.png"));
         next.setBounds(350, 400, 100, 40);
@@ -1198,12 +1204,12 @@ public class RightWindow extends JPanel {
                     MainWindow.rightPanel.MakeOrderPart2(booking);
                 } else {
                     JOptionPane.showMessageDialog(null, "Nie wybrano biletów", "Błąd", INFORMATION_MESSAGE);
-                    
+
                 }
             }
         });
         add(next);
-        
+
         repaint();
     }
 
@@ -1220,7 +1226,7 @@ public class RightWindow extends JPanel {
         removeAll();
         setLayout(null);
         setBounds(BORDER, 0, WindowConstants.WIDTH - BORDER, WindowConstants.HEIGHT);
-        
+
         String[] info = booking.getInfo();
         JLabel title = new JLabel(info[0]);
         title.setForeground(WindowConstants.schematKolorow.getNazwy());
@@ -1228,17 +1234,17 @@ public class RightWindow extends JPanel {
         title.setHorizontalAlignment(SwingConstants.CENTER);
         title.setBounds(50, 20, 700, 50);
         add(title);
-        
+
         JLabel date = new JLabel(info[1] + " : " + info[2]);
         date.setForeground(WindowConstants.schematKolorow.getNazwy());
         date.setFont(new Font(WindowConstants.czcionka2, Font.CENTER_BASELINE, 15));
         date.setHorizontalAlignment(SwingConstants.CENTER);
         date.setBounds(50, 50, 700, 50);
         add(date);
-        
+
         final Hall hal = new Hall(info[1], info[2], Integer.parseInt(booking.getInfo()[3]));
         final int[][] sal = hal.getHall();
-        
+
         final ArrayList<int[]> list = new ArrayList<>();
         JLabel ekran = new JLabel(new ImageIcon("res" + File.separator + "Ekran.png"));
         ekran.setBounds(160, 110, 480, 28);
@@ -1273,19 +1279,19 @@ public class RightWindow extends JPanel {
                                 }
                             }
                         }
-                        
+
                         @Override
                         public void mousePressed(MouseEvent e) {
                         }
-                        
+
                         @Override
                         public void mouseReleased(MouseEvent e) {
                         }
-                        
+
                         @Override
                         public void mouseEntered(MouseEvent e) {
                         }
-                        
+
                         @Override
                         public void mouseExited(MouseEvent e) {
                         }
@@ -1306,7 +1312,7 @@ public class RightWindow extends JPanel {
         add(miejsceWybrane);
         add(miejsceZajete);
         add(miejsceDostepne);
-        
+
         JLabel zajete = new JLabel("Miejsce niedostępne");
         JLabel wolne = new JLabel("Miejsce dostępne");
         JLabel wybrane = new JLabel("Miejsce wybrane");
@@ -1325,7 +1331,7 @@ public class RightWindow extends JPanel {
         add(wybrane);
         add(zajete);
         add(wolne);
-        
+
         ImageButton next = new ImageButton("res" + File.separator + "Dalej.png");
         next.setRolloverIcon(new ImageIcon("res" + File.separator + "DalejEntered.png"));
         next.setBounds(350, 510, 100, 40);
@@ -1361,7 +1367,7 @@ public class RightWindow extends JPanel {
         removeAll();
         setLayout(null);
         setBounds(BORDER, 0, WindowConstants.WIDTH - BORDER, WindowConstants.HEIGHT);
-        
+
         String[] info = booking.getInfo();
         JLabel title = new JLabel(info[0]);
         title.setForeground(WindowConstants.schematKolorow.getNazwy());
@@ -1369,14 +1375,14 @@ public class RightWindow extends JPanel {
         title.setHorizontalAlignment(SwingConstants.CENTER);
         title.setBounds(50, 70, 700, 50);
         add(title);
-        
+
         JLabel date = new JLabel(info[1] + " : " + info[2]);
         date.setForeground(WindowConstants.schematKolorow.getNazwy());
         date.setFont(new Font(WindowConstants.czcionka2, Font.CENTER_BASELINE, 15));
         date.setHorizontalAlignment(SwingConstants.CENTER);
         date.setBounds(50, 100, 700, 50);
         add(date);
-        
+
         JLabel jlDane = new JLabel("Proszę podać następujące dane:");
         jlDane.setForeground(WindowConstants.schematKolorow.getNazwy());
         jlDane.setFont(new Font(WindowConstants.czcionka2, Font.CENTER_BASELINE, 15));
@@ -1384,12 +1390,12 @@ public class RightWindow extends JPanel {
         jlDane.setBounds(50, 140, 700, 50);
         add(jlDane);
         JLabel[] dane = new JLabel[4];
-        
+
         dane[0] = new JLabel("Imie");
         dane[1] = new JLabel("Nazwisko");
         dane[2] = new JLabel("Adres e-mail");
         dane[3] = new JLabel("Numer telefonu");
-        
+
         for (int i = 0; i < dane.length; i++) {
             dane[i].setForeground(WindowConstants.schematKolorow.getNazwy());
             dane[i].setFont(new Font(WindowConstants.czcionka, Font.CENTER_BASELINE, 15));
@@ -1407,17 +1413,17 @@ public class RightWindow extends JPanel {
         jtfPol[1].setToolTipText("Wprowadź swoje nazwisko");
         jtfPol[2].setToolTipText("Wprowadź poprawny adres e-mail, na który zostanie wysłane potwierdzenie");
         jtfPol[3].setToolTipText("Wprowadź numer telefonu komurkowego, lub numer telefonu stacjonalnego poprzedzony dwucyfrowym numerek kierunkowym");
-        
+
         ImageButton next = new ImageButton("res" + File.separator + "Dalej.png");
         next.setRolloverIcon(new ImageIcon("res" + File.separator + "DalejEntered.png"));
         next.setBounds(350, 510, 100, 40);
         next.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                
+
                 if (!PoprawnoscDanych.poprawnosc(jtfPol[0].getText(), jtfPol[1].getText(), jtfPol[2].getText(), jtfPol[3].getText().replaceAll(" ", ""))) {
                     JOptionPane.showMessageDialog(null, "Proszę wpisać poprawne dane", "Error", INFORMATION_MESSAGE);
-                    
+
                 } else {
                     MainWindow.rightPanel.MakeOrderPart4(booking, jtfPol[0].getText(), jtfPol[1].getText(), jtfPol[2].getText(), Integer.parseInt(jtfPol[3].getText()));
                 }
@@ -1444,14 +1450,14 @@ public class RightWindow extends JPanel {
         removeAll();
         setLayout(null);
         setBounds(BORDER, 0, WindowConstants.WIDTH - BORDER, WindowConstants.HEIGHT);
-        
+
         JLabel check = new JLabel("Sprawdź poprawność danych do rezerwacji");
         check.setBounds(50, 60, 700, 50);
         check.setForeground(WindowConstants.schematKolorow.getNazwy());
         check.setFont(new Font(WindowConstants.czcionka2, Font.CENTER_BASELINE, 20));
         check.setHorizontalAlignment(SwingConstants.CENTER);
         add(check);
-        
+
         JLabel[] infoName = new JLabel[9];
         infoName[0] = new JLabel("Tytuł:");
         infoName[1] = new JLabel("Data:");
@@ -1462,7 +1468,7 @@ public class RightWindow extends JPanel {
         infoName[6] = new JLabel("Adres e-mail:");
         infoName[7] = new JLabel("Numer telefonu:");
         infoName[8] = new JLabel("Cena:");
-        
+
         for (int i = 0; i < infoName.length; i++) {
             infoName[i].setBounds(50, 120 + 30 * i, 250, 30);
             infoName[i].setForeground(WindowConstants.schematKolorow.getNazwy());
@@ -1484,7 +1490,7 @@ public class RightWindow extends JPanel {
         ImageButton next = new ImageButton("res" + File.separator + "Dalej.png");
         next.setRolloverIcon(new ImageIcon("res" + File.separator + "DalejEntered.png"));
         next.setBounds(410, 450, 100, 40);
-        
+
         JLabel[] info = new JLabel[9];
         info[0] = new JLabel(booking.getInfo()[0]);
         info[1] = new JLabel(booking.getInfo()[1]);
@@ -1496,7 +1502,7 @@ public class RightWindow extends JPanel {
         info[7] = new JLabel(Integer.toString(number));
         DecimalFormat df = new DecimalFormat("#.00");
         info[8] = new JLabel(df.format(booking.price()) + " zł");
-        
+
         for (int i = 0; i < info.length; i++) {
             info[i].setBounds(310, 120 + 30 * i, 390, 30);
             info[i].setForeground(WindowConstants.schematKolorow.getNapisy());
@@ -1535,7 +1541,7 @@ public class RightWindow extends JPanel {
         setLayout(null);
         setBackground(WindowConstants.schematKolorow.getTlo());
         setBounds(BORDER, 0, WindowConstants.WIDTH - BORDER, WindowConstants.HEIGHT);
-        
+
         int ile = idTab.length;
         final JPanel panel = new JPanel();
         panel.setBounds(0, 50, WindowConstants.WIDTH - BORDER, WindowConstants.HEIGHT - 50);
