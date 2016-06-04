@@ -139,6 +139,8 @@ public class RightWindow extends JPanel {
             add(opis);
             opis.addMouseListener(aList);
         }
+        validate();
+        
         repaint();
     }
 
