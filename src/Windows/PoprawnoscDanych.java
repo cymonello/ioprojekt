@@ -35,7 +35,6 @@ public class PoprawnoscDanych {
         if ("[0-9]".equals(String.valueOf(email.charAt(0))) || "[_.-]".equals(String.valueOf(email.charAt(0))) || (email.length() - email.replaceAll("@", "").length()) > 1) {
             return false;
         }
-        System.out.println(replaceAll3.length() + " " + replaceAll3);
         if (replaceAll1.length() > 0 || name.length() == 0
                 || replaceAll2.length() > 0 || lastname.length() == 0
                 || replaceAll3.length() > 0 || email.indexOf('@') <= 0 || email.indexOf('@') > email.indexOf('.', email.indexOf('@') + 2) || email.indexOf('.', email.indexOf('@') + 2) == email.length() - 1) {
