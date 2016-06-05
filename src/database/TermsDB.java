@@ -51,7 +51,7 @@ public class TermsDB {
      * metodę getMovieInfo(int id) gdzie id to będzie movie z ResultSet
      *
      * @param date - data na którą chcemy pobrać terminy
-     * @return
+     * @return ResultSet
      */
     public ResultSet getTermsInDay(String date) {
         ResultSet termsInDay = null;
@@ -103,7 +103,7 @@ public class TermsDB {
      * Zwraca tytuł filmu z konkretnego terminu
      *
      * @param id - id terminu, z którego chcemy dowiedzieć się tytułu filmu
-     * @return
+     * @return tytuł filmu
      */
     public String getTitle(int id) {
         String title = null;

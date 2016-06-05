@@ -47,7 +47,7 @@ public class MoviesDB {
      * Zwraca cały ResultSet ze wszystkimi danymi owybranym filmie
      *
      * @param id
-     * @return
+     * @return ResultSet
      */
     public ResultSet getMovie(int id) {
         ResultSet movie = null;
@@ -68,7 +68,7 @@ public class MoviesDB {
      * Zwraca String tytuł
      *
      * @param id
-     * @return
+     * @return tytuł filmu o danym id
      */
     public String getTitle(int id) {
         String title = null;
@@ -92,7 +92,7 @@ public class MoviesDB {
      * Zwraca Date datę premiery filmu
      *
      * @param id
-     * @return
+     * @return opis filmu
      */
     public String getDescription(int id) {
         String desc = null;
@@ -115,7 +115,7 @@ public class MoviesDB {
     /**
      * Metoda zwracająca max id z bazy filmów czyli ilość filmów w bazie
      *
-     * @return
+     * @return ilość filmów w bazie - najwieksze ID
      */
     public int getMaxId() {
         int id = 0;
@@ -141,7 +141,7 @@ public class MoviesDB {
      * aktorzy 8 - kraj 9 - rok prod 10 - ocena 11 - opis
      *
      * @param id
-     * @return
+     * @return zbiór informacji o filmie
      */
     public Object[] getMovieInfo(int id) {
         ResultSet r = null;
@@ -180,7 +180,7 @@ public class MoviesDB {
      * Metoda zwracająca ocenę filmu
      *
      * @param id
-     * @return
+     * @return ocena danego filmu
      */
     public double getNote(int id) {
         double note = 0;

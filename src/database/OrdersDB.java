@@ -75,7 +75,7 @@ public class OrdersDB {
     /**
      * Metoda zwracająca id ostatniego zamówienia
      *
-     * @return
+     * @return id ostatniego zamowienia
      */
     public int getId() {
         int id = 0;
@@ -100,7 +100,7 @@ public class OrdersDB {
      *
      * @param id
      * @param pass
-     * @return
+     * @return true/false w zaleznosci od prowadzonych akceptacji hasloa i numeru rezerwacji
      */
     public boolean check(int id, String pass) {
         String temp_pass, date;

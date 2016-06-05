@@ -165,7 +165,7 @@ public class TicketsDB {
      *
      * @param id id rezerwacji
      * @param sala tablica reprezentująca salę z nowo wybranymi miejscami
-     * @return
+     * @return true/false w lazeżności od mozliwości zapisania zmienionych miejsc
      */
     public boolean saveEdited(int id, int[][] sala) {
         try {
