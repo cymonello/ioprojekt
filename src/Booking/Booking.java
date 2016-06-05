@@ -11,6 +11,11 @@ import java.util.List;
 import java.util.Random;
 
 /**
+ * Klasa Booking reprezentujaca rezerwacje biletu na wybrany film, w wybranym
+ * terminie i o wybranej godzinie Przechowuje liste biletow, liste miejsc(w
+ * formacie: [rząd, kolumna]), numer identyfikacyjny filmu, ktory jest
+ * przypisany do danego terminu i godziny oraz informacje o rezerwacji(tytul,
+ * data, godzina, sala).
  *
  * @author Kamil Oleszek
  */
@@ -24,18 +29,40 @@ public class Booking {
     private int termId;
     private String[] informacje;
 
+    /**
+     * Metoda, ktora zwraca ilosc kupionych biletow
+     *
+     * @return ticket.size() - rozmiar listy ticket
+     */
     public int listLength() {
         return ticket.size();
     }
 
+    /**
+     * Metoda, ktora udostepnia wszystkie informacje na temat rezerwacji -
+     * zgromadzone w tablicy informacje
+     *
+     * @return informacje - tablica informacji(skladowa)
+     */
     public String[] getInfo() {
         return informacje;
     }
 
+    /**
+     * Metoda, ktora dodaje do listy biletow kolejny obiekt klasy Ticket
+     *
+     * @param index - numer identyfikacyjny biletu(typ)
+     */
     public void newTicket(int index) {
         ticket.add(new Ticket(index));
     }
 
+    /**
+     * Metoda, ktora zwraca calkowity koszt zamowienia, jesli ilosc biletow jest
+     * równa co najmniej 5 to klient otrzymuje znizke -30% od kazdego biletu
+     *
+     * @return cena - calkowity koszt zamowionych biletow
+     */
     public double price() {
         double cena = 0;
         if (ticket.size() >= 5) {
@@ -50,6 +77,11 @@ public class Booking {
         return cena;
     }
 
+    /**
+     * Metoda, ktora zwraca tablice cen kazdego typu biletu.
+     *
+     * @return ceny - tablica cen kazdego typu biletu
+     */
     public double[] ceny() {
         double[] ceny = new double[4];
         ceny[0] = 24.00;
@@ -60,9 +92,22 @@ public class Booking {
         return ceny;
     }
 
+    /**
+     * Konstruktor klasy Booking
+     */
     public Booking() {
     }
 
+    /**
+     * Metoda, ktora umozliwia rozpoczecie procesu rezerwacji Jest ona
+     * wywolywana po kliknieciu w godzine pod wybranym filmem.
+     *
+     * Do skladowej termId przypisuje numer id filmu(ktory jest przypisany do
+     * danego terminu i danej godziny)
+     *
+     * @param id - numer id filmu(ktory jest przypisany do danego terminu i
+     * danej godziny)
+     */
     public void startBooking(int id) {
         TermsDB term = new TermsDB();
         term.open();
@@ -71,10 +116,32 @@ public class Booking {
         term.close();
     }
 
+    /**
+     * Metoda, dzieki ktorej pozyskuje liste wszystkich zarezerwowanych miejsc i
+     * przypisuje ja do skladowej miejsce
+     *
+     * @param msc - lista zarezerwowanych miejsc w formacie: [rząd, kolumna]
+     */
     public void getSeat(ArrayList<int[]> msc) {
         miejsce = msc;
     }
 
+    /**
+     * Metoda, ktora konczy proces rezerwacji i dodaje zamowienie do bazy
+     * OrdersDB za pomoca metody addOrder. Dodaje takze zarezerwowane bilety do
+     * bazy TicketDB za pomoca metody addTicket Metoda ta generuje takze numer
+     * rezerwacji oraz wysyla maila z potwierdzeniem zamowienia
+     *
+     *
+     * @param imie - imie
+     * @param nazwisko - nazwisko
+     * @param email - adres e-mail
+     * @param nr_tel - numer telefonu
+     * @param ilosc - ilosc biletow
+     * @param cena - calkowity koszt biletow
+     * @return true - jesli rezerwacja sie powiodla, false - jesli sie nie
+     * powiodla.
+     */
     public boolean endBooking(String imie, String nazwisko, String email, int nr_tel, String ilosc, String cena) {
         Random rand1 = new Random();
         Integer pass = rand1.nextInt(899999) + 100000;
