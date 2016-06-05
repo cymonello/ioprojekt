@@ -10,12 +10,13 @@ import java.util.HashMap;
 /**
  * Created by deleviretta on 22.04.16.
  */
-
 /**
- * Klasa odpowiadająca za stworzenie repertuaru z datami wyświetlania dla danego filmu. Obiekt wykorzystywany
- * w wyszukiwarce po wciśnieciu przycisku "Sprawdź terminy"
+ * Klasa odpowiadająca za stworzenie repertuaru z datami wyświetlania dla danego
+ * filmu. Obiekt wykorzystywany w wyszukiwarce po wciśnieciu przycisku "Sprawdź
+ * terminy"
  */
 public class Dates {
+
     /**
      * Tablica przechowująca daty filmów
      */
@@ -41,9 +42,9 @@ public class Dates {
     private Integer numberOfDays;
 
     /**
-     * Konstruktor przyjmujący id filmu dla którego będziemy szukali dat jego wyświetlania
+     * Konstruktor przyjmujący id filmu dla którego będziemy szukali dat jego
+     * wyświetlania
      */
-
     public Dates(Integer id) {
         numberOfDays = 7;
         date[0] = s.format(cal.getTime());
@@ -65,10 +66,10 @@ public class Dates {
 
     /**
      * Prywatna metoda tworząca tablicę dat filmów
+     *
      * @throws SQLException wyjątek bazodanowy
      * @throws ClassNotFoundException wyjątek klasy Class
      */
-
     private void buildingTables() throws SQLException, ClassNotFoundException {
         String[] tempDatesOfMovies = new String[7];
         Repertoire rep;
@@ -79,7 +80,7 @@ public class Dates {
         for (int i = 0; i < numberOfDays; i++) {
             rep = new Repertoire(date[i]);
             idPerDay = rep.getMovie();
-            if(idPerDay!=null) {
+            if (idPerDay != null) {
                 if (contains(idPerDay, movieID)) {
                     tempDatesOfMovies[j] = date[i];
                     hours = rep.getMapHours();
@@ -98,21 +99,25 @@ public class Dates {
 
     /**
      * Zwraca tablicę przechowującą daty
+     *
      * @return tablica dat
      */
-
     public String[] getDatesOfMovie() {
         return datesOfMovie;
     }
 
     /**
      * Zwraca tablice asocjacyjną jako HashMap przechowującą godziny dla dat
+     *
      * @return tablica asocjacyjna z godzinami wyświetlania dla dat
      */
-    public HashMap<String, Integer[]> getMapHoursOfMovie() { return mapHoursOfMovie; }
-    private boolean contains(Integer[] table, Integer value){
+    public HashMap<String, Integer[]> getMapHoursOfMovie() {
+        return mapHoursOfMovie;
+    }
+
+    private boolean contains(Integer[] table, Integer value) {
         for (int i = 0; i < table.length; i++) {
-            if(table[i].equals(value)) {
+            if (table[i].equals(value)) {
                 return true;
             }
         }
@@ -120,18 +125,19 @@ public class Dates {
     }
 
     /**
-     * Metoda zwracająca id terminu (dla konkretnej daty i godziny), który znajduje się w bazie danych
+     * Metoda zwracająca id terminu (dla konkretnej daty i godziny), który
+     * znajduje się w bazie danych
+     *
      * @param hours godzina wyświetlania
      * @param date data wyświetlania
      * @return id terminu z bazy
      */
-
-    public Integer gettingTermsIDForFilm (Integer hours, String date){
+    public Integer gettingTermsIDForFilm(Integer hours, String date) {
         Integer[] tempHours = mapHoursOfMovie.get(date);
         Integer[] tempTermID = mapTermsOfMovie.get(date);
         Integer tempIndex;
         for (int i = 0; i < tempHours.length; i++) {
-            if(tempHours[i].equals(hours)){
+            if (tempHours[i].equals(hours)) {
                 tempIndex = i;
                 return tempTermID[tempIndex];
             }

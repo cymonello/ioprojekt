@@ -1,25 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package database;
 
-import Booking.Hall;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Arrays;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author Szymon
  */
-public class TicketsDB
-{
+public class TicketsDB {
 
     private Connection connect = null;
     private Statement statement = null;
@@ -27,16 +19,14 @@ public class TicketsDB
     private static int ilosc;
     private String date, hour;
     private int hall;
+
     /**
      * Metoda otwiera połączenie z bazą
      */
-    public void open()
-    {
-        try
-        {
+    public void open() {
+        try {
             connect = DriverManager.getConnection("jdbc:mysql://ran.nazwa.pl:3307/ran_2", "ran_2", "Szymon_M95");
-        } catch (SQLException e)
-        {
+        } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.toString());
         }
     }
@@ -44,16 +34,12 @@ public class TicketsDB
     /**
      * Metoda zamykająca połączenie z bazą danych
      */
-    public void close()
-    {
-        try
-        {
-            if (connect != null)
-            {
+    public void close() {
+        try {
+            if (connect != null) {
                 connect.close();
             }
-        } catch (SQLException e)
-        {
+        } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.toString());
         }
     }
@@ -69,12 +55,9 @@ public class TicketsDB
      * @param seat
      * @param type
      */
-    public void addTicket(int order, String date, String hour, int hall, int row, int seat, int type)
-    {
-        try
-        {
-            if (connect != null)
-            {
+    public void addTicket(int order, String date, String hour, int hall, int row, int seat, int type) {
+        try {
+            if (connect != null) {
                 statement = connect.createStatement();
                 statement.executeUpdate("INSERT INTO Tickets (orderid, date, hour, hall, row, seat, type) VALUES ("
                         + "'" + order + "',"
@@ -84,12 +67,10 @@ public class TicketsDB
                         + "'" + row + "',"
                         + "'" + seat + "',"
                         + "'" + type + "')");
-            } else
-            {
+            } else {
                 JOptionPane.showMessageDialog(null, "Błąd! Brak połączenia z bazą filmów");
             }
-        } catch (SQLException e)
-        {
+        } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.toString());
         }
     }
@@ -104,33 +85,25 @@ public class TicketsDB
      * @return zwraca tablicę int[][] symbolizującą salę (0 lub 1 - zajętość
      * miejsc)
      */
-    public int[][] checkHall(String date, String hour, int hall)
-    {
+    public int[][] checkHall(String date, String hour, int hall) {
         int[][] sala = new int[10][20];
         ResultSet term = null;
-        try
-        {
-            if (connect != null)
-            {
+        try {
+            if (connect != null) {
                 statement = connect.createStatement();
                 term = statement.executeQuery("SELECT row, seat FROM Tickets WHERE hall='" + hall + "' AND date='" + date + "' AND hour='" + hour + "';");
-                while (term.next())
-                {
+                while (term.next()) {
                     sala[term.getInt("row")][term.getInt("seat")] = 1;
                 }
-                for (int i = 0; i < 10; i++)
-                {
-                    for (int j = 9; j < 11; j++)
-                    {
+                for (int i = 0; i < 10; i++) {
+                    for (int j = 9; j < 11; j++) {
                         sala[i][j] = -1;
                     }
                 }
-            } else
-            {
+            } else {
                 JOptionPane.showMessageDialog(null, "Błąd! Brak połączenia z bazą biletow");
             }
-        } catch (SQLException e)
-        {
+        } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.toString());
         }
         return sala;
@@ -144,17 +117,14 @@ public class TicketsDB
      * @param id id erdytowanego zamówienia
      * @return informacje - tablica obiektów z informacjami
      */
-    public Object[] orderToEdit(int id)
-    {
+    public Object[] orderToEdit(int id) {
         ResultSet temp = null;
         Integer count = 0;
         Object[] informacje = new Object[5];
         int[][] sala = null;
         stareMiejsca = new int[10][20];
-        try
-        {
-            if (connect != null)
-            {
+        try {
+            if (connect != null) {
                 statement = connect.createStatement();
                 temp = statement.executeQuery("SELECT date, hour, hall, row, seat, type FROM Tickets WHERE orderid='" + id + "';");
                 temp.next();
@@ -166,31 +136,25 @@ public class TicketsDB
                 hall = temp.getInt("hall");
                 sala = checkHall(temp.getString("date"), temp.getString("hour"), temp.getInt("hall"));
                 temp.beforeFirst();
-                while (temp.next())
-                {
+                while (temp.next()) {
                     sala[temp.getInt("row")][temp.getInt("seat")] = 2;
                     count++;
                 }
-                for (int i = 0; i < 10; i++)
-                {
-                    for (int j = 9; j < 11; j++)
-                    {
+                for (int i = 0; i < 10; i++) {
+                    for (int j = 9; j < 11; j++) {
                         sala[i][j] = -1;
                     }
                 }
                 informacje[3] = count.toString();
                 informacje[4] = sala;
-                for (int i = 0; i < 10; i++)
-                {
-                    for (int j = 0; j < 20; j++)
-                    {
+                for (int i = 0; i < 10; i++) {
+                    for (int j = 0; j < 20; j++) {
                         stareMiejsca[i][j] = sala[i][j];
                     }
                 }
                 ilosc = count;
             }
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.toString());
         }
         return informacje;
@@ -203,19 +167,14 @@ public class TicketsDB
      * @param sala tablica reprezentująca salę z nowo wybranymi miejscami
      * @return
      */
-    public boolean saveEdited(int id, int[][] sala)
-    {
-        try
-        {
+    public boolean saveEdited(int id, int[][] sala) {
+        try {
             int[] rows = new int[ilosc];
             int[] seats = new int[ilosc];
             int k = 0;
-            for (int i = 0; i < 10; i++)
-            {
-                for (int j = 0; j < 20; j++)
-                {
-                    if (stareMiejsca[i][j] == 2)
-                    {
+            for (int i = 0; i < 10; i++) {
+                for (int j = 0; j < 20; j++) {
+                    if (stareMiejsca[i][j] == 2) {
                         rows[k] = i;
                         seats[k] = j;
                         k++;
@@ -223,29 +182,23 @@ public class TicketsDB
                 }
             }
             k = 0;
-            if (connect != null)
-            {
+            if (connect != null) {
                 int[][] sala_do_spr = checkHall(date, hour, hall);
-                for (int i = 0; i < 10; i++)
-                {
-                    for (int j = 0; j < 20; j++)
-                    {
-                        if (sala[i][j] == 2)
-                        {
-                            if (sala_do_spr[i][j] != 1)
-                            {
+                for (int i = 0; i < 10; i++) {
+                    for (int j = 0; j < 20; j++) {
+                        if (sala[i][j] == 2) {
+                            if (sala_do_spr[i][j] != 1) {
                                 statement = connect.createStatement();
                                 statement.executeUpdate("UPDATE Tickets SET row='" + i + "', seat='" + j + "' WHERE orderid='" + id + "' AND row='" + rows[k] + "' AND seat='" + seats[k] + "';");
                                 k++;
-                            }
-                            else 
+                            } else {
                                 return false;
+                            }
                         }
                     }
                 }
             }
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.toString());
         }
         return true;
@@ -257,18 +210,14 @@ public class TicketsDB
      *
      * @param id - id usuwanego zamówienia
      */
-    public void deleteOrder(int id)
-    {
-        try
-        {
-            if (connect != null)
-            {
+    public void deleteOrder(int id) {
+        try {
+            if (connect != null) {
                 statement = connect.createStatement();
                 statement.executeUpdate("DELETE FROM Tickets WHERE orderid=" + id + ";");
                 statement.executeUpdate("DELETE FROM Orders WHERE id=" + id + ";");
             }
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.toString());
         }
     }

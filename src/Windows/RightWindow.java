@@ -795,8 +795,9 @@ public class RightWindow extends JPanel {
         add(jlHaslo);
         final JTextField jtfNumer = new JTextField();
         jtfNumer.setBounds(370, 105, 150, 40);
+        jtfNumer.setToolTipText("Można sprawdzić dane rezerwacji której ważność upływa kolejnego dnia lub później!");
         add(jtfNumer);
-
+        
         final JPasswordField jtfPassw = new JPasswordField();
         jtfPassw.setBounds(370, 155, 150, 40);
         add(jtfPassw);
@@ -819,7 +820,7 @@ public class RightWindow extends JPanel {
                 if (isOk) {
                     MainWindow.rightPanel.editPart2(Integer.parseInt(jtfNumer.getText()));
                 } else {
-                    JOptionPane.showMessageDialog(null, "Niepoprawne dane rezerwacji", "Błąd", INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Niepoprawne dane rezerwacji lub możliwość edycji tej rezerwacji upłynęła!", "Błąd", INFORMATION_MESSAGE);
                 }
             }
         });
