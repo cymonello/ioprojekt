@@ -29,19 +29,21 @@ public class PoprawnoscDanych {
         if (name == null || lastname == null || email == null || numer == null) {
             return false;
         }
-        String replaceAll1 = name.replaceAll("[a-z]+", "").replaceAll("[A-Z]+", "").replaceAll("[ąćłńżźśóęĄĆŁŃŻŹŚÓĘ]", "");
-        String replaceAll2 = lastname.replaceAll("[a-z]+", "").replaceAll("[A-Z]+", "").replaceAll("[ąćłńżźśóęĄĆŁŃŻŹŚÓĘ-]", "");
-        String replaceAll3 = email.replaceAll("[a-z]", "").replaceAll("[A-Z]", "").replaceAll("[0-9]", "").replaceAll("[!#$%&'*+-/=?^_`{|}~.@]", "");
-        if ("[0-9]".equals(String.valueOf(email.charAt(0))) || "[_.-]".equals(String.valueOf(email.charAt(0))) || (email.length() - email.replaceAll("@", "").length()) > 1) {
+        try {
+            String replaceAll1 = name.replaceAll("[a-z]+", "").replaceAll("[A-Z]+", "").replaceAll("[ąćłńżźśóęĄĆŁŃŻŹŚÓĘ]", "");
+            String replaceAll2 = lastname.replaceAll("[a-z]+", "").replaceAll("[A-Z]+", "").replaceAll("[ąćłńżźśóęĄĆŁŃŻŹŚÓĘ-]", "");
+            String replaceAll3 = email.replaceAll("[a-z]", "").replaceAll("[A-Z]", "").replaceAll("[0-9]", "").replaceAll("[!#$%&'*+-/=?^_`{|}~.@]", "");
+            if ("[0-9]".equals(String.valueOf(email.charAt(0))) || "[_.-]".equals(String.valueOf(email.charAt(0))) || (email.length() - email.replaceAll("@", "").length()) > 1) {
+                return false;
+            }
+            if (replaceAll1.length() > 0 || name.length() == 0
+                    || replaceAll2.length() > 0 || lastname.length() == 0
+                    || replaceAll3.length() > 0 || email.indexOf('@') <= 0 || email.indexOf('@') > email.indexOf('.', email.indexOf('@') + 2) || email.indexOf('.', email.indexOf('@') + 2) == email.length() - 1) {
+                return false;
+            }
+        } catch (Exception ex) {
             return false;
         }
-        System.out.println(replaceAll3.length() + " " + replaceAll3);
-        if (replaceAll1.length() > 0 || name.length() == 0
-                || replaceAll2.length() > 0 || lastname.length() == 0
-                || replaceAll3.length() > 0 || email.indexOf('@') <= 0 || email.indexOf('@') > email.indexOf('.', email.indexOf('@') + 2) || email.indexOf('.', email.indexOf('@') + 2) == email.length() - 1) {
-            return false;
-        }
-
         int tel_num = 0;
         try {
             if (!numer.replaceAll(" ", "").equals(numer) || numer.replaceAll(" ", "").length() != 9) {

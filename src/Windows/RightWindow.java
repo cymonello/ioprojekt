@@ -795,7 +795,7 @@ public class RightWindow extends JPanel {
         add(jlHaslo);
         final JTextField jtfNumer = new JTextField();
         jtfNumer.setBounds(370, 105, 150, 40);
-        jtfNumer.setToolTipText("Można sprawdzić dane rezerwacji której ważność upływa kolejnego dnia lub później!");
+        jtfNumer.setToolTipText("Można sprawdzić dane rezerwacji której ważność nie upłynęła!");
         add(jtfNumer);
         
         final JPasswordField jtfPassw = new JPasswordField();
