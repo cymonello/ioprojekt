@@ -112,10 +112,10 @@ public class OrdersDB {
                 termid = statement.executeQuery("SELECT term FROM Orders WHERE id=" + id);
                 if (termid.next()) {
                     term = termid.getInt("term");
-                    data = statement.executeQuery("SELECT date FROM Terms WHERE id=" + term);
+                    data = statement.executeQuery("SELECT date, hour FROM Terms WHERE id=" + term);
                     data.next();
-                    date = data.getString("date");
-                    Date d2 = parseDate(date, "dd.MM.yy");
+                    date = data.getString("date") + " " + data.getString("hour");
+                    Date d2 = parseDate(date, "dd.MM.yy HH:mm");
                     Date d1 = new Date();
                     if (d2.before(d1)) {
                         return false;
