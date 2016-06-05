@@ -10,6 +10,9 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.JOptionPane;
 
 /**
@@ -122,13 +125,26 @@ public class OrdersDB
      */
     public boolean check(int id, String pass)
     {
-        String temp_pass;
-        ResultSet temp;
+        String temp_pass, date;
+        int term;
+        ResultSet temp, termid, data;
         try
         {
             if(connect != null)
             {
                 statement = connect.createStatement();
+                termid = statement.executeQuery("SELECT term FROM Orders WHERE id=" + id);
+                if(termid.next())
+                {
+                    term = termid.getInt("term");
+                    data = statement.executeQuery("SELECT date FROM Terms WHERE id=" + term);
+                    data.next();
+                    date = data.getString("date");
+                    Date d2 = parseDate(date, "dd.MM.yy");
+                    Date d1 = new Date();
+                    if(d2.before(d1))
+                        return false;
+                }
                 temp = statement.executeQuery("SELECT password FROM Orders WHERE id=" + id);
                 if(temp.next())
                 {
@@ -141,10 +157,21 @@ public class OrdersDB
             {
                 JOptionPane.showMessageDialog(null, "Błąd! Brak połączenia z bazą filmów");
             }
-        } catch (SQLException e)
+        } 
+        catch (SQLException e)
+        {
+            JOptionPane.showMessageDialog(null, e.toString());
+        }
+        catch (ParseException e)
         {
             JOptionPane.showMessageDialog(null, e.toString());
         }
         return false;
+    }
+    
+    private Date parseDate(String date, String format) throws ParseException
+    {
+        SimpleDateFormat formatter = new SimpleDateFormat(format);
+        return formatter.parse(date);
     }
 }

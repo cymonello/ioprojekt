@@ -5,6 +5,7 @@
  */
 package database;
 
+import Booking.Hall;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -24,7 +25,8 @@ public class TicketsDB
     private Statement statement = null;
     private static int[][] stareMiejsca;
     private static int ilosc;
-
+    private String date, hour;
+    private int hall;
     /**
      * Metoda otwiera połączenie z bazą
      */
@@ -157,8 +159,11 @@ public class TicketsDB
                 temp = statement.executeQuery("SELECT date, hour, hall, row, seat, type FROM Tickets WHERE orderid='" + id + "';");
                 temp.next();
                 informacje[0] = temp.getString("date");
+                date = temp.getString("date");
                 informacje[1] = temp.getString("hour");
+                hour = temp.getString("hour");
                 informacje[2] = String.valueOf(temp.getInt("hall"));
+                hall = temp.getInt("hall");
                 sala = checkHall(temp.getString("date"), temp.getString("hour"), temp.getInt("hall"));
                 temp.beforeFirst();
                 while (temp.next())
@@ -220,15 +225,21 @@ public class TicketsDB
             k = 0;
             if (connect != null)
             {
+                int[][] sala_do_spr = checkHall(date, hour, hall);
                 for (int i = 0; i < 10; i++)
                 {
                     for (int j = 0; j < 20; j++)
                     {
                         if (sala[i][j] == 2)
                         {
-                            statement = connect.createStatement();
-                            statement.executeUpdate("UPDATE Tickets SET row='" + i + "', seat='" + j + "' WHERE orderid='" + id + "' AND row='" + rows[k] + "' AND seat='" + seats[k] + "';");
-                            k++;
+                            if (sala_do_spr[i][j] != 1)
+                            {
+                                statement = connect.createStatement();
+                                statement.executeUpdate("UPDATE Tickets SET row='" + i + "', seat='" + j + "' WHERE orderid='" + id + "' AND row='" + rows[k] + "' AND seat='" + seats[k] + "';");
+                                k++;
+                            }
+                            else 
+                                return false;
                         }
                     }
                 }
