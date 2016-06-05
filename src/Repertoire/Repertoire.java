@@ -53,7 +53,6 @@ public class Repertoire {
             tdb.close();
         }
         catch(ClassNotFoundException e){
-            e.getMessage();
         }
     }
 
@@ -84,7 +83,7 @@ public class Repertoire {
      */
     private Integer searchingIfValue(Integer[] tab, Integer key){
         for (int i = 0; i < tab.length; i++) {
-            if(tab[i].equals(key)){
+            if(tab[i]==key){
                 return 1;
             }
         }
@@ -106,7 +105,7 @@ public class Repertoire {
         Integer[] tempID = new Integer[13];
         while (moviesRS.next()) {
             id = moviesRS.getInt("movie");
-            if (id.equals(movie[index])) {
+            if (id == movie[index]) {
                 tempHours[k] = moviesRS.getInt("hour");
                 tempID[k] = moviesRS.getInt("id");
                 k++;
