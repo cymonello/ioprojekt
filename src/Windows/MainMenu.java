@@ -5,6 +5,8 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -83,7 +85,8 @@ public class MainMenu extends JPanel implements ActionListener {
                 WindowConstants.schematKolorow = Colors.SCHEMAT0;
                 MainWindow.leftPanel.setBackground(WindowConstants.schematKolorow.getTlo());
                 MainWindow.rightPanel.StartWindow();
-                MainWindow.rightPanel.StartWindow();
+                MainWindow.rightPanel.revalidate();
+                MainWindow.rightPanel.repaint();
             }
         });
         ImageButton schemat1 = new ImageButton("res" + File.separator + "schemat1.png");
@@ -98,6 +101,8 @@ public class MainMenu extends JPanel implements ActionListener {
                 WindowConstants.schematKolorow = Colors.SCHEMAT1;
                 MainWindow.leftPanel.setBackground(WindowConstants.schematKolorow.getTlo());
                 MainWindow.rightPanel.StartWindow();
+                MainWindow.rightPanel.revalidate();
+                MainWindow.rightPanel.repaint();
             }
         });
         ImageButton schemat2 = new ImageButton("res" + File.separator + "schemat2.png");
@@ -112,6 +117,8 @@ public class MainMenu extends JPanel implements ActionListener {
                 WindowConstants.schematKolorow = Colors.SCHEMAT2;
                 MainWindow.leftPanel.setBackground(WindowConstants.schematKolorow.getTlo());
                 MainWindow.rightPanel.StartWindow();
+                MainWindow.rightPanel.revalidate();
+                MainWindow.rightPanel.repaint();
             }
         });
         ImageButton schemat3 = new ImageButton("res" + File.separator + "schemat3.png");
@@ -126,6 +133,8 @@ public class MainMenu extends JPanel implements ActionListener {
                 WindowConstants.schematKolorow = Colors.SCHEMAT3;
                 MainWindow.leftPanel.setBackground(WindowConstants.schematKolorow.getTlo());
                 MainWindow.rightPanel.StartWindow();
+                MainWindow.rightPanel.revalidate();
+                MainWindow.rightPanel.repaint();
             }
         });
         JLabel schematy = new JLabel(new ImageIcon("res" + File.separator+"schematy.png"));

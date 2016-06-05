@@ -27,7 +27,7 @@ abstract public class WindowConstants {
      * Aktualny schemat kolorystyczny, możliwy do zmienienia przez urzytkownika
      * w trakcie działania programu
      */
-    public static Colors schematKolorow = Colors.SCHEMAT0;
+    volatile public static Colors schematKolorow = Colors.SCHEMAT0;
     /**
      * Czcionka dla normlanego tekstu
      */
