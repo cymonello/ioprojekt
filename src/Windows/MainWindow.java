@@ -19,7 +19,7 @@ public class MainWindow extends JFrame {
      */
     public static void main(String[] args) {
         MainWindow main = new MainWindow();
-        run(main, WindowConstants.WIDTH, WindowConstants.HEIGHT, "Projekt - prototyp 2");
+        run(main, WindowConstants.WIDTH, WindowConstants.HEIGHT, "IO_Projekt_rezerwacji_w_kinie");
 
     }
     //zmienne pakietowe, aby móc z nich korzystyć w funkcjach klasy RightWindow
